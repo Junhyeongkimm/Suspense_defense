@@ -1,0 +1,41 @@
+#pragma once
+#include "../Engine/Vec2.h"
+#include "../Engine/Camera.h"
+#include "../Engine/Matrix.h"
+
+//#include "Mediator.h"
+class Mediator;
+
+class Player {
+private:
+	Math::TransformationMatrix matrix;
+	Math::vec2 position;
+	Math::vec2 attack_position = { 0, 0 };
+	Math::ivec2 tile_position;
+	const double speed = 250;
+	const double size = 50;
+	const CS230::Camera& camera;
+
+
+	int hp = 10;
+	const double attack_delay = 0.2;
+	double attack_count = 0;
+	bool is_attacking = false;
+
+	const double invincibility_time = 1.0;
+	double invincibility_count = 0;
+
+	Mediator* mediator;
+
+public:
+	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
+	void Update(double dt);
+	void Draw();
+	const Math::vec2& GetPosition() const { return position; }
+	const Math::ivec2& GetTilePosition() const { return tile_position; }
+	Math::vec2 GetAttackPosition();
+	bool Able_To_Attack() { return attack_count > attack_delay; }
+	double GetDistanceFromAttack(Math::vec2 target);
+	void Attack();
+	void Reduce_hp();
+};
