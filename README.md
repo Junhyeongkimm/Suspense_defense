@@ -9,6 +9,7 @@
   Taehoon Lim(임태훈):Design Lead, Systems Design
 
 - Compilation Instructions
+
 Run the solution and compile it because you don't need any other image assets or sound files
 
 -  How to play?
