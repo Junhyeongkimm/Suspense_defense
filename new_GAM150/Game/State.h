@@ -9,5 +9,6 @@ Created:    March 16, 2023
 */
 enum class States {
     Splash,
-    Game
+    Game,
+    MainMenu
 };

@@ -50,32 +50,24 @@ void Player::Update(double dt) {
 	}*/
 
 	if (buttons[KeyboardButtons::W]) {
-		if ((mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::WALL) || mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::COLONY_SIDE) {
-			position.y -= speed * dt;
-		}
-		position.y += speed * dt;
-		
-	}
-	if (buttons[KeyboardButtons::S]) {
-		if ((mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::WALL) || (mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::COLONY_SIDE)) {
+		if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
 			position.y += speed * dt;
 		}
-		position.y -= speed * dt;
-		
+	}
+	if (buttons[KeyboardButtons::S]) {
+		if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
+			position.y -= speed * dt;
+		}
 	}
 	if (buttons[KeyboardButtons::A]) {
-		if ((mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::WALL) || (mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::COLONY_SIDE)) {
-			position.x += speed * dt;
-		}
-		position.x -= speed * dt;
-		
-	}
-	if (buttons[KeyboardButtons::D]) {
-		if ((mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::WALL) || (mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::COLONY_SIDE)) {
+		if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
 			position.x -= speed * dt;
 		}
-		position.x += speed * dt;
-		
+	}
+	if (buttons[KeyboardButtons::D]) {
+		if ((mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
+			position.x += speed * dt;
+		}
 	}
 
 	pop_settings();

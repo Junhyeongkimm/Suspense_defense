@@ -14,6 +14,7 @@ Updated:    April 28, 2023
 #include "Engine/Engine.h"
 #include "Game/Splash.h"
 #include "Game/Game.h"
+#include "Game/MainMenu.h"
 
 int main() {
     try {
@@ -22,6 +23,8 @@ int main() {
 
         Splash splash;
         engine.GetGameStateManager().AddGameState(splash);
+        MainMenu mainmenu;
+        engine.GetGameStateManager().AddGameState(mainmenu);
         Game game;
         engine.GetGameStateManager().AddGameState(game);
 

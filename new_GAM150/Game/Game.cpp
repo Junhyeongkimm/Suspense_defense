@@ -85,13 +85,13 @@ void Game::Draw() {
 	for (Monster* monster : monsters) {
 		monster->Draw();
 	}
-
 	pop_settings();
 
 
 	push_settings();
 	set_font_size(25);
-	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", 0, 70);
+	
+	//draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", 0, 70);
 	draw_text("Resource: " + std::to_string(player->GetMapResource()) + ", " + std::to_string(player->GetMonsterResource()), 0, 50);
 	draw_text("Hp: " + std::to_string(player->GetHP()), 0, 30);
 	pop_settings();

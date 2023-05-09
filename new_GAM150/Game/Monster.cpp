@@ -6,33 +6,39 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 }
 
 void Monster::Update(double dt, Math::vec2 target) {
-	//Move(target, dt);
 
 	double x_direction = (target.x - position.x) / GetDistance(target);
 	double y_direction = (target.y - position.y) / GetDistance(target);
 
+	// 몬스터 크기의 절반을 미리 계산해둡니다.
+	double half_size = size / 2.0;
 
-	/*if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL)) {
-		position.x += speed * dt * x_direction;
+	// 몬스터가 이동할 위치를 미리 계산합니다.
+	Math::vec2 next_position_x = { position.x + speed * dt * x_direction, position.y };
+	Math::vec2 next_position_y = { position.x, position.y + speed * dt * y_direction };
+
+	// 벽과 충돌하는 경우는 움직이지 않습니다.
+	bool can_move_x = (
+		mediator->GetMapState({ next_position_x.x - half_size, next_position_x.y }) != TILES::WALL &&
+		mediator->GetMapState({ next_position_x.x + half_size, next_position_x.y }) != TILES::WALL &&
+		mediator->GetMapState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
+		mediator->GetMapState({ next_position_x.x + half_size, next_position_x.y }) != TILES::BASE_WALL);
+
+	bool can_move_y = (
+		mediator->GetMapState({ next_position_y.x, next_position_y.y - half_size }) != TILES::WALL &&
+		mediator->GetMapState({ next_position_y.x, next_position_y.y + half_size }) != TILES::WALL &&
+		mediator->GetMapState({ next_position_y.x, next_position_y.y - half_size }) != TILES::BASE_WALL &&
+		mediator->GetMapState({ next_position_y.x, next_position_y.y + half_size }) != TILES::BASE_WALL);
+
+	if (can_move_x) {
+		position.x = next_position_x.x;
 	}
 
-	if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL)) {
-		position.y += speed * dt * y_direction;
-	}*/
+	if (can_move_y) {
+		position.y = next_position_y.y;
+	}
 
-	if ((mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::WALL)
-		|| (mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::WALL)
-		|| (mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::BASE_WALL)
-		|| (mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::BASE_WALL)) {
-		position.x -= speed * dt * x_direction;
-	}
-	if ((mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::WALL)
-		|| (mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::WALL)
-		|| (mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::BASE_WALL)
-		|| (mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::BASE_WALL)) {
-		position.y -= speed * dt * y_direction;
-	}
-	position += speed * dt * Math::vec2({ x_direction, y_direction });
+	//position += speed * dt * Math::vec2({ x_direction, y_direction });
 
 	
 
