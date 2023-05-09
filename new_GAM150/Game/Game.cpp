@@ -4,6 +4,7 @@
 #include <vector>
 #include "doodle/input.hpp"
 #include "doodle/angle.hpp"
+
 using namespace doodle;
 
 //Player*player, std::vector<Monster*>monsters, Map*map, Mediator* mediator
@@ -40,10 +41,12 @@ void Game::Update([[maybe_unused]] double dt) {
 	camera.Update(player->GetPosition());
 
 	if (player->GetHP() <= 0) {
-		Engine::GetGameStateManager().ClearNextGameState();
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
+
+
 	if (Key == KeyboardButtons::Escape) {
-		Engine::GetGameStateManager().ClearNextGameState();
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 
 	static bool not_clicked = false;
