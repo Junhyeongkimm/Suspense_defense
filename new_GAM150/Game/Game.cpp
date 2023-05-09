@@ -33,11 +33,15 @@ void Game::Load() {
 
 void Game::Update([[maybe_unused]] double dt) {
 	player->Update(dt);
+	map->Update(dt);
 	for (Monster* monster : monsters) {
 		monster->Update(dt, player->GetPosition());
 	}
 	camera.Update(player->GetPosition());
 
+	if (player->GetHP() <= 0) {
+		Engine::GetGameStateManager().ClearNextGameState();
+	}
 	if (Key == KeyboardButtons::Escape) {
 		Engine::GetGameStateManager().ClearNextGameState();
 	}
@@ -51,6 +55,8 @@ void Game::Update([[maybe_unused]] double dt) {
 		if (player->Able_To_Attack()) {
 			player->Attack();
 		}
+		player->SetAttackPosition(player->GetAttackPosition());
+		//attack_position = GetAttackPosition();
 		//monsters.push_back(new Monster(player->GetAttackPosition(), mediator));
 		not_clicked = false;
 	}
@@ -64,14 +70,29 @@ void Game::Draw() {
 	Engine::GetWindow().Clear(0x000000FF);
 
 	Math::TransformationMatrix camera_matrix = camera.GetMatrix();
+
 	push_settings();
 	//apply_rotate(QUARTER_PI);
-	//apply_translate(-player->GetPosition().x + Engine::GetWindow().GetSize().x / 2, -player->GetPosition().y + Engine::GetWindow().GetSize().y / 2);
 	apply_translate(-mediator->GetPlayerPosition().x + Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayerPosition().y + Engine::GetWindow().GetSize().y / 2);
+
+	push_settings();
+	no_outline();
 	map->Show_Map(player->GetTilePosition());
+	pop_settings();
+
 	player->Draw();
+
 	for (Monster* monster : monsters) {
 		monster->Draw();
 	}
+
+	pop_settings();
+
+
+	push_settings();
+	set_font_size(25);
+	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", 0, 70);
+	draw_text("Resource: " + std::to_string(player->GetMapResource()) + ", " + std::to_string(player->GetMonsterResource()), 0, 50);
+	draw_text("Hp: " + std::to_string(player->GetHP()), 0, 30);
 	pop_settings();
 }

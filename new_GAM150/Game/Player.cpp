@@ -49,18 +49,35 @@ void Player::Update(double dt) {
 		position.y -= speed * dt * (1 / sqrt(2));
 	}*/
 
-	if (buttons[KeyboardButtons::W] && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) {
+	if (buttons[KeyboardButtons::W]) {
+		if ((mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::WALL) || mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::COLONY_SIDE) {
+			position.y -= speed * dt;
+		}
 		position.y += speed * dt;
+		
 	}
-	if (buttons[KeyboardButtons::S] && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) &&(mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
+	if (buttons[KeyboardButtons::S]) {
+		if ((mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::WALL) || (mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::COLONY_SIDE)) {
+			position.y += speed * dt;
+		}
 		position.y -= speed * dt;
+		
 	}
-	if (buttons[KeyboardButtons::A] && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
+	if (buttons[KeyboardButtons::A]) {
+		if ((mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::WALL) || (mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::COLONY_SIDE)) {
+			position.x += speed * dt;
+		}
 		position.x -= speed * dt;
+		
 	}
-	if (buttons[KeyboardButtons::D] && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
+	if (buttons[KeyboardButtons::D]) {
+		if ((mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::WALL) || (mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::COLONY_SIDE)) {
+			position.x -= speed * dt;
+		}
 		position.x += speed * dt;
+		
 	}
+
 	pop_settings();
 
 	attack_count += dt;
@@ -75,6 +92,8 @@ void Player::Update(double dt) {
 	if (attack_count > attack_delay) {
 		is_attacking = false;
 	}
+
+	mediator->CheckPlayerAttacked();
 }
 
 void Player::Draw() {
@@ -87,11 +106,11 @@ void Player::Draw() {
 	if (is_attacking == true) {
 		push_settings();
 		set_outline_width(100);
+		//draw_line(position.x, position.y, attack_position.x, attack_position.y);
 		draw_line(position.x, position.y, GetAttackPosition().x, GetAttackPosition().y);
-
 		pop_settings();
 	}
-	
+
 }
 
 void Player::Reduce_hp() {
@@ -107,7 +126,6 @@ double Player::GetDistanceFromAttack(Math::vec2 target) {
 
 void Player::Attack() {
 	is_attacking = true;
-	attack_position = GetAttackPosition();
 
 	mediator->Check_Monster_Attacked();
 	mediator->Check_Map_Attacked();

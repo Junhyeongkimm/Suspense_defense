@@ -28,6 +28,14 @@ void Mediator::Check_Map_Attacked() {
 	}
 }
 
+void Mediator::CheckPlayerAttacked() {
+	for (Monster* monster : *monsters) {
+		if (monster->GetDistance(player->GetPosition()) < monster->GetSize() / 2) {
+			player->Reduce_hp();
+		}
+	}
+}
+
 void Mediator::SetPlayer(Player* player) {
 	this->player = player;
 }

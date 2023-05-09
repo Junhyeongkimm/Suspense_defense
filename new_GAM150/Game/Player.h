@@ -12,8 +12,8 @@ private:
 	Math::vec2 position;
 	Math::vec2 attack_position = { 0, 0 };
 	Math::ivec2 tile_position;
-	const double speed = 250;
-	const double size = 50;
+	const double speed = 500;
+	const double size = 40;
 	const CS230::Camera& camera;
 
 
@@ -24,6 +24,9 @@ private:
 
 	const double invincibility_time = 1.0;
 	double invincibility_count = 0;
+
+	int map_resource = 0;
+	int monster_resource = 0;
 
 	Mediator* mediator;
 
@@ -38,4 +41,11 @@ public:
 	double GetDistanceFromAttack(Math::vec2 target);
 	void Attack();
 	void Reduce_hp();
+	void IncreaseMapResource() { ++map_resource; }
+	void IncreaseMonsterResource() { ++monster_resource; }
+	int GetMapResource() { return map_resource; }
+	int GetMonsterResource() { return monster_resource; }
+	int GetHP() { return hp; }
+	void SetAttackPosition(Math::vec2 position) { attack_position = position; }
+	void GoToBase() { position = { 7550, 7550 }; }
 };

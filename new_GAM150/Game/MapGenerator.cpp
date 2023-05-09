@@ -14,6 +14,20 @@ Map::Map(Mediator* mediator) : mediator(mediator) {
 		}
 	}
 }
+
+void Map::Update(double dt) {
+	time += dt; 
+
+	if (time >= duration) {
+		if (is_day == true)
+			is_day = false;
+		else
+			is_day = true;
+		time = 0;
+	}
+	
+}
+
 void Map::MapMaking() {
 	Initialize();
 
@@ -21,8 +35,9 @@ void Map::MapMaking() {
 		Optimizing();
 
 	Make_Base();
-	Make_Colony(150);
-	Make_Resource(300);
+	Make_Colony(300);
+	Make_Resource(600);
+	Make_Warp(200);
 }
 void Map::Initialize() {
 	for (int i = 0; i < map_size; i++) {
@@ -139,6 +154,23 @@ void Map::Make_Resource(int number) {
 		}
 	}
 }
+void Map::Make_Warp(int number) {
+	for (int i = 0; i < number; i++) {
+		while (1) {
+			int rand_x = random(10, map_size - 10);
+			int rand_y = random(10, map_size - 10);
+
+			if (MAP[rand_x][rand_y]->Get_State() == TILES::VOID) {
+				delete MAP[rand_x][rand_y];
+				MAP[rand_x][rand_y] = new Warp(Math::vec2{ rand_x * tile_length, rand_y * tile_length });
+				break;
+			}
+			else
+				continue;
+		}
+	}
+}
+
 void Map::Show_Map(Math::ivec2 player_position) {
 	/*int player_x = (int)(map_length / 2 + player_position.x) / (int)tile_length;
 	int player_y = (int)(map_length / 2 + player_position.y) / (int)tile_length;*/
@@ -152,37 +184,86 @@ void Map::Show_Map(Math::ivec2 player_position) {
 	//apply_translate(-player_position.x, -player_position.y);
 	
 	//no_outline();
-	for (int i = player_x - 10; i < player_x + 10; i++) {
-		for (int j = player_y - 10; j < player_y + 10; j++) {
+
+	static int offset;
+	
+	if (is_day == true) {
+		if (time <= duration / 4) {
+			offset = (4 * time / duration * 3) + 7; // 7 ~ 10
+		}
+		else if (time > duration / 4 && time <= 3 * duration / 4) { // 10
+			offset = 10;
+		}
+		else {
+			offset = 10 - (4 * (time - 3 * duration / 4) / duration * 3); // 10~7
+		}
+	}
+	else {
+		if (time <= duration / 4) {
+			offset = 7 - (4 * time / duration * 3); // 7 ~ 4
+		}
+		else if (time > duration / 4 && time <= 3 * duration / 4) { // 4
+			offset = 4;
+		}
+		else {
+			offset = (4 * (time - 3 * duration / 4) / duration * 3) + 4; // 4~7
+		}
+	}
+	
+
+
+	for (int i = player_x - offset; i < player_x + offset; i++) {
+		for (int j = player_y - offset; j < player_y + offset; j++) {
 			if (i < 0 || i >= map_size || j < 0 || j >= map_size)
 				continue;
-			MAP[i][j]->Draw();
+			MAP[i][j]->Draw(is_day);
 		}
 	}
 	pop_settings();
 }
-
+#include <iostream>
 void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 
 	switch (MAP[x][y]->Get_State()) {
 	case TILES::COLONY_SIDE:
-		MAP[x][y]->Attacked(attack_point);
-		if (MAP[x][y]->GetHP() <= 0) {
+		if (MAP[x][y]->Attacked(attack_point, 1)) {
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
-					if (MAP[x+i][y+j]->Get_State() == TILES::COLONY_CORE) {
-						for (int k = -1; k <= 1; k++) {
-							for (int l = -1; l <= 1; l++) {
-								delete MAP[x + i + k][y + j + l];
-								MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
+					if (MAP[x + i][y + j]->Get_State() == TILES::COLONY_CORE) {
+						MAP[x + i][y + j]->ReduceHP();
+						std::cout << "Core Attacked" << std::endl;
+						if (MAP[x + i][y + j]->GetHP() <= 0) {
+							for (int k = -1; k <= 1; k++) {
+								for (int l = -1; l <= 1; l++) {
+									delete MAP[x + i + k][y + j + l];
+									MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
+								}
 							}
+							mediator->AddMonster(MAP[x + i][y + j]->GetPosition());
 						}
 					}
 				}
 			}
-			//mediator->AddMonster(MAP[x][y]->GetPosition());
-			mediator->AddMonster(MAP[x][y]->GetPosition());
 		}
+		
+
+		//MAP[x][y]->Attacked(attack_point);
+		//if (MAP[x][y]->GetHP() <= 0) {
+		//	for (int i = -1; i <= 1; i++) {
+		//		for (int j = -1; j <= 1; j++) {
+		//			if (MAP[x+i][y+j]->Get_State() == TILES::COLONY_CORE) {
+		//				for (int k = -1; k <= 1; k++) {
+		//					for (int l = -1; l <= 1; l++) {
+		//						delete MAP[x + i + k][y + j + l];
+		//						MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
+		//					}
+		//				}
+		//			}
+		//		}
+		//	}
+		//	//mediator->AddMonster(MAP[x][y]->GetPosition());
+		//	mediator->AddMonster(MAP[x][y]->GetPosition());
+		//}
 		
 		break;
 	case TILES::WALL:
@@ -198,6 +279,16 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 		if (MAP[x][y]->GetHP() <= 0) {
 			delete MAP[x][y];
 			MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+			mediator->IncreaseMapResource();
+		}
+
+		break;
+	case TILES::WARP:
+		MAP[x][y]->Attacked(attack_point);
+		if (MAP[x][y]->GetHP() <= 0) {
+			delete MAP[x][y];
+			MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+			mediator->Warp();
 		}
 
 		break;

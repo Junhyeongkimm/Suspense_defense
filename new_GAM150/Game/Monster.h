@@ -7,7 +7,7 @@ class Monster {
 private:
 	Math::vec2 position;
 	int hp = 1;
-	double size = 50;
+	double size = 40;
 	double speed = 200;
 
 	Mediator* mediator;

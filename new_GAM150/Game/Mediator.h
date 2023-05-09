@@ -14,18 +14,24 @@ class Mediator {
 public:
 	Mediator();
 	void Attack_player();
-	//void Attack_monster();
+
 	void Check_Monster_Attacked();
 	void Check_Map_Attacked();
+	void CheckPlayerAttacked();
+
 	void SetPlayer(Player* player);
 	void SetMonsters(std::vector<Monster*>*monsters);
 	void SetMap(Map* map);
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
 	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
+
+	//int GetMapState(Math::ivec2 position) { return map->GetTileState(position); }
 	void AddMonster(Math::vec2 position);
-	//void Check_Collision();
-	//void Update();
+
 	void DeleteMonster(Monster* monster);
+	void IncreaseMapResource() { player->IncreaseMapResource(); }
+	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
+	void Warp() { player->GoToBase(); }
 
 private:
 	Player* player;
