@@ -105,7 +105,7 @@ void Player::Draw() {
 	
 	if (is_attacking == true) {
 		push_settings();
-		set_outline_width(100);
+		set_outline_width(10);
 		//draw_line(position.x, position.y, attack_position.x, attack_position.y);
 		draw_line(position.x, position.y, GetAttackPosition().x, GetAttackPosition().y);
 		pop_settings();
