@@ -11,6 +11,11 @@
 //class Map;
 
 class Mediator {
+private:
+	Player* player;
+	std::vector<Monster*>* monsters;
+	Map* map;
+
 public:
 	Mediator();
 	void Attack_player();
@@ -33,8 +38,4 @@ public:
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
 	void Warp() { player->GoToBase(); }
 
-private:
-	Player* player;
-	std::vector<Monster*>*monsters;
-	Map* map;
 };
