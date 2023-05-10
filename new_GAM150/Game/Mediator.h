@@ -30,7 +30,6 @@ public:
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
 	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
 
-	//int GetMapState(Math::ivec2 position) { return map->GetTileState(position); }
 	void AddMonster(Math::vec2 position);
 
 	void DeleteMonster(Monster* monster);
