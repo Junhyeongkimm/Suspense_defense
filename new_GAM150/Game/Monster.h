@@ -5,12 +5,12 @@ class Mediator;
 
 class Monster {
 private:
+	Mediator* mediator;
 	Math::vec2 position;
 	int hp = 1;
 	double size = 40;
 	double speed = 200;
 
-	Mediator* mediator;
 public:
 	Monster(Math::vec2 position, Mediator* mediator);
 	void Update(double dt, Math::vec2 target);

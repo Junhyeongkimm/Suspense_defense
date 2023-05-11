@@ -138,6 +138,7 @@
     <ClCompile Include="Engine\TextureManager.cpp" />
     <ClCompile Include="Engine\Vec2.cpp" />
     <ClCompile Include="Engine\Window.cpp" />
+    <ClCompile Include="Game\Bullet.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\MainMenu.cpp" />
     <ClCompile Include="Game\MapGenerator.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Engine\TextureManager.h" />
     <ClInclude Include="Engine\Vec2.h" />
     <ClInclude Include="Engine\Window.h" />
+    <ClInclude Include="Game\Bullet.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\MainMenu.h" />
     <ClInclude Include="Game\MapGenerator.h" />

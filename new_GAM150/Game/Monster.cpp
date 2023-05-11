@@ -77,11 +77,10 @@ double Monster::GetDistance(Math::vec2 target) {
 void Monster::Reduce_hp() {
 	--hp;
 }
-#include <iostream>
+
 void Monster::Attacked(Math::vec2 attack_position) {
 	if (GetDistance(attack_position) < size / 2) {
 		Reduce_hp();
-		std::cout << "attacked!\n";
 
 		if (hp <= 0) {
 			mediator->IncreaseMonsterResource();

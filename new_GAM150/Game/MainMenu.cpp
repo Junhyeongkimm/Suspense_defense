@@ -39,6 +39,12 @@ void MainMenu::Update([[maybe_unused]] double dt) {
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
         }
     }
+    if (Key == KeyboardButtons::Escape) {
+        if (counter == 0)
+        {
+            Engine::GetGameStateManager().ClearNextGameState();
+        }
+    }
 
 }
 

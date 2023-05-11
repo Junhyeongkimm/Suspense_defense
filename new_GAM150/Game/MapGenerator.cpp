@@ -18,11 +18,16 @@ Map::Map(Mediator* mediator) : mediator(mediator) {
 void Map::Update(double dt) {
 	time += dt; 
 
+
 	if (time >= duration) {
-		if (is_day == true)
+		if (is_day == true) {
+
 			is_day = false;
-		else
+		}
+		else {
+			
 			is_day = true;
+		}
 		time = 0;
 	}
 	
@@ -189,24 +194,24 @@ void Map::Show_Map(Math::ivec2 player_position) {
 	
 	if (is_day == true) {
 		if (time <= duration / 4) {
-			offset = (4 * time / duration * 3) + 7; // 7 ~ 10
+			offset = (int)(4 * time / duration * 3) + 7; // 7 ~ 10
 		}
 		else if (time > duration / 4 && time <= 3 * duration / 4) { // 10
 			offset = 10;
 		}
 		else {
-			offset = 10 - (4 * (time - 3 * duration / 4) / duration * 3); // 10~7
+			offset = 10 - (int)(4 * (time - 3 * duration / 4) / duration * 3); // 10~7
 		}
 	}
 	else {
 		if (time <= duration / 4) {
-			offset = 7 - (4 * time / duration * 3); // 7 ~ 4
+			offset = 7 - (int)(4 * time / duration * 3); // 7 ~ 4
 		}
 		else if (time > duration / 4 && time <= 3 * duration / 4) { // 4
 			offset = 4;
 		}
 		else {
-			offset = (4 * (time - 3 * duration / 4) / duration * 3) + 4; // 4~7
+			offset = (int)(4 * (time - 3 * duration / 4) / duration * 3) + 4; // 4~7
 		}
 	}
 	

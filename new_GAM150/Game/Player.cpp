@@ -75,6 +75,21 @@ void Player::Update(double dt) {
 	attack_count += dt;
 	invincibility_count += dt;
 
+	static bool not_clicked = false;
+
+	if (!MouseIsPressed) {
+		not_clicked = true;
+	}
+	if (MouseIsPressed && not_clicked) {
+		if (Able_To_Attack()) {
+			Attack();
+		}
+		SetAttackPosition(GetAttackPosition());
+		//attack_position = GetAttackPosition();
+		//monsters.push_back(new Monster(player->GetAttackPosition(), mediator));
+		not_clicked = false;
+	}
+
 
 	// tile_position Update!!
 	static const double map_length = 15000 / 300;

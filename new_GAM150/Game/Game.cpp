@@ -49,20 +49,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 
-	static bool not_clicked = false;
-
-	if (!MouseIsPressed) {
-		not_clicked = true;
-	}
-	if (MouseIsPressed && not_clicked) {
-		if (player->Able_To_Attack()) {
-			player->Attack();
-		}
-		player->SetAttackPosition(player->GetAttackPosition());
-		//attack_position = GetAttackPosition();
-		//monsters.push_back(new Monster(player->GetAttackPosition(), mediator));
-		not_clicked = false;
-	}
+	
 }
 
 void Game::Unload() {

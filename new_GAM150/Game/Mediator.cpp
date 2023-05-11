@@ -1,6 +1,6 @@
 #include "Mediator.h"
 
-Mediator::Mediator() : map(nullptr), player(nullptr), monsters() {
+Mediator::Mediator() : map(nullptr), player(nullptr), monsters(), bullets() {
 
 }
 
@@ -45,9 +45,15 @@ void Mediator::SetMonsters(std::vector<Monster*>*monsters) {
 void Mediator::SetMap(Map* map) {
 	this->map = map;
 }
-#include <iostream>
+void Mediator::SetBullet(std::vector<Bullet*>* bullets) {
+	this->bullets = bullets;
+}
+
 void Mediator::AddMonster(Math::vec2 position) {
 	monsters->push_back(new Monster(position, this));
+}
+void Mediator::AddBullet(Math::vec2 position, Math::vec2 direction) {
+	bullets->push_back(new Bullet(position, direction, this));
 }
 
 //void Mediator::Check_Collision() {

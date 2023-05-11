@@ -7,7 +7,6 @@ using namespace doodle;
 // enum TILES { WALL, VOID, COLONY_CORE, COLONY_SIDE, BASE_WALL, BASE_INSIDE, RESOURCE };
 
 class Tile {
-private:
 protected:
 	static inline const double size = 50;
 	Math::vec2 position;

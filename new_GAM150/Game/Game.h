@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "MapGenerator.h"
+#include "Bullet.h"
 #include "Mediator.h"
 
 

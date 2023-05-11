@@ -8,6 +8,7 @@ class Mediator;
 
 class Player {
 private:
+	Mediator* mediator;
 	Math::TransformationMatrix matrix;
 	Math::vec2 position;
 	Math::vec2 attack_position = { 0, 0 };
@@ -22,13 +23,15 @@ private:
 	double attack_count = 0;
 	bool is_attacking = false;
 
+	enum ATTACK_MODE { MELEE = 0, RANGE = 1 };
+	int attack_mode = MELEE;
+
 	const double invincibility_time = 1.0;
 	double invincibility_count = 0;
 
 	int map_resource = 0;
 	int monster_resource = 0;
 
-	Mediator* mediator;
 
 public:
 	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
