@@ -7,10 +7,9 @@
 
 using namespace doodle;
 
-//Player*player, std::vector<Monster*>monsters, Map*map, Mediator* mediator
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
-	player(nullptr), monsters(), map(nullptr), mediator(nullptr)
+	player(nullptr), monsters(), bullets(), map(nullptr), mediator(nullptr)
 { }
 
 void Game::Load() {
@@ -28,6 +27,7 @@ void Game::Load() {
 	// monsters
 	mediator->SetMonsters(&monsters);
 	//mediator->AddMonster({ 7500, 7500 });
+	mediator->SetBullets(&bullets);
 
 	map->MapMaking();
 }
@@ -37,6 +37,9 @@ void Game::Update([[maybe_unused]] double dt) {
 	map->Update(dt);
 	for (Monster* monster : monsters) {
 		monster->Update(dt, player->GetPosition());
+	}
+	for (Bullet* bullet : bullets) {
+		bullet->Update(dt);
 	}
 	camera.Update(player->GetPosition());
 
@@ -49,13 +52,25 @@ void Game::Update([[maybe_unused]] double dt) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 
-	
+
+	for (Bullet* bullet : bullets) {
+		if (map->GetTileState(bullet->GetPosition()) != TILES::VOID) {
+			mediator->DeleteBullet(bullet);
+		}
+		for (Monster* monster : monsters) {
+			if (monster->GetDistance(bullet->GetPosition()) < monster->GetSize()) {
+				mediator->DeleteBullet(bullet);
+				mediator->DeleteMonster(monster);
+			}
+		}
+	}
+
 }
 
 void Game::Unload() {
 
 }
-#include <iostream>
+
 void Game::Draw() {
 	Engine::GetWindow().Clear(0x000000FF);
 
@@ -74,6 +89,9 @@ void Game::Draw() {
 
 	for (Monster* monster : monsters) {
 		monster->Draw();
+	}
+	for (Bullet* bullet : bullets) {
+		bullet->Draw();
 	}
 	pop_settings();
 

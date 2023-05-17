@@ -31,6 +31,7 @@ private:
     CS230::Camera camera;
     Player* player;
     std::vector<Monster*>monsters;
+    std::vector<Bullet*>bullets;
     Map* map;
     Mediator* mediator;
     //CS230::GameObjectManager gameobjectmanager;

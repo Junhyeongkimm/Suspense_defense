@@ -8,7 +8,7 @@ using namespace doodle;
 
 #define PRESSED         true
 #define NOT_PRESSED     false
-
+#include <iostream>
 std::map<KeyboardButtons, bool> buttons = {
 	{ KeyboardButtons::W, NOT_PRESSED },
 	{ KeyboardButtons::S, NOT_PRESSED },
@@ -101,6 +101,15 @@ void Player::Update(double dt) {
 	}
 
 	mediator->CheckPlayerAttacked();
+
+	if (Key == KeyboardButtons::NumPad_1) {
+		attack_mode = MELEE;
+		std::cout << "Melee mode!" << std::endl;
+	}
+	else if (Key == KeyboardButtons::NumPad_2) {
+		attack_mode = RANGE;
+		std::cout << "Range mode!" << std::endl;
+	}
 }
 
 void Player::Draw() {
@@ -132,12 +141,17 @@ double Player::GetDistanceFromAttack(Math::vec2 target) {
 }
 
 void Player::Attack() {
-	is_attacking = true;
+	if (attack_mode == MELEE) {
+		is_attacking = true;
 
-	mediator->Check_Monster_Attacked();
-	mediator->Check_Map_Attacked();
+		mediator->Check_Monster_Attacked();
+		mediator->Check_Map_Attacked();
+		attack_count = 0;
+	}
+	else if (attack_mode == RANGE) {
+		mediator->AddBullet(position, GetAttackPosition()-position);
+	}
 
-	attack_count = 0;
 }
 
 Math::vec2 Player::GetAttackPosition() {

@@ -29,15 +29,17 @@ public:
 
 	void SetPlayer(Player* player);
 	void SetMonsters(std::vector<Monster*>*monsters);
+	void SetBullets(std::vector<Bullet*>*bullets);
 	void SetMap(Map* map);
-	void SetBullet(std::vector<Bullet*>* bullets);
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
 	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
 
 	void AddMonster(Math::vec2 position);
-	void AddBullet(Math::vec2 position, Math::vec2 direction);
-
 	void DeleteMonster(Monster* monster);
+
+	void AddBullet(Math::vec2 position, Math::vec2 direction);
+	void DeleteBullet(Bullet* bullet);
+
 	void IncreaseMapResource() { player->IncreaseMapResource(); }
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
 	void Warp() { player->GoToBase(); }
