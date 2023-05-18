@@ -6,6 +6,7 @@
 #include "doodle/angle.hpp"
 
 using namespace doodle;
+#include <iostream>
 
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
@@ -54,7 +55,7 @@ void Game::Update([[maybe_unused]] double dt) {
 
 
 	for (Bullet* bullet : bullets) {
-		if (map->GetTileState(bullet->GetPosition()) != TILES::VOID) {
+		if (map->GetTileState(bullet->GetPosition()) == TILES::WALL) {
 			mediator->DeleteBullet(bullet);
 		}
 		for (Monster* monster : monsters) {
@@ -65,6 +66,15 @@ void Game::Update([[maybe_unused]] double dt) {
 		}
 	}
 
+	Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2, (double)map->Get_Map_Length() / 2 };
+
+	for (Monster* monster : monsters) {
+		if ((monster->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && (tower_attack_count >= tower_attack_cool)) {
+			mediator->AddBullet(middle_point, monster->GetPosition() - middle_point);
+			tower_attack_count = 0;
+		}
+	}
+	//tower_attack_count += dt;
 }
 
 void Game::Unload() {

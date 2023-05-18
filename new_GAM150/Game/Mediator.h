@@ -44,4 +44,7 @@ public:
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
 	void Warp() { player->GoToBase(); }
 
+	bool Is_Day() { return map->IsDay(); }
+
+	double GetMapLength() { return map->Get_Map_Length(); }
 };

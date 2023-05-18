@@ -42,6 +42,7 @@ public:
 	void Make_Warp(int number);
 	void Show_Map(Math::ivec2 player_position);
 	int Get_Map_Size() { return map_size; }
+	double Get_Map_Length() { return map_length; }
 	double Get_Tile_Length() { return tile_length; }
 	int GetTileState(Math::vec2 position) { return MAP[(int)(position.x/tile_length)][(int)(position.y/tile_length)]->Get_State(); }
 	//int GetTileState(Math::ivec2 position) { return MAP[position.x][position.y]->Get_State(); }
@@ -49,4 +50,5 @@ public:
 	int GetTileHP(int x, int y) { }
 	double GetTime() { return time; }
 	double GetDuration() { return duration; }
+	bool IsDay() { return is_day; }
 };

@@ -16,7 +16,7 @@ public:
 	void Update(double dt, Math::vec2 target);
 	void Move(Math::vec2 target, double dt);
 	void Draw();
-	const Math::vec2& GetPosition() const { return position; }
+	Math::vec2& GetPosition()  { return position; }
 	double GetDistance(Math::vec2 target);
 	double GetSize() { return size; }
 	void Attacked(Math::vec2 attack_position);

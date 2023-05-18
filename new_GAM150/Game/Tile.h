@@ -4,7 +4,7 @@
 #include "doodle/drawing.hpp"
 using namespace doodle;
 
-// enum TILES { WALL, VOID, COLONY_CORE, COLONY_SIDE, BASE_WALL, BASE_INSIDE, RESOURCE };
+// enum TILES { WALL, VOID, COLONY_CORE, COLONY_SIDE, BASE_WALL, BASE_INSIDE, RESOURCE, TOWER };
 
 class Tile {
 protected:
@@ -82,6 +82,13 @@ public:
 class Warp :public Tile {
 public:
 	Warp(Math::vec2 position);
+	void Update();
+	void Draw(bool is_day);
+};
+
+class Tower : public Tile {
+public:
+	Tower(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
 };

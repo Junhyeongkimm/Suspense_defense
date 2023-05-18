@@ -97,6 +97,8 @@ void Map::Make_Base() {
 			MAP[i][j] = new Base_Inside(Math::vec2{ i * tile_length, j * tile_length });
 		}
 	}
+	delete MAP[map_size / 2][map_size / 2];
+	MAP[map_size / 2][map_size / 2] = new Tower(Math::vec2{ map_size / 2 * tile_length, map_size / 2 * tile_length });
 }
 bool Map::Check_Surrounding_Cells(const int x, const int y) {
 	int count = 0;

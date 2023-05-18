@@ -35,4 +35,7 @@ private:
     Map* map;
     Mediator* mediator;
     //CS230::GameObjectManager gameobjectmanager;
+
+    double tower_attack_count = 0;
+    double tower_attack_cool = 0.5;
 };

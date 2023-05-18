@@ -213,3 +213,23 @@ void Warp::Draw(bool is_day) {
 	draw_rectangle(position.x, position.y, size);
 	pop_settings();
 }
+
+Tower::Tower(Math::vec2 position) : Tile(position) {
+	state = TILES::TOWER;
+	hp = 10;
+}
+void Tower::Update() {
+
+}
+void Tower::Draw(bool is_day) {
+	push_settings();
+	if (is_day) {
+		set_fill_color(HexColor{ 0x0000ffff });
+	}
+	else {
+		set_fill_color(HexColor{ 0x0000ffff });
+	}
+
+	draw_rectangle(position.x, position.y, size);
+	pop_settings();
+}
