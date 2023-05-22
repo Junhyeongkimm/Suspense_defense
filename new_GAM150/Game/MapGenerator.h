@@ -26,6 +26,8 @@ private:
 	const double duration = 10;
 	bool is_day = true;
 
+	int remaining_colony = 0;
+
 	Tile* MAP[map_size][map_size];
 
 	Mediator* mediator;
@@ -51,4 +53,5 @@ public:
 	double GetTime() { return time; }
 	double GetDuration() { return duration; }
 	bool IsDay() { return is_day; }
+	int GetColony() { return remaining_colony; }
 };

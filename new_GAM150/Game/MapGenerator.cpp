@@ -144,6 +144,7 @@ void Map::Make_Colony(int number) {
 			i++;
 		}
 	}
+	remaining_colony += number;
 }
 void Map::Make_Resource(int number) {
 	for (int i = 0; i < number; i++) {
@@ -228,7 +229,7 @@ void Map::Show_Map(Math::ivec2 player_position) {
 	}
 	pop_settings();
 }
-#include <iostream>
+
 void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 
 	switch (MAP[x][y]->Get_State()) {
@@ -238,7 +239,6 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 				for (int j = -1; j <= 1; j++) {
 					if (MAP[x + i][y + j]->Get_State() == TILES::COLONY_CORE) {
 						MAP[x + i][y + j]->ReduceHP();
-						std::cout << "Core Attacked" << std::endl;
 						if (MAP[x + i][y + j]->GetHP() <= 0) {
 							for (int k = -1; k <= 1; k++) {
 								for (int l = -1; l <= 1; l++) {
@@ -247,6 +247,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 								}
 							}
 							mediator->AddMonster(MAP[x + i][y + j]->GetPosition());
+							--remaining_colony;
 						}
 					}
 				}

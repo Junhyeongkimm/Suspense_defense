@@ -144,5 +144,8 @@
     <ClInclude Include="Game\Bullet.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\AStar.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

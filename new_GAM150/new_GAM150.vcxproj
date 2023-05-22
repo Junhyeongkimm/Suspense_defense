@@ -163,6 +163,7 @@
     <ClInclude Include="Engine\TextureManager.h" />
     <ClInclude Include="Engine\Vec2.h" />
     <ClInclude Include="Engine\Window.h" />
+    <ClInclude Include="Game\AStar.h" />
     <ClInclude Include="Game\Bullet.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\MainMenu.h" />

@@ -63,6 +63,10 @@ public:
 	void Update();
 	void Draw(bool is_day);
 	virtual void Attacked();
+	bool AbleToBeAttacked() { if (invincibility_count > invincibility_time) { invincibility_count = 0; return true; } else { return false; } }
+private:
+	double invincibility_count = 0;
+	const double invincibility_time = 1.0;
 };
 
 class Base_Inside : public Tile {

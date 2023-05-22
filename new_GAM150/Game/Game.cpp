@@ -74,7 +74,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			tower_attack_count = 0;
 		}
 	}
-	//tower_attack_count += dt;
+	tower_attack_count += dt;
 }
 
 void Game::Unload() {
@@ -110,7 +110,18 @@ void Game::Draw() {
 	set_font_size(25);
 	
 	//draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", 0, 70);
-	draw_text("Resource: " + std::to_string(player->GetMapResource()) + ", " + std::to_string(player->GetMonsterResource()), 0, 50);
+	//draw_text("Resource: " + std::to_string(player->GetMapResource()) + ", " + std::to_string(player->GetMonsterResource()), 0, 50);
+	//draw_text("Hp: " + std::to_string(player->GetHP()), 0, 30);
+
+	draw_text("R1: " + std::to_string(player->GetMapResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 50);
+	draw_text("R2: " + std::to_string(player->GetMonsterResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 80);
+
+	draw_text("C: " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
+	draw_text("M: " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);
+
 	draw_text("Hp: " + std::to_string(player->GetHP()), 0, 30);
+
+	draw_text("Time: " + std::to_string((int)(map->GetTime() * 100) / 10) + "%", Engine::GetWindow().GetSize().x / 2 - 100, Engine::GetWindow().GetSize().y - 50);
+
 	pop_settings();
 }
