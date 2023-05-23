@@ -12,7 +12,7 @@ Updated:    March 20, 2023
 #pragma once
 #include "Window.h"
 #include "Logger.h"
-//#include "Input.h"
+#include "Input.h"
 #include "GameStateManager.h"
 #include "TextureManager.h"
 #include <chrono>
@@ -32,9 +32,9 @@ public:
     static CS230::GameStateManager& GetGameStateManager() {
         return Instance().gameStateManager;
     }
-    /*static CS230::Input& GetInput() {
+    static CS230::Input& GetInput() {
         return Instance().input;
-    }*/
+    }
     static CS230::TextureManager& GetTextureManager() {
         return Instance().textureManager;
     }
@@ -58,7 +58,7 @@ private:
     ~Engine();
 
     CS230::Logger logger;
-    //CS230::Input input;
+    CS230::Input input;
     CS230::Window window;
     CS230::GameStateManager gameStateManager;
     CS230::TextureManager textureManager;

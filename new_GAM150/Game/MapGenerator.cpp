@@ -287,7 +287,8 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			if (MAP[x][y]->GetHP() <= 0) {
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-				mediator->Warp();
+				//mediator->Warp();
+				mediator->IncreaseWarpResource();
 			}
 
 			break;

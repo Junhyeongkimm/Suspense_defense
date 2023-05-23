@@ -38,6 +38,7 @@ public:
 
 	void IncreaseMapResource() { player->IncreaseMapResource(); }
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
+	void IncreaseWarpResource() { player->IncreaseWarpResource(); }
 	void Warp() { player->GoToBase(); }
 
 	bool Is_Day() { return map->IsDay(); }

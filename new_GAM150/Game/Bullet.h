@@ -7,7 +7,7 @@ class Mediator;
 class Bullet {
 private:
 	Math::vec2 position;
-	const double speed = 5;
+	const double speed = 15;
 	const double size = 20;
 
 	Math::vec2 direction;

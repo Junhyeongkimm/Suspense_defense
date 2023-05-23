@@ -31,6 +31,7 @@ private:
 
 	int map_resource = 0;
 	int monster_resource = 0;
+	int warp_resource = 0;
 
 
 public:
@@ -46,8 +47,10 @@ public:
 	void Reduce_hp();
 	void IncreaseMapResource() { ++map_resource; }
 	void IncreaseMonsterResource() { ++monster_resource; }
+	void IncreaseWarpResource() { ++warp_resource; }
 	int GetMapResource() { return map_resource; }
 	int GetMonsterResource() { return monster_resource; }
+	int GetWarpResource() { return warp_resource; }
 	int GetHP() { return hp; }
 	void SetAttackPosition(Math::vec2 position) { attack_position = position; }
 	void GoToBase();

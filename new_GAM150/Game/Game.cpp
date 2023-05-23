@@ -115,6 +115,8 @@ void Game::Draw() {
 
 	draw_text("R1: " + std::to_string(player->GetMapResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 50);
 	draw_text("R2: " + std::to_string(player->GetMonsterResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 80);
+	draw_text("R3: " + std::to_string(player->GetWarpResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 110);
+
 
 	draw_text("C: " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
 	draw_text("M: " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);

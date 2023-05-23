@@ -6,6 +6,7 @@
 #include "Mediator.h"
 using namespace doodle;
 
+/*
 #define PRESSED         true
 #define NOT_PRESSED     false
 #include <iostream>
@@ -23,6 +24,7 @@ void on_key_pressed(KeyboardButtons button) {
 void on_key_released(KeyboardButtons button) {
 	buttons[button] = NOT_PRESSED;
 }
+*/
 
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
 	
@@ -31,22 +33,22 @@ Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator*
 void Player::Update(double dt) {
 	push_settings();
 
-	if (buttons[KeyboardButtons::W]) {
+	if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 		if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
 			position.y += speed * dt;
 		}
 	}
-	if (buttons[KeyboardButtons::S]) {
+	if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 		if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
 			position.y -= speed * dt;
 		}
 	}
-	if (buttons[KeyboardButtons::A]) {
+	if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 		if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
 			position.x -= speed * dt;
 		}
 	}
-	if (buttons[KeyboardButtons::D]) {
+	if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 		if ((mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
 			position.x += speed * dt;
 		}
@@ -83,13 +85,16 @@ void Player::Update(double dt) {
 
 	mediator->CheckPlayerAttacked();
 
-	if (Key == KeyboardButtons::NumPad_1) {
-		attack_mode = MELEE;
-		std::cout << "Melee mode!" << std::endl;
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
+		if (attack_mode == MELEE)
+			attack_mode = RANGE;
+		else
+			attack_mode = MELEE;
 	}
-	else if (Key == KeyboardButtons::NumPad_2) {
-		attack_mode = RANGE;
-		std::cout << "Range mode!" << std::endl;
+
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && mediator->GetMapState(position) != TILES::BASE_INSIDE && warp_resource > 0) {
+		GoToBase();
+		--warp_resource;
 	}
 }
 
