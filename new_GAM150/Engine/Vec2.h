@@ -34,6 +34,8 @@ namespace Math {
 
         vec2 operator/(double divisor);
         vec2& operator/=(double divisor);
+
+        double GetLength() { return sqrt(x * x + y * y); }
     };
 
     vec2 operator*(double scale, const vec2& v);

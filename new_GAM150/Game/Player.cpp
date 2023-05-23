@@ -22,8 +22,29 @@ void Player::Update(double dt) {
 		not_clicked = true;
 	}
 	if (MouseIsPressed && not_clicked) { // When the player click the mouse
-		if (Able_To_Attack()) { // If the player is able to attack, attack
+		if (Able_To_Attack() && MouseButton == MouseButtons::Left) { // If the player is able to attack and clicked the left button of mouse, attack
 			Attack();
+		}
+		if (MouseButton == MouseButtons::Right && dodge_count >= dodge_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
+			is_dodging = true;
+			dodge_count = 0;
+			dodge_direction = { 0, 0 };
+			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+				dodge_direction.y += 1;
+			}
+			if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
+				dodge_direction.y -= 1;
+			}
+			if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+				dodge_direction.x -= 1;
+			}
+			if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+				dodge_direction.x += 1;
+			}
+			// If the player move diagonally, divide speed by sqrt(2)
+			if (dodge_direction.GetLength() == sqrt(2)) {
+				dodge_direction /= sqrt(2);
+			}
 		}
 		SetAttackPosition(GetAttackPosition());
 		not_clicked = false;
@@ -56,23 +77,6 @@ void Player::Update(double dt) {
 		}
 	}
 	// Player dodge
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Space) && dodge_count >= dodge_time) {
-		is_dodging = true;
-		dodge_count = 0;
-		dodge_direction = { 0, 0 };
-		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
-			dodge_direction.y += 1;
-		}
-		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
-			dodge_direction.y -= 1;
-		}
-		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-			dodge_direction.x -= 1;
-		}
-		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-			dodge_direction.x += 1;
-		}
-	}
 	if (is_dodging) {
 		invincibility_count = 0;
 		// Check collision while dodging
@@ -87,26 +91,32 @@ void Player::Update(double dt) {
 	}
 	else {
 		// Player moving with W, A, S, D
+		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 			if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
-				position.y += speed * dt;
+				direction.y += 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 			if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
-				position.y -= speed * dt;
+				direction.y -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 			if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
-				position.x -= speed * dt;
+				direction.x -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 			if ((mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
-				position.x += speed * dt;
+				direction.x += 1;
 			}
 		}
+		// If the player move diagonally, divide speed by sqrt(2)
+		if (direction.GetLength() == sqrt(2)) {
+			direction /= sqrt(2);
+		}
+		position += direction * speed * dt;
 	}
 	// Tile_position update based on the player's position
 	static const double map_length = mediator->GetMapLength() / mediator->GetMapSize();
@@ -126,7 +136,7 @@ void Player::Draw() {
 		push_settings();
 		set_outline_width(10);
 		//draw_line(position.x, position.y, attack_position.x, attack_position.y);
-		draw_line(position.x, position.y, GetAttackPosition().x, GetAttackPosition().y);
+		draw_line(position.x, position.y, size * GetAttackPosition().x, size * GetAttackPosition().y);
 		pop_settings();
 	}
 }
@@ -154,14 +164,13 @@ void Player::Attack() {
 		attack_count = 0;
 		mediator->AddBullet(position, GetAttackPosition()-position);
 	}
-
 }
 // Get the attack position
 Math::vec2 Player::GetAttackPosition() {
 	double distance = sqrt((get_mouse_x() - Engine::GetWindow().GetSize().x / 2) * (get_mouse_x() - Engine::GetWindow().GetSize().x / 2) + (get_mouse_y() - Engine::GetWindow().GetSize().y / 2) * (get_mouse_y() - Engine::GetWindow().GetSize().y / 2));
 
-	double attack_x_pos = position.x + size * (get_mouse_x() - Engine::GetWindow().GetSize().x / 2) / distance;
-	double attack_y_pos = position.y + size * (get_mouse_y() - Engine::GetWindow().GetSize().y / 2) / distance;
+	double attack_x_pos = position.x + ((double)get_mouse_x() - (double)Engine::GetWindow().GetSize().x / 2) / distance;
+	double attack_y_pos = position.y + ((double)get_mouse_y() - (double)Engine::GetWindow().GetSize().y / 2) / distance;
 
 	return { attack_x_pos, attack_y_pos };
 }

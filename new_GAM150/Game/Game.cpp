@@ -71,8 +71,11 @@ void Game::Update([[maybe_unused]] double dt) {
 	// Attack the target monster if it is not nullptr and in range
 	tower_attack_count += dt;
 	if (target != nullptr) {
-		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && (tower_attack_count >= tower_attack_cool)) {
-			mediator->AddBullet(middle_point, target->GetPosition() - middle_point);
+		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
+			Math::vec2 direction = target->GetPosition() - middle_point;
+			double distance = sqrt((direction.x) * (direction.x) + (direction.y) * (direction.y));
+			direction /= distance;
+			mediator->AddBullet(middle_point, direction);
 			tower_attack_count = 0;
 		}
 	}
