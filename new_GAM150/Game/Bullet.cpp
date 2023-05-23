@@ -2,9 +2,8 @@
 #include "Mediator.h"
 #include "../Engine/Engine.h"
 
-#include <iostream>
 Bullet::Bullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : position(start_position), direction(direction), mediator(mediator) {
-	std::cout << "created!" << std::endl;
+
 }
 
 void Bullet::Update(double dt) {

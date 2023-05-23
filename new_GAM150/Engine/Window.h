@@ -27,8 +27,8 @@ namespace CS230 {
 
         friend void ::on_window_resized(int, int);
         Math::ivec2 window_size;
-        static constexpr int default_width = 800;
-        static constexpr int default_height = 600;
+        static constexpr int default_width = 1000;
+        static constexpr int default_height = 750;
     };
 }
 

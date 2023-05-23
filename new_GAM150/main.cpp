@@ -16,6 +16,14 @@ Updated:    April 28, 2023
 #include "Game/Game.h"
 #include "Game/MainMenu.h"
 
+#include <Windows.h>
+
+void make_window_not_resizable()
+{
+    HWND window_handle = GetActiveWindow();
+    SetWindowLong(window_handle, GWL_STYLE, GetWindowLong(window_handle, GWL_STYLE) & ~WS_SIZEBOX & ~WS_MAXIMIZEBOX);
+}
+
 int main() {
     try {
         Engine& engine = Engine::Instance();
@@ -28,6 +36,7 @@ int main() {
         Game game;
         engine.GetGameStateManager().AddGameState(game);
 
+        make_window_not_resizable();
         while (engine.HasGameEnded() == false) {
             engine.Update();
         }

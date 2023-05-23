@@ -225,11 +225,9 @@ void Map::Show_Map(Math::ivec2 player_position) {
 			offset = (int)(4 * (time - 3 * duration / 4) / duration * 3) + 4; // 4~7
 		}
 	}
-	
 
-
-	for (int i = player_x - offset; i < player_x + offset; i++) {
-		for (int j = player_y - offset; j < player_y + offset; j++) {
+	for (int i = player_x - offset - 1; i <= player_x + offset + 1; i++) {
+		for (int j = player_y - offset - 1; j <= player_y + offset + 1; j++) {
 			if (i < 0 || i >= map_size || j < 0 || j >= map_size)
 				continue;
 			MAP[i][j]->Draw(is_day);
