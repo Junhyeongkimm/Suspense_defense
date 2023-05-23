@@ -136,7 +136,7 @@ void Player::Draw() {
 		push_settings();
 		set_outline_width(10);
 		//draw_line(position.x, position.y, attack_position.x, attack_position.y);
-		draw_line(position.x, position.y, size * GetAttackPosition().x, size * GetAttackPosition().y);
+		draw_line(position.x, position.y, position.x + (size * (GetAttackPosition().x - position.x)), position.y + (size * (GetAttackPosition().y - position.y)));
 		pop_settings();
 	}
 }
