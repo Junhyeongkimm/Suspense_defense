@@ -1,22 +1,18 @@
 #include "Mediator.h"
 
+// Constructor
 Mediator::Mediator() : map(nullptr), player(nullptr), monsters(), bullets() {
 
 }
-
-void Mediator::Attack_player() {
-	player->Reduce_hp();
-	
-}
-
+// Check if the monsters are attacked
 void Mediator::Check_Monster_Attacked() {
 	for (Monster* monster : *monsters) {
 		monster->Attacked(player->GetAttackPosition());
 	}
 }
-
+// Check if the map is attacked
 void Mediator::Check_Map_Attacked() {
-	
+	// Two for loop are to restrain restrain the scope
 	for (int i = player->GetTilePosition().x - 3; i <= player->GetTilePosition().x + 3; i++) {
 		for (int j = player->GetTilePosition().y - 3; j <= player->GetTilePosition().y + 3; j++) {
 			map->CheckAttacked(i, j, player->GetAttackPosition());
@@ -24,7 +20,7 @@ void Mediator::Check_Map_Attacked() {
 		}
 	}
 }
-
+// Check if the player is attacekd
 void Mediator::CheckPlayerAttacked() {
 	for (Monster* monster : *monsters) {
 		if (monster->GetDistance(player->GetPosition()) < monster->GetSize() / 2) {
@@ -32,7 +28,7 @@ void Mediator::CheckPlayerAttacked() {
 		}
 	}
 }
-
+// Set functions
 void Mediator::SetPlayer(Player* player) {
 	this->player = player;
 }
@@ -45,7 +41,7 @@ void Mediator::SetBullets(std::vector<Bullet*>*bullets) {
 void Mediator::SetMap(Map* map) {
 	this->map = map;
 }
-
+// Add and delete monster
 void Mediator::AddMonster(Math::vec2 position) {
 	monsters->push_back(new Monster(position, this));
 }
@@ -54,7 +50,7 @@ void Mediator::DeleteMonster(Monster* monster) {
 	monsters->erase(std::remove(monsters->begin(), monsters->end(), monster), monsters->end());
 	delete monster;
 }
-
+// Add and delete bullet
 void Mediator::AddBullet(Math::vec2 position, Math::vec2 direction) {
 	bullets->push_back(new Bullet(position, direction, this));
 }

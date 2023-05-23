@@ -15,9 +15,13 @@ private:
 	Mediator* mediator;
 
 public:
+	// Constructor
 	Bullet(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator);
+	// Update by "dt"
 	void Update(double dt);
+	// Draw
 	void Draw();
+	// Get position
 	Math::vec2 GetPosition() { return position; }
 
 };

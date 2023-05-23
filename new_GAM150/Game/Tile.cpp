@@ -1,31 +1,33 @@
 #include "Tile.h"
 #include "TileStates.h"
 
+// Forward declare to declare vector tiles
 class Tile;
 std::vector<Tile*> tiles;
 
+// Constructor
 Tile::Tile(Math::vec2 position) : position(position) {
 
 }
-
+// Update
 void Tile::Update() {
 
 }
-
+// Draw based on it is day or night
 void Tile::Draw(bool is_day) {
 	//draw_rectangle(position.x, position.y, size, size);
 }
-
+// Getter function
 int Tile::Get_State() {
 	return state;
 }
-
+// Check attcked
 void Tile::Attacked(Math::vec2 attack_point) {
 	if (attack_point.x > position.x && attack_point.x < position.x + size && attack_point.y > position.y && attack_point.y < position.y + size) {
 		--hp;
 	}
 }
-
+// Check attacked and return true or false
 bool Tile::Attacked(Math::vec2 attack_point, int i) {
 	if (attack_point.x > position.x && attack_point.x < position.x + size && attack_point.y > position.y && attack_point.y < position.y + size) {
 		--hp;
@@ -33,9 +35,10 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 	}
 	return false;
 }
-
 // ---------------------------------------------------------------------------------------------------
+// Tiles below are very similar. The major difference is hp and state.
 
+// Wall
 Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
 	state = TILES::WALL;
@@ -65,7 +68,7 @@ void Wall::Draw(bool is_day) {
 void Wall::Attacked() {
 	--hp;
 }
-
+// Void
 Void::Void(Math::vec2 position) : Tile(position) {
 	state = TILES::VOID;
 }
@@ -84,7 +87,7 @@ void Void::Draw(bool is_day) {
 	draw_rectangle(position.x, position.y, size, size);
 	doodle::pop_settings();
 }
-
+// Colony_Core
 Colony_Core::Colony_Core(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_CORE;
 	hp = 3;
@@ -107,7 +110,7 @@ void Colony_Core::Draw(bool is_day) {
 void Colony_Core::Attacked() {
 	--hp;
 }
-
+// Colony_Side
 Colony_Side::Colony_Side(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_SIDE;
 	hp = 2;
@@ -130,7 +133,7 @@ void Colony_Side::Draw(bool is_day) {
 void Colony_Side::Attacked() {
 	//--hp;
 }
-
+// Base_Wall
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_WALL;
 	hp = 10;
@@ -153,8 +156,7 @@ void Base_Wall::Draw(bool is_day) {
 void Base_Wall::Attacked() {
 	--hp;
 }
-
-
+// Base_Inside
 Base_Inside::Base_Inside(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_INSIDE;
 }
@@ -173,7 +175,7 @@ void Base_Inside::Draw(bool is_day) {
 	draw_rectangle(position.x, position.y, size, size);
 	doodle::pop_settings();
 }
-
+// Resource
 Resource::Resource(Math::vec2 position) : Tile(position) {
 	state = TILES::RESOURCE;
 	hp = 1;
@@ -193,7 +195,7 @@ void Resource::Draw(bool is_day) {
 	draw_rectangle(position.x, position.y, size, size);
 	doodle::pop_settings();
 }
-
+// Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {
 	state = TILES::WARP;
 	hp = 1;
@@ -213,7 +215,7 @@ void Warp::Draw(bool is_day) {
 	draw_rectangle(position.x, position.y, size);
 	pop_settings();
 }
-
+// Tower
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
 	hp = 10;
@@ -229,7 +231,6 @@ void Tower::Draw(bool is_day) {
 	else {
 		set_fill_color(HexColor{ 0x0000ffff });
 	}
-
 	draw_rectangle(position.x, position.y, size);
 	pop_settings();
 }

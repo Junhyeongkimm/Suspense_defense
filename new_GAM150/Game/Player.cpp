@@ -6,10 +6,11 @@
 #include "Mediator.h"
 using namespace doodle;
 
+// Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
 	
 }
-
+// Update
 void Player::Update(double dt) {
 	// Increase attack_count and invincibility_count, dodge_count by dt
 	attack_count += dt;
@@ -20,8 +21,8 @@ void Player::Update(double dt) {
 	if (!MouseIsPressed) {
 		not_clicked = true;
 	}
-	if (MouseIsPressed && not_clicked) { // When the player click the mouse.
-		if (Able_To_Attack()) {
+	if (MouseIsPressed && not_clicked) { // When the player click the mouse
+		if (Able_To_Attack()) { // If the player is able to attack, attack
 			Attack();
 		}
 		SetAttackPosition(GetAttackPosition());
@@ -128,7 +129,6 @@ void Player::Draw() {
 		draw_line(position.x, position.y, GetAttackPosition().x, GetAttackPosition().y);
 		pop_settings();
 	}
-
 }
 // Reduce hp
 void Player::Reduce_hp() {
@@ -145,7 +145,6 @@ double Player::GetDistanceFromAttack(Math::vec2 target) {
 void Player::Attack() {
 	if (attack_mode == MELEE) {
 		is_attacking = true;
-
 		mediator->Check_Monster_Attacked();
 		mediator->Check_Map_Attacked();
 		attack_count = 0;
@@ -157,7 +156,7 @@ void Player::Attack() {
 	}
 
 }
-
+// Get the attack position
 Math::vec2 Player::GetAttackPosition() {
 	double distance = sqrt((get_mouse_x() - Engine::GetWindow().GetSize().x / 2) * (get_mouse_x() - Engine::GetWindow().GetSize().x / 2) + (get_mouse_y() - Engine::GetWindow().GetSize().y / 2) * (get_mouse_y() - Engine::GetWindow().GetSize().y / 2));
 
@@ -166,7 +165,7 @@ Math::vec2 Player::GetAttackPosition() {
 
 	return { attack_x_pos, attack_y_pos };
 }
-
+// Warp to the base
 void Player::GoToBase() {
 	position = { mediator->GetMapLength() / 2 + size / 2, mediator->GetMapLength() / 2 + size / 2 };
 }
