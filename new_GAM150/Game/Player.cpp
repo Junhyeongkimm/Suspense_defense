@@ -6,96 +6,41 @@
 #include "Mediator.h"
 using namespace doodle;
 
-/*
-#define PRESSED         true
-#define NOT_PRESSED     false
-#include <iostream>
-std::map<KeyboardButtons, bool> buttons = {
-	{ KeyboardButtons::W, NOT_PRESSED },
-	{ KeyboardButtons::S, NOT_PRESSED },
-	{ KeyboardButtons::A, NOT_PRESSED },
-	{ KeyboardButtons::D, NOT_PRESSED },
-};
-
-void on_key_pressed(KeyboardButtons button) {
-	buttons[button] = PRESSED;
-}
-
-void on_key_released(KeyboardButtons button) {
-	buttons[button] = NOT_PRESSED;
-}
-*/
-
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
 	
 }
 
 void Player::Update(double dt) {
-	push_settings();
-
-	if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
-		if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
-			position.y += speed * dt;
-		}
-	}
-	if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
-		if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
-			position.y -= speed * dt;
-		}
-	}
-	if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-		if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
-			position.x -= speed * dt;
-		}
-	}
-	if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-		if ((mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
-			position.x += speed * dt;
-		}
-	}
-
-	pop_settings();
-
+	// Increase attack_count and invincibility_count, dodge_count by dt
 	attack_count += dt;
 	invincibility_count += dt;
-
+	dodge_count += dt;
+	// Check click
 	static bool not_clicked = false;
-
 	if (!MouseIsPressed) {
 		not_clicked = true;
 	}
-	if (MouseIsPressed && not_clicked) {
+	if (MouseIsPressed && not_clicked) { // When the player click the mouse.
 		if (Able_To_Attack()) {
 			Attack();
 		}
 		SetAttackPosition(GetAttackPosition());
-		//attack_position = GetAttackPosition();
-		//monsters.push_back(new Monster(player->GetAttackPosition(), mediator));
 		not_clicked = false;
 	}
-
-	// tile_position Update!!
-	static const double map_length = mediator->GetMapLength() / mediator->GetMapSize();
-	tile_position.x = (int)((position.x) / map_length);
-	tile_position.y = (int)((position.y) / map_length);
-
 	if (attack_count > attack_delay) {
 		is_attacking = false;
 	}
-
-	mediator->CheckPlayerAttacked();
-
+	// Change the attack mode by 'Tab'
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
 		if (attack_mode == MELEE)
 			attack_mode = RANGE;
 		else
 			attack_mode = MELEE;
 	}
-
+	// Player warp
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && mediator->GetMapState(position) != TILES::BASE_INSIDE && warp_resource > 0) {
 		is_warping = true;
 	}
-
 	if (is_warping) {
 		warp_count += dt;
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
@@ -109,16 +54,74 @@ void Player::Update(double dt) {
 			is_warping = false;
 		}
 	}
+	// Player dodge
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Space) && dodge_count >= dodge_time) {
+		is_dodging = true;
+		dodge_count = 0;
+		dodge_direction = { 0, 0 };
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+			dodge_direction.y += 1;
+		}
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
+			dodge_direction.y -= 1;
+		}
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+			dodge_direction.x -= 1;
+		}
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+			dodge_direction.x += 1;
+		}
+	}
+	if (is_dodging) {
+		invincibility_count = 0;
+		// Check collision while dodging
+		if ((mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
+			(mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE)) {
+			position += dodge_direction * 2 * speed * dt;
+		}
+		if (dodge_count >= dodge_time) {
+			dodge_count = 0;
+			is_dodging = false;
+		}
+	}
+	else {
+		// Player moving with W, A, S, D
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+			if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
+				position.y += speed * dt;
+			}
+		}
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
+			if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
+				position.y -= speed * dt;
+			}
+		}
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+			if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
+				position.x -= speed * dt;
+			}
+		}
+		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+			if ((mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
+				position.x += speed * dt;
+			}
+		}
+	}
+	// Tile_position update based on the player's position
+	static const double map_length = mediator->GetMapLength() / mediator->GetMapSize();
+	tile_position.x = (int)((position.x) / map_length);
+	tile_position.y = (int)((position.y) / map_length);
+	// Check player attacked
+	mediator->CheckPlayerAttacked();
 }
-
+// Draw player
 void Player::Draw() {
 	push_settings();
-	//apply_translate(-position.x + Engine::GetWindow().GetSize().x / 2, -position.y + Engine::GetWindow().GetSize().y / 2);
 	set_fill_color(HexColor(0x888888ff));
 	draw_ellipse(position.x, position.y, size, size);
 	pop_settings();
-	
-	if (is_attacking == true) {
+	// If the player is attacking, draw the line (in the MELEE mode)
+	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();
 		set_outline_width(10);
 		//draw_line(position.x, position.y, attack_position.x, attack_position.y);
@@ -127,18 +130,18 @@ void Player::Draw() {
 	}
 
 }
-
+// Reduce hp
 void Player::Reduce_hp() {
 	if (invincibility_count > invincibility_time) {
 		--hp;
 		invincibility_count = 0;
 	}
 }
-
+// Get distacne from the player to the target
 double Player::GetDistanceFromAttack(Math::vec2 target) {
 	return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
 }
-
+// Attack function
 void Player::Attack() {
 	if (attack_mode == MELEE) {
 		is_attacking = true;
@@ -148,6 +151,8 @@ void Player::Attack() {
 		attack_count = 0;
 	}
 	else if (attack_mode == RANGE) {
+		is_attacking = true;
+		attack_count = 0;
 		mediator->AddBullet(position, GetAttackPosition()-position);
 	}
 

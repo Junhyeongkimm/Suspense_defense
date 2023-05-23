@@ -17,9 +17,8 @@ private:
 	const double size = 40;
 	const CS230::Camera& camera;
 
-
 	int hp = 10;
-	const double attack_delay = 0.2;
+	const double attack_delay = 0.5;
 	double attack_count = 0;
 	bool is_attacking = false;
 
@@ -36,6 +35,11 @@ private:
 	bool is_warping = false;
 	const double warp_time = 2.0;
 	double warp_count = 0;
+
+	bool is_dodging = false;
+	const double dodge_time = 0.2;
+	double dodge_count = 0;
+	Math::vec2 dodge_direction{ 0, 0 };
 
 
 public:
