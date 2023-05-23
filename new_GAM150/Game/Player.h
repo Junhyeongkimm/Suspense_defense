@@ -33,6 +33,10 @@ private:
 	int monster_resource = 0;
 	int warp_resource = 0;
 
+	bool is_warping = false;
+	const double warp_time = 2.0;
+	double warp_count = 0;
+
 
 public:
 	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);

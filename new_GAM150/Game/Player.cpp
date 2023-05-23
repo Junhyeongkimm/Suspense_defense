@@ -93,8 +93,21 @@ void Player::Update(double dt) {
 	}
 
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && mediator->GetMapState(position) != TILES::BASE_INSIDE && warp_resource > 0) {
-		GoToBase();
-		--warp_resource;
+		is_warping = true;
+	}
+
+	if (is_warping) {
+		warp_count += dt;
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
+			warp_count = 0;
+			is_warping = false;
+		}
+		if (warp_count >= warp_time) {
+			warp_count = 0;
+			GoToBase();
+			--warp_resource;
+			is_warping = false;
+		}
 	}
 }
 
