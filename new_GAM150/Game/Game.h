@@ -38,4 +38,5 @@ private:
 
     double tower_attack_count = 0;
     double tower_attack_cool = 2.0;
+    Monster* target;
 };

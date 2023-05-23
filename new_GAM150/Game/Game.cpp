@@ -10,7 +10,7 @@ using namespace doodle;
 
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
-	player(nullptr), monsters(), bullets(), map(nullptr), mediator(nullptr)
+	player(nullptr), monsters(), bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { }
 
 void Game::Load() {
@@ -68,12 +68,23 @@ void Game::Update([[maybe_unused]] double dt) {
 
 	Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length() / 2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length() / 2 };
 
+	// Find the closest monster and set the target
+	target = nullptr;
 	for (Monster* monster : monsters) {
-		if ((monster->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && (tower_attack_count >= tower_attack_cool)) {
-			mediator->AddBullet(middle_point, monster->GetPosition() - middle_point);
+		if (target == nullptr || monster->GetDistance(middle_point) < target->GetDistance(middle_point))
+			target = monster;
+	}
+	// Attack the target monster if it is not nullptr
+	if (target != nullptr) {
+		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && (tower_attack_count >= tower_attack_cool)) {
+			mediator->AddBullet(middle_point, target->GetPosition() - middle_point);
 			tower_attack_count = 0;
 		}
 	}
+	// If there is no monster, set the target to the nullptr
+	if (monsters.size() == 0)
+		target = nullptr;
+
 	tower_attack_count += dt;
 }
 
