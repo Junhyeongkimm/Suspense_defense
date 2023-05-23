@@ -11,6 +11,9 @@ private:
 	double size = 40;
 	double speed = 200;
 
+	const double paralyze_time = 1.0;
+	double paralyze_count = 0;
+
 public:
 	Monster(Math::vec2 position, Mediator* mediator);
 	void Update(double dt, Math::vec2 target);

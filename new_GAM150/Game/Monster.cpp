@@ -6,6 +6,9 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 }
 
 void Monster::Update(double dt, Math::vec2 target) {
+	paralyze_count += dt;
+	if (paralyze_count < paralyze_time)
+		return;
 
 	if (mediator->Is_Day()) {
 		double x_direction = (target.x - position.x) / GetDistance(target);
