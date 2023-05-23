@@ -30,24 +30,6 @@ Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator*
 
 void Player::Update(double dt) {
 	push_settings();
-	//apply_rotate(-QUARTER_PI);
-
-	/*if (buttons[KeyboardButtons::W]) {
-		position.y += speed * dt;
-		position.x += speed * dt * (1 / sqrt(2));
-	}
-	if (buttons[KeyboardButtons::S]) {
-		position.y -= speed * dt;
-		position.x -= speed * dt * (1 / sqrt(2));
-	}
-	if (buttons[KeyboardButtons::A]) {
-		position.x -= speed * dt;
-		position.y += speed * dt * (1 / sqrt(2));
-	}
-	if (buttons[KeyboardButtons::D]) {
-		position.x += speed * dt;
-		position.y -= speed * dt * (1 / sqrt(2));
-	}*/
 
 	if (buttons[KeyboardButtons::W]) {
 		if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
@@ -90,9 +72,8 @@ void Player::Update(double dt) {
 		not_clicked = false;
 	}
 
-
 	// tile_position Update!!
-	static const double map_length = 15000 / 300;
+	static const double map_length = mediator->GetMapLength() / mediator->GetMapSize();
 	tile_position.x = (int)((position.x) / map_length);
 	tile_position.y = (int)((position.y) / map_length);
 
@@ -161,4 +142,8 @@ Math::vec2 Player::GetAttackPosition() {
 	double attack_y_pos = position.y + size * (get_mouse_y() - Engine::GetWindow().GetSize().y / 2) / distance;
 
 	return { attack_x_pos, attack_y_pos };
+}
+
+void Player::GoToBase() {
+	position = { mediator->GetMapLength() / 2 + size / 2, mediator->GetMapLength() / 2 + size / 2 };
 }

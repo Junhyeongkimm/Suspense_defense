@@ -37,9 +37,6 @@ void Monster::Update(double dt, Math::vec2 target) {
 		}
 	}
 	else {
-		//double x_direction = (target.x - position.x) / GetDistance(target);
-		//double y_direction = (target.y - position.y) / GetDistance(target);
-
 		Math::vec2 middle_point{ mediator->GetMapLength() / 2, mediator->GetMapLength() / 2 };
 
 		double x_direction = (middle_point.x - position.x) / GetDistance(middle_point);
@@ -66,28 +63,6 @@ void Monster::Update(double dt, Math::vec2 target) {
 			position.y = next_position_y.y;
 		}
 	}
-	
-
-	//position += speed * dt * Math::vec2({ x_direction, y_direction });
-
-	
-
-	/*if ((mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::WALL) || mediator->GetMapState({ position.x, position.y + size / 2 }) == TILES::COLONY_SIDE) {
-		position.y -= speed * dt;
-	}
-	if ((mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::WALL) || (mediator->GetMapState({ position.x, position.y - size / 2 }) == TILES::COLONY_SIDE)) {
-		position.y += speed * dt;
-	}
-	if ((mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::WALL) || (mediator->GetMapState({ position.x - size / 2, position.y }) == TILES::COLONY_SIDE)) {
-		position.x += speed * dt;
-	}
-	if ((mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::WALL) || (mediator->GetMapState({ position.x + size / 2, position.y }) == TILES::COLONY_SIDE)) {
-		position.x -= speed * dt;
-	}
-	position.x += speed * dt;
-	position.x -= speed * dt;
-	position.y -= speed * dt;
-	position.y += speed * dt;*/
 }
 
 void Monster::Move(Math::vec2 target, double dt) {

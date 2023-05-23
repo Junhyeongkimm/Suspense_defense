@@ -66,7 +66,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		}
 	}
 
-	Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2, (double)map->Get_Map_Length() / 2 };
+	Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length() / 2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length() / 2 };
 
 	for (Monster* monster : monsters) {
 		if ((monster->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && (tower_attack_count >= tower_attack_cool)) {
@@ -88,7 +88,7 @@ void Game::Draw() {
 
 	push_settings();
 	//apply_rotate(QUARTER_PI);
-	apply_translate(-mediator->GetPlayerPosition().x + Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayerPosition().y + Engine::GetWindow().GetSize().y / 2);
+	apply_translate(-mediator->GetPlayerPosition().x + (double)Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayerPosition().y + (double)Engine::GetWindow().GetSize().y / 2);
 
 	push_settings();
 	no_outline();
@@ -121,7 +121,8 @@ void Game::Draw() {
 
 	draw_text("Hp: " + std::to_string(player->GetHP()), 0, 30);
 
-	draw_text("Time: " + std::to_string((int)(map->GetTime() * 100) / 10) + "%", Engine::GetWindow().GetSize().x / 2 - 100, Engine::GetWindow().GetSize().y - 50);
+	draw_text("Day " + std::to_string(map->GetDate()), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
+	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
 
 	pop_settings();
 }

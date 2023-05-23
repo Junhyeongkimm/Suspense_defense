@@ -10,12 +10,9 @@ class Mediator;
 #include <vector>
 
 class Map {
-private:
-	//Player* player;
-	//std::vector<Monster*> monsters;
-
-	static inline const double map_length = 15000;
-	static inline const int map_size = 300;
+private: 
+	static inline const double map_length = 10000;
+	static inline const int map_size = 200;
 
 	static inline const int optimize_number = 6;
 	static inline const double initialize_chance = 30.0;
@@ -23,8 +20,9 @@ private:
 	static inline const double tile_length = map_length / map_size;
 
 	double time = 0;
-	const double duration = 10;
+	const double duration = 50;
 	bool is_day = true;
+	int date = 0;
 
 	int remaining_colony = 0;
 
@@ -54,4 +52,5 @@ public:
 	double GetDuration() { return duration; }
 	bool IsDay() { return is_day; }
 	int GetColony() { return remaining_colony; }
+	int GetDate() { return date; }
 };

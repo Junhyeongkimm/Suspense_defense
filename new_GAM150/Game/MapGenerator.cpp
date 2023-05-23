@@ -21,12 +21,20 @@ void Map::Update(double dt) {
 
 	if (time >= duration) {
 		if (is_day == true) {
-
 			is_day = false;
+			for (int i = 0; i < map_size; i++) {
+				for (int j = 0; j < map_size; j++) {
+					if (MAP[i][j]->Get_State() == TILES::COLONY_CORE)
+						mediator->AddMonster(MAP[i][j]->GetPosition());
+				}
+			}
 		}
 		else {
-			
 			is_day = true;
+			++date;
+			Make_Colony(date * 5);
+			Make_Resource(date * 10);
+			Make_Warp(date * 10);
 		}
 		time = 0;
 	}
@@ -40,9 +48,9 @@ void Map::MapMaking() {
 		Optimizing();
 
 	Make_Base();
-	Make_Colony(300);
-	Make_Resource(600);
-	Make_Warp(200);
+	Make_Colony(10);
+	Make_Resource(100);
+	Make_Warp(100);
 }
 void Map::Initialize() {
 	for (int i = 0; i < map_size; i++) {
@@ -232,78 +240,63 @@ void Map::Show_Map(Math::ivec2 player_position) {
 
 void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 
-	switch (MAP[x][y]->Get_State()) {
-	case TILES::COLONY_SIDE:
-		if (MAP[x][y]->Attacked(attack_point, 1)) {
-			for (int i = -1; i <= 1; i++) {
-				for (int j = -1; j <= 1; j++) {
-					if (MAP[x + i][y + j]->Get_State() == TILES::COLONY_CORE) {
-						MAP[x + i][y + j]->ReduceHP();
-						if (MAP[x + i][y + j]->GetHP() <= 0) {
-							for (int k = -1; k <= 1; k++) {
-								for (int l = -1; l <= 1; l++) {
-									delete MAP[x + i + k][y + j + l];
-									MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
+	if (attack_point.x > 0 && attack_point.x < map_length && attack_point.y > 0 && attack_point.y < map_length
+		&& x > 0 && x < map_size-1 && y > 0 && y < map_size-1) {
+		switch (MAP[x][y]->Get_State()) {
+		case TILES::COLONY_SIDE:
+			if (MAP[x][y]->Attacked(attack_point, 1)) {
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						if (MAP[x + i][y + j]->Get_State() == TILES::COLONY_CORE) {
+							MAP[x + i][y + j]->ReduceHP();
+							if (MAP[x + i][y + j]->GetHP() <= 0) {
+								for (int k = -1; k <= 1; k++) {
+									for (int l = -1; l <= 1; l++) {
+										delete MAP[x + i + k][y + j + l];
+										MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
+									}
 								}
+								mediator->AddMonster(MAP[x + i][y + j]->GetPosition());
+								--remaining_colony;
 							}
-							mediator->AddMonster(MAP[x + i][y + j]->GetPosition());
-							--remaining_colony;
 						}
 					}
 				}
 			}
+
+			break;
+		case TILES::WALL:
+			MAP[x][y]->Attacked(attack_point);
+			if (MAP[x][y]->GetHP() <= 0) {
+				delete MAP[x][y];
+				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+			}
+
+			break;
+		case TILES::RESOURCE:
+			MAP[x][y]->Attacked(attack_point);
+			if (MAP[x][y]->GetHP() <= 0) {
+				delete MAP[x][y];
+				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+				mediator->IncreaseMapResource();
+			}
+
+			break;
+		case TILES::WARP:
+			MAP[x][y]->Attacked(attack_point);
+			if (MAP[x][y]->GetHP() <= 0) {
+				delete MAP[x][y];
+				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+				mediator->Warp();
+			}
+
+			break;
+		default:
+
+			break;
 		}
-		
-
-		//MAP[x][y]->Attacked(attack_point);
-		//if (MAP[x][y]->GetHP() <= 0) {
-		//	for (int i = -1; i <= 1; i++) {
-		//		for (int j = -1; j <= 1; j++) {
-		//			if (MAP[x+i][y+j]->Get_State() == TILES::COLONY_CORE) {
-		//				for (int k = -1; k <= 1; k++) {
-		//					for (int l = -1; l <= 1; l++) {
-		//						delete MAP[x + i + k][y + j + l];
-		//						MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
-		//					}
-		//				}
-		//			}
-		//		}
-		//	}
-		//	//mediator->AddMonster(MAP[x][y]->GetPosition());
-		//	mediator->AddMonster(MAP[x][y]->GetPosition());
-		//}
-		
-		break;
-	case TILES::WALL:
-		MAP[x][y]->Attacked(attack_point);
-		if (MAP[x][y]->GetHP() <= 0) {
-			delete MAP[x][y];
-			MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-		}
-
-		break;
-	case TILES::RESOURCE:
-		MAP[x][y]->Attacked(attack_point);
-		if (MAP[x][y]->GetHP() <= 0) {
-			delete MAP[x][y];
-			MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-			mediator->IncreaseMapResource();
-		}
-
-		break;
-	case TILES::WARP:
-		MAP[x][y]->Attacked(attack_point);
-		if (MAP[x][y]->GetHP() <= 0) {
-			delete MAP[x][y];
-			MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-			mediator->Warp();
-		}
-
-		break;
-	default:
-
-		break;
 	}
+	
 
 	/*if (MAP[x][y]->Get_State() == TILES::WALL || MAP[x][y]->Get_State() == TILES::COLONY_CORE || MAP[x][y]->Get_State() == TILES::RESOURCE) {
 		MAP[x][y]->Attacked(attack_point);

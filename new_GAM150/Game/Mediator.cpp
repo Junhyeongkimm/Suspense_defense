@@ -9,10 +9,6 @@ void Mediator::Attack_player() {
 	
 }
 
-//void Mediator::Attack_monster() {
-//	monster->Reduce_hp();
-//}
-
 void Mediator::Check_Monster_Attacked() {
 	for (Monster* monster : *monsters) {
 		monster->Attacked(player->GetAttackPosition());
@@ -27,8 +23,6 @@ void Mediator::Check_Map_Attacked() {
 			
 		}
 	}
-
-	
 }
 
 void Mediator::CheckPlayerAttacked() {
@@ -57,12 +51,6 @@ void Mediator::AddMonster(Math::vec2 position) {
 }
 void Mediator::DeleteMonster(Monster* monster) {
 	auto it = std::find(monsters->begin(), monsters->end(), monster);
-
-	// If the monster is found, erase it from the vector
-	//if (it != monsters->end()) {
-	//	monsters->erase(it);
-	//	delete monster; // Don't forget to free the memory!
-	//}
 	monsters->erase(std::remove(monsters->begin(), monsters->end(), monster), monsters->end());
 	delete monster;
 }
@@ -75,11 +63,3 @@ void Mediator::DeleteBullet(Bullet* bullet) {
 	bullets->erase(std::remove(bullets->begin(), bullets->end(), bullet), bullets->end());
 	delete bullet;
 }
-
-//void Mediator::Check_Collision() {
-//
-//}
-
-//void Mediator::Update() {
-//
-//}

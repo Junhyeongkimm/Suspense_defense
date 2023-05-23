@@ -50,5 +50,5 @@ public:
 	int GetMonsterResource() { return monster_resource; }
 	int GetHP() { return hp; }
 	void SetAttackPosition(Math::vec2 position) { attack_position = position; }
-	void GoToBase() { position = { 7550, 7550 }; }
+	void GoToBase();
 };

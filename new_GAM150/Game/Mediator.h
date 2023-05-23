@@ -7,10 +7,6 @@
 #include <vector>
 #include "../Engine/Vec2.h"
 
-//class Player;
-//class Monster;
-//class Map;
-
 class Mediator {
 private:
 	Player* player;
@@ -47,4 +43,6 @@ public:
 	bool Is_Day() { return map->IsDay(); }
 
 	double GetMapLength() { return map->Get_Map_Length(); }
+	double GetTileLength() { return map->Get_Tile_Length(); }
+	int GetMapSize() { return map->Get_Map_Size(); }
 };

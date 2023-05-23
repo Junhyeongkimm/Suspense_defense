@@ -1,6 +1,6 @@
 #pragma once
 #include "../Engine/Vec2.h"
-//#include "Mediator.h"
+
 class Mediator;
 
 class Monster {
