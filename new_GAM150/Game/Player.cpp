@@ -15,7 +15,8 @@ void Player::Update(double dt) {
 	// Increase attack_count and invincibility_count, dodge_count by dt
 	attack_count += dt;
 	invincibility_count += dt;
-	dodge_count += dt;
+	//dodging_count += dt;
+	dodge_cool_count += dt;
 	// Check click
 	static bool not_clicked = false;
 	if (!MouseIsPressed) {
@@ -25,9 +26,7 @@ void Player::Update(double dt) {
 		if (Able_To_Attack() && MouseButton == MouseButtons::Left) { // If the player is able to attack and clicked the left button of mouse, attack
 			Attack();
 		}
-		if (MouseButton == MouseButtons::Right && dodge_count >= dodge_time && KeyIsPressed) { // If the player is able to dodge and clicked the right button of mosue, dodge
-			is_dodging = true;
-			dodge_count = 0;
+		if (MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 				dodge_direction.y += 1;
@@ -42,9 +41,14 @@ void Player::Update(double dt) {
 				dodge_direction.x += 1;
 			}
 			// If the player move diagonally, divide speed by sqrt(2)
-			if (dodge_direction.GetLength() == sqrt(2)) {
+			if (dodge_direction.GetLength() == 0) {
+				return;
+			}
+			else if (dodge_direction.GetLength() == sqrt(2)) {
 				dodge_direction /= sqrt(2);
 			}
+			is_dodging = true;
+			dodge_cool_count = 0;
 		}
 		not_clicked = false;
 	}
@@ -77,14 +81,15 @@ void Player::Update(double dt) {
 	}
 	// Player dodge
 	if (is_dodging) {
-		invincibility_count = invincibility_time - dodge_time;
+		dodging_count += dt;
+		invincibility_count = invincibility_time - dodging_time;
 		// Check collision while dodging
 		if ((mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
 			(mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE)) {
 			position += dodge_direction * 2 * speed * dt;
 		}
-		if (dodge_count >= dodge_time) {
-			dodge_count = 0;
+		if (dodging_count >= dodging_time) {
+			dodging_count = 0;
 			is_dodging = false;
 		}
 	}

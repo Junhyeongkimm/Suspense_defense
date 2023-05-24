@@ -15,13 +15,13 @@ private:
 	Math::vec2 attack_direction = { 0, 0 };
 	// Tile position of the player on the map
 	Math::ivec2 tile_position;
-	const double speed = 350;
+	double speed = 350;
 	const double size = 40;
 	const CS230::Camera& camera; // It is not used
 	// HP
 	int hp = 10;
 	// Attack
-	const double attack_delay = 0.5;
+	double attack_delay = 0.5;
 	double attack_count = 0;
 	bool is_attacking = false;
 	enum ATTACK_MODE { MELEE = 0, RANGE = 1 };
@@ -39,8 +39,10 @@ private:
 	double warp_count = 0;
 	// Dodge
 	bool is_dodging = false;
-	const double dodge_time = 0.2;
-	double dodge_count = 0;
+	const double dodging_time = 0.2;
+	double dodging_count = 0;
+	const double dodge_cool_time = 1.0;
+	double dodge_cool_count = 0;
 	Math::vec2 dodge_direction{ 0, 0 };
 public:
 	// Constructor
