@@ -25,7 +25,7 @@ void Player::Update(double dt) {
 		if (Able_To_Attack() && MouseButton == MouseButtons::Left) { // If the player is able to attack and clicked the left button of mouse, attack
 			Attack();
 		}
-		if (MouseButton == MouseButtons::Right && dodge_count >= dodge_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
+		if (MouseButton == MouseButtons::Right && dodge_count >= dodge_time && KeyIsPressed) { // If the player is able to dodge and clicked the right button of mosue, dodge
 			is_dodging = true;
 			dodge_count = 0;
 			dodge_direction = { 0, 0 };
@@ -77,7 +77,7 @@ void Player::Update(double dt) {
 	}
 	// Player dodge
 	if (is_dodging) {
-		invincibility_count = 0;
+		invincibility_count = invincibility_time - dodge_time;
 		// Check collision while dodging
 		if ((mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
 			(mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE)) {
@@ -127,7 +127,13 @@ void Player::Update(double dt) {
 // Draw player
 void Player::Draw() {
 	push_settings();
-	set_fill_color(HexColor(0x888888ff));
+	if (is_dodging) {
+		set_fill_color(HexColor(0x000000ff));
+	}
+	else {
+		set_fill_color(HexColor(0x888888ff));
+	}
+	
 	draw_ellipse(position.x, position.y, size, size);
 	pop_settings();
 	// If the player is attacking, draw the line (in the MELEE mode)

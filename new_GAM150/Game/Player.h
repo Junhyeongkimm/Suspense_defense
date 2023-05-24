@@ -15,7 +15,7 @@ private:
 	Math::vec2 attack_direction = { 0, 0 };
 	// Tile position of the player on the map
 	Math::ivec2 tile_position;
-	const double speed = 500;
+	const double speed = 350;
 	const double size = 40;
 	const CS230::Camera& camera; // It is not used
 	// HP
