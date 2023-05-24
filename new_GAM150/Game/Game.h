@@ -39,7 +39,7 @@ private:
     Map* map;
     Mediator* mediator;
     //CS230::GameObjectManager gameobjectmanager;
-    Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length(), (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length() };
+    Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2 };
     double tower_attack_count = 0;
     double tower_attack_cool = 2.0;
     Monster* target;

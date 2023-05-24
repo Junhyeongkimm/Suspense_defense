@@ -42,7 +42,7 @@ void Monster::Update(double dt, Math::vec2 target) {
 	}
 	// During the night time, it will move to the base
 	else {
-		Math::vec2 middle_point{ mediator->GetMapLength() / 2, mediator->GetMapLength() / 2 };
+		Math::vec2 middle_point{ mediator->GetMapLength() / 2 + mediator->GetTileLength()/2, mediator->GetMapLength() / 2 + mediator->GetTileLength()/2 };
 
 		double x_direction = (middle_point.x - position.x) / GetDistance(middle_point);
 		double y_direction = (middle_point.y - position.y) / GetDistance(middle_point);
