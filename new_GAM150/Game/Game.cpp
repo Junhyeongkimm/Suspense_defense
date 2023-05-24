@@ -21,7 +21,7 @@ void Game::Load() {
 	map = new Map(mediator);
 	mediator->SetMap(map);
 	// Create player and give it to the mediator
-	player = new Player({ map->Get_Tile_Length() * map->Get_Map_Size() / 2, map->Get_Tile_Length() * map->Get_Map_Size() / 2 }, camera, mediator, { map->Get_Map_Size() / 2, map->Get_Map_Size() / 2 });
+	player = new Player({ map->Get_Tile_Length() * map->Get_Map_Size() / 2 + map->Get_Tile_Length() / 2, map->Get_Tile_Length() * map->Get_Map_Size() / 2 + map->Get_Tile_Length() / 2 }, camera, mediator, { map->Get_Map_Size() / 2, map->Get_Map_Size() / 2 });
 	mediator->SetPlayer(player);
 	// Give monsters to the mediator
 	mediator->SetMonsters(&monsters);
