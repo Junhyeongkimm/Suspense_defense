@@ -7,7 +7,8 @@ Mediator::Mediator() : map(nullptr), player(nullptr), monsters(), bullets() {
 // Check if the monsters are attacked
 void Mediator::Check_Monster_Attacked() {
 	for (Monster* monster : *monsters) {
-		monster->Attacked(player->GetAttackPosition());
+		//monster->Attacked(player->GetAttackPosition());
+		monster->Attacked(player->GetPosition() + player->GetSize() * player->GetAttackDirection());
 	}
 }
 // Check if the map is attacked
@@ -15,8 +16,8 @@ void Mediator::Check_Map_Attacked() {
 	// Two for loop are to restrain restrain the scope
 	for (int i = player->GetTilePosition().x - 3; i <= player->GetTilePosition().x + 3; i++) {
 		for (int j = player->GetTilePosition().y - 3; j <= player->GetTilePosition().y + 3; j++) {
-			map->CheckAttacked(i, j, player->GetAttackPosition());
-			
+			//map->CheckAttacked(i, j, player->GetAttackPosition());
+			map->CheckAttacked(i, j, player->GetPosition() + player->GetSize() * player->GetAttackDirection());
 		}
 	}
 }

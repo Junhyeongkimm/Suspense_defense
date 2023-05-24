@@ -73,8 +73,7 @@ void Game::Update([[maybe_unused]] double dt) {
 	if (target != nullptr) {
 		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
-			double distance = sqrt((direction.x) * (direction.x) + (direction.y) * (direction.y));
-			direction /= distance;
+			direction /= direction.GetLength();
 			mediator->AddBullet(middle_point, direction);
 			tower_attack_count = 0;
 		}

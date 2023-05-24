@@ -11,8 +11,8 @@ private:
 	Math::TransformationMatrix matrix; // It is not used
 	// Position of the player
 	Math::vec2 position;
-	// Attack position of the player
-	Math::vec2 attack_position = { 0, 0 };
+	// Attack direction of the player
+	Math::vec2 attack_direction = { 0, 0 };
 	// Tile position of the player on the map
 	Math::ivec2 tile_position;
 	const double speed = 500;
@@ -50,15 +50,17 @@ public:
 	// Draw
 	void Draw();
 	// Getter functions
-	const Math::vec2& GetPosition() const { return position; }
+	Math::vec2& GetPosition() { return position; }
 	const Math::ivec2& GetTilePosition() const { return tile_position; }
 	Math::vec2 GetAttackPosition();
+	Math::vec2 GetAttackDirection() { return attack_direction; }
 	double GetDistanceFromAttack(Math::vec2 target);
 	int GetMapResource() { return map_resource; }
 	int GetMonsterResource() { return monster_resource; }
 	int GetWarpResource() { return warp_resource; }
 	int GetHP() { return hp; }
 	bool Able_To_Attack() { return attack_count > attack_delay; }
+	double GetSize() { return size; }
 	// Increase the resource
 	void IncreaseMapResource() { ++map_resource; }
 	void IncreaseMonsterResource() { ++monster_resource; }
@@ -68,7 +70,7 @@ public:
 	// Reduce hp
 	void Reduce_hp();
 	// Set the attack position
-	void SetAttackPosition(Math::vec2 position) { attack_position = position; }
+	void SetAttackPosition(Math::vec2 position) { attack_direction = position; }
 	// Warp to the base
 	void GoToBase();
 };

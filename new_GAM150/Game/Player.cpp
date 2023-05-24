@@ -46,7 +46,6 @@ void Player::Update(double dt) {
 				dodge_direction /= sqrt(2);
 			}
 		}
-		SetAttackPosition(GetAttackPosition());
 		not_clicked = false;
 	}
 	if (attack_count > attack_delay) {
@@ -135,8 +134,8 @@ void Player::Draw() {
 	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();
 		set_outline_width(10);
-		//draw_line(position.x, position.y, attack_position.x, attack_position.y);
-		draw_line(position.x, position.y, position.x + (size * (GetAttackPosition().x - position.x)), position.y + (size * (GetAttackPosition().y - position.y)));
+		draw_line(position.x, position.y, position.x + size * attack_direction.x, position.y + size * attack_direction.y);
+		//draw_line(position.x, position.y, position.x + (size * (GetAttackPosition().x - position.x)), position.y + (size * (GetAttackPosition().y - position.y)));
 		pop_settings();
 	}
 }
@@ -153,6 +152,7 @@ double Player::GetDistanceFromAttack(Math::vec2 target) {
 }
 // Attack function
 void Player::Attack() {
+	SetAttackPosition(GetAttackPosition() - position);
 	if (attack_mode == MELEE) {
 		is_attacking = true;
 		mediator->Check_Monster_Attacked();
