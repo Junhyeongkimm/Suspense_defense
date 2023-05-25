@@ -50,6 +50,7 @@ void Mediator::DeleteMonster(Monster* monster) {
 	auto it = std::find(monsters->begin(), monsters->end(), monster);
 	monsters->erase(std::remove(monsters->begin(), monsters->end(), monster), monsters->end());
 	delete monster;
+	this->IncreaseMonsterResource();
 }
 // Add and delete bullet
 void Mediator::AddBullet(Math::vec2 position, Math::vec2 direction) {

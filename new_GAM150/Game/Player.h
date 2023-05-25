@@ -20,6 +20,7 @@ private:
 	const CS230::Camera& camera; // It is not used
 	// HP
 	int hp = 10;
+	int max_hp = 10;
 	// Attack
 	double attack_delay = 0.5;
 	double attack_count = 0;
@@ -61,6 +62,7 @@ public:
 	int GetMonsterResource() { return monster_resource; }
 	int GetWarpResource() { return warp_resource; }
 	int GetHP() { return hp; }
+	int GetMaxHP() { return max_hp; }
 	bool Able_To_Attack() { return attack_count > attack_delay; }
 	double GetSize() { return size; }
 	// Increase the resource

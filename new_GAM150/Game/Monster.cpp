@@ -89,7 +89,6 @@ void Monster::Attacked(Math::vec2 attack_position) {
 	if (GetDistance(attack_position) < size / 2) {
 		Reduce_hp();
 		if (hp <= 0) {
-			mediator->IncreaseMonsterResource();
 			mediator->DeleteMonster(this);
 		}
 	}
