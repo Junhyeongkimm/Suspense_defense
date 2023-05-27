@@ -28,7 +28,6 @@ int main() {
     try {
         Engine& engine = Engine::Instance();
         engine.Start("Suspense Defense");
-
         Splash splash;
         engine.GetGameStateManager().AddGameState(splash);
         MainMenu mainmenu;

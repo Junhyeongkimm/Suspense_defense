@@ -77,4 +77,18 @@ public:
 	void SetAttackPosition(Math::vec2 position) { attack_direction = position; }
 	// Warp to the base
 	void GoToBase();
+
+	enum class player_action {
+		daywaiting,
+		dayleft,
+		dayright,
+		dayup,
+		daydown,
+		nightwaiting,
+		nightleft,
+		nightright,
+		nightup,
+		nightdown
+	};
+		
 };

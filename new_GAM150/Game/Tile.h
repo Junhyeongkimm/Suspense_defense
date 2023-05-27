@@ -29,9 +29,9 @@ public:
 	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
 	int Get_State();
 	int GetHP() { return hp; }
+	CS230::Sprite sprite;
 	// Reduce hp of the tile
 	void ReduceHP() { --hp; }
-
 	
 };
 // Wall tile

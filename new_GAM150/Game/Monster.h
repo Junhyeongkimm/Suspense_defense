@@ -30,4 +30,15 @@ public:
 	void Reduce_hp();
 	// Destructor
 	~Monster();
+	enum class monster_action{
+		left,
+		leftattack,
+		right,
+		rightattack,
+		up,
+		upattack,
+		down,
+		downattack
+
+	};
 };
