@@ -13,6 +13,7 @@ protected:
 	int state = 0;
 	int hp = 0;
 	HexColor color = 0;
+	
 public:
 	// Constructor
 	Tile(Math::vec2 position);
@@ -32,6 +33,8 @@ public:
 	CS230::Sprite sprite;
 	// Reduce hp of the tile
 	void ReduceHP() { --hp; }
+	double scale_x;
+	double scale_y;
 	
 };
 // Wall tile
@@ -41,11 +44,13 @@ public:
 	void Update();
 	void Draw(bool is_day);
 	virtual void Attacked();
-	enum class colonycore_animations
+	enum class rock_animations
 	{
 		basic,
 		broken
 	};
+private:
+	bool rockbroken = false;
 };
 // Void tile
 class Void : public Tile {

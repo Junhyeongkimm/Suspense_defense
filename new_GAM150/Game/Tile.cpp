@@ -43,18 +43,26 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
 	state = TILES::WALL;
 	hp = 2;
-	sprite.Load("Asset/rock.spt");
+
+	sprite.Load("Assets/rock.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
 void Wall::Update() {
-
+	if (hp == 1 && rockbroken == false){
+		rockbroken = true;
+		sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
+	}
 }
 void Wall::Draw(bool is_day) {
 	doodle::push_settings();
 	if (is_day) {
 		if (hp == 2)
 			set_fill_color(HexColor{ 0x444444ff });
-		else if (hp == 1)
+		else if (hp == 1){}
 			set_fill_color(HexColor{ 0x888888ff });
+
 	}
 	else {
 		if (hp == 2)
@@ -64,6 +72,8 @@ void Wall::Draw(bool is_day) {
 	}
 	
 	draw_rectangle(position.x, position.y, size, size);
+	
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	doodle::pop_settings();
 }
 void Wall::Attacked() {
