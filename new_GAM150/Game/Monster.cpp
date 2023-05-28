@@ -82,7 +82,7 @@ double Monster::GetDistance(Math::vec2 target) {
 }
 // Reduce hp
 void Monster::Reduce_hp() {
-	--hp;
+	hp -= mediator->GetDamage();
 }
 // Check attaced, check died
 void Monster::Attacked(Math::vec2 attack_position) {

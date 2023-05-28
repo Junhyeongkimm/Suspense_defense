@@ -102,9 +102,14 @@ void Game::Draw() {
 	pop_settings();
 
 	player->Draw();
-
+	//monster->GetDistance(player->GetPosition()) < map->Get_Tile_Length() * (map->GetOffset()+1)
 	for (Monster* monster : monsters) {
-		monster->Draw();
+		if( monster->GetPosition().x < player->GetPosition().x + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+			monster->GetPosition().x > player->GetPosition().x - map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+			monster->GetPosition().y < player->GetPosition().y + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+			monster->GetPosition().y > player->GetPosition().y - map->Get_Tile_Length() * (map->GetOffset() + 2)
+			)
+			monster->Draw();
 	}
 	for (Bullet* bullet : bullets) {
 		bullet->Draw();
@@ -121,7 +126,7 @@ void Game::Draw() {
 	draw_text("C: " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
 	draw_text("M: " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);
 
-	draw_text("Hp: " + std::to_string(player->GetMaxHP()) + " / " + std::to_string(player->GetHP()), 10, 30);
+	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
 
 	draw_text("Day " + std::to_string(map->GetDate()), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
 	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);

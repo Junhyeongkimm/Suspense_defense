@@ -123,9 +123,8 @@ void Player::Update(double dt) {
 		position += direction * speed * dt;
 	}
 	// Tile_position update based on the player's position
-	static const double map_length = mediator->GetMapLength() / mediator->GetMapSize();
-	tile_position.x = (int)((position.x) / map_length);
-	tile_position.y = (int)((position.y) / map_length);
+	tile_position.x = (int)((position.x) / mediator->GetTileLength());
+	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 	// Check player attacked
 	mediator->CheckPlayerAttacked();
 }
@@ -188,4 +187,8 @@ Math::vec2 Player::GetAttackPosition() {
 // Warp to the base
 void Player::GoToBase() {
 	position = { mediator->GetMapLength() / 2 + size / 2, mediator->GetMapLength() / 2 + size / 2 };
+}
+// Upgrade the player
+void Player::Upgrade() {
+
 }

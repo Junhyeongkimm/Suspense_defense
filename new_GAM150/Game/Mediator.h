@@ -47,4 +47,5 @@ public:
 	int GetMapSize() { return map->Get_Map_Size(); }
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
 	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
+	int GetDamage() { return player->GetDamage(); }
 };

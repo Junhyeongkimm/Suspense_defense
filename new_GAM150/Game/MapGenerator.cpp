@@ -200,8 +200,6 @@ void Map::Show_Map(Math::ivec2 player_position) {
 	//apply_translate(-player_position.x, -player_position.y);
 	
 	//no_outline();
-
-	static int offset;
 	
 	if (is_day == true) {
 		if (time <= duration / 4) {
