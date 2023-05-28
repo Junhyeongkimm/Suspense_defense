@@ -56,8 +56,8 @@ public:
 	// Draw
 	void Draw();
 	// Getter functions
-	Math::vec2& GetPosition() { return position; }
-	Math::ivec2& GetTilePosition() { return tile_position; }
+	Math::vec2 GetPosition() { return position; }
+	Math::ivec2 GetTilePosition() { return tile_position; }
 	Math::vec2 GetAttackPosition();
 	Math::vec2 GetAttackDirection() { return attack_direction; }
 	double GetDistanceFromAttack(Math::vec2 target);

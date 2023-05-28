@@ -16,7 +16,7 @@ void Monster::Update(double dt) {
 	if (mediator->Is_Day()) {
 		double x_direction = (mediator->GetPlayerPosition().x - position.x) / GetDistance(mediator->GetPlayerPosition());
 		double y_direction = (mediator->GetPlayerPosition().y - position.y) / GetDistance(mediator->GetPlayerPosition());
-
+		
 		double half_size = size / 2.0;
 
 		Math::vec2 next_position_x = { position.x + speed * dt * x_direction, position.y };
