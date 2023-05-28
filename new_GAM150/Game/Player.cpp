@@ -191,7 +191,7 @@ Math::vec2 Player::GetAttackPosition() {
 }
 // Warp to the base
 void Player::GoToBase() {
-	position = { mediator->GetMapLength() / 2 + size / 2, mediator->GetMapLength() / 2 + size / 2 };
+	position = { mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2, mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2 };
 }
 // Upgrade the player
 void Player::Upgrade() {
