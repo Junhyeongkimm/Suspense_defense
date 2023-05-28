@@ -7,7 +7,7 @@ std::vector<Tile*> tiles;
 
 // Constructor
 Tile::Tile(Math::vec2 position) : position(position) {
-
+	
 }
 // Update
 void Tile::Update() {
@@ -43,6 +43,7 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
 	state = TILES::WALL;
 	hp = 2;
+	sprite.Load("Asset/rock.spt");
 }
 void Wall::Update() {
 

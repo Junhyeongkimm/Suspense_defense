@@ -30,6 +30,9 @@ public:
 	void Reduce_hp();
 	// Destructor
 	~Monster();
+
+	CS230::Sprite sprite;
+
 	enum class monster_action{
 		left,
 		leftattack,

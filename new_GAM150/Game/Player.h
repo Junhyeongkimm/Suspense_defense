@@ -77,6 +77,7 @@ public:
 	void SetAttackPosition(Math::vec2 position) { attack_direction = position; }
 	// Warp to the base
 	void GoToBase();
+	CS230::Sprite sprite;
 
 	enum class player_action {
 		daywaiting,

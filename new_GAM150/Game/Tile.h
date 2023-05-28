@@ -44,7 +44,6 @@ public:
 	enum class colonycore_animations
 	{
 		basic,
-		wallattacked,
 		broken
 	};
 };
