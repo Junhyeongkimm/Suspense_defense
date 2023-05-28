@@ -36,25 +36,18 @@ void Game::Update([[maybe_unused]] double dt) {
 	player->Update(dt);
 	map->Update(dt);
 	for (Monster* monster : monsters) {
-		monster->Update(dt, player->GetPosition());
+		monster->Update(dt);
 	}
 	for (Bullet* bullet : bullets) {
 		bullet->Update(dt);
 	}
 	camera.Update(player->GetPosition());
-	// If the hp of player go to negative, game over, and change the scene to the mainmenu
-	if (player->GetHP() <= 0) {
-		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-	}
 	// If the player press "Escape" key, change the scene to the mainmenu
 	if (Key == KeyboardButtons::Escape) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 	// Check bullet collsion to the map(Wall) and monster
 	for (Bullet* bullet : bullets) {
-		if (map->GetTileState(bullet->GetPosition()) == TILES::WALL) {
-			mediator->DeleteBullet(bullet);
-		}
 		for (Monster* monster : monsters) {
 			if (monster->GetDistance(bullet->GetPosition()) < monster->GetSize()) {
 				mediator->DeleteBullet(bullet);

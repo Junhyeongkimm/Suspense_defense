@@ -4,6 +4,7 @@
 #include "doodle/angle.hpp"
 #include "../Engine/Engine.h"
 #include "Mediator.h"
+#include "State.h"
 using namespace doodle;
 
 // Constructor
@@ -63,7 +64,7 @@ void Player::Update(double dt) {
 			attack_mode = MELEE;
 	}
 	// Player warp
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && mediator->GetMapState(position) != TILES::BASE_INSIDE && warp_resource > 0) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMapState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
 		is_warping = true;
 	}
 	if (is_warping) {
@@ -127,6 +128,10 @@ void Player::Update(double dt) {
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 	// Check player attacked
 	mediator->CheckPlayerAttacked();
+
+	if (hp <= 0) {
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+	}
 }
 // Draw player
 void Player::Draw() {

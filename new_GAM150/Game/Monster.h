@@ -17,7 +17,7 @@ public:
 	// Constructor
 	Monster(Math::vec2 position, Mediator* mediator);
 	// Update by dt and will move the the target
-	void Update(double dt, Math::vec2 target);
+	void Update(double dt);
 	// Draw
 	void Draw();
 	// Getter functions

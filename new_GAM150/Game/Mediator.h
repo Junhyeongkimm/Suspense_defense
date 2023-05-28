@@ -48,4 +48,5 @@ public:
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
 	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
 	int GetDamage() { return player->GetDamage(); }
+	int GetTileState(Math::vec2 position) {return map->GetTileState(position); }
 };

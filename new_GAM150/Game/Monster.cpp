@@ -6,15 +6,16 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 
 }
 // Update
-void Monster::Update(double dt, Math::vec2 target) {
+void Monster::Update(double dt) {
+	
 	// Paralyze. Monster will do nothing while the paralyze_count is smaller than the paralyze_time
 	paralyze_count += dt;
 	if (paralyze_count < paralyze_time)
 		return;
 	// During the daytime, it will move to the player.
 	if (mediator->Is_Day()) {
-		double x_direction = (target.x - position.x) / GetDistance(target);
-		double y_direction = (target.y - position.y) / GetDistance(target);
+		double x_direction = (mediator->GetPlayerPosition().x - position.x) / GetDistance(mediator->GetPlayerPosition());
+		double y_direction = (mediator->GetPlayerPosition().y - position.y) / GetDistance(mediator->GetPlayerPosition());
 
 		double half_size = size / 2.0;
 

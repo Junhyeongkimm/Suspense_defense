@@ -10,6 +10,10 @@ Bullet::Bullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediat
 void Bullet::Update(double dt) {
 	// Update position
 	position += direction * speed * dt;
+	// Check collision with Wall
+	if (mediator->GetTileState(position) == TILES::WALL) {
+		mediator->DeleteBullet(this);
+	}
 }
 // Draw bullet
 void Bullet::Draw() {
