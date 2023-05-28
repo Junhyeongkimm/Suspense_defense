@@ -46,6 +46,7 @@ public:
 	double GetTileLength() { return map->Get_Tile_Length(); }
 	int GetMapSize() { return map->Get_Map_Size(); }
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
+	Math::ivec2 GetPlayerTilePosition() { return player->GetTilePosition(); }
 	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
 	int GetDamage() { return player->GetDamage(); }
 	int GetTileState(Math::vec2 position) {return map->GetTileState(position); }

@@ -31,6 +31,9 @@ private:
 	Tile* MAP[map_size][map_size];
 	// Mediator
 	Mediator* mediator;
+	// Middle point
+	Math::vec2 middle_point{ map_length / 2 + tile_length / 2, map_length / 2 + tile_length / 2 };
+	Math::vec2 arrow_direction{ 0, 0 };
 public:
 	// Constructor
 	Map(Mediator* mediator);
@@ -53,7 +56,9 @@ public:
 	// Make "number" numbers of warp
 	void Make_Warp(int number);
 	// Show the map based on the player's position.
-	void Show_Map(Math::ivec2 player_position);
+	void Show_Map();
+	// Draw arrow to the base
+	void Show_Arrow();
 	// Getter functions
 	int Get_Map_Size() { return map_size; }
 	double Get_Map_Length() { return map_length; }

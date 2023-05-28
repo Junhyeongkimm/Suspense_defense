@@ -4,24 +4,26 @@
 #include "Mediator.h"
 #include "../Engine/Engine.h"
 using namespace doodle;
-#include <iostream>
 
+// Constructor of this class
 Map::Map(Mediator* mediator) : mediator(mediator) {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
+			// Change all things to the Void
 			delete MAP[i][j];
 			MAP[i][j] = new Void( Math::vec2{ i*tile_length, j*tile_length } );
 		}
 	}
 }
-
+// Update function
 void Map::Update(double dt) {
+	// Time system
 	time += dt; 
-
-
 	if (time >= duration) {
+		// Day -> Night timing
 		if (is_day == true) {
 			is_day = false;
+			// Make monsters
 			for (int i = 0; i < map_size; i++) {
 				for (int j = 0; j < map_size; j++) {
 					if (MAP[i][j]->Get_State() == TILES::COLONY_CORE)
@@ -29,7 +31,9 @@ void Map::Update(double dt) {
 				}
 			}
 		}
+		// Night -> Day timing
 		else {
+			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
 			Make_Colony(date * 5);
@@ -38,20 +42,21 @@ void Map::Update(double dt) {
 		}
 		time = 0;
 	}
-	
 }
-
+// Map making system
 void Map::MapMaking() {
+	// Initializing
 	Initialize();
-
+	// Optimizing
 	for (int i = 0; i < optimize_number; i++)
 		Optimizing();
-
+	// Make things
 	Make_Base();
 	Make_Colony(10);
 	Make_Resource(100);
 	Make_Warp(100);
 }
+// Initialize
 void Map::Initialize() {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
@@ -65,7 +70,6 @@ void Map::Initialize() {
 			}
 		}
 	}
-
 	for (int i = 1; i < map_size - 1; i++) {
 		for (int j = 1; j < map_size - 1; j++) {
 			if (random(100) < initialize_chance) {
@@ -75,6 +79,7 @@ void Map::Initialize() {
 		}
 	}
 }
+// Optimize
 void Map::Optimizing() {
 	for (int i = 1; i < map_size - 1; i++) {
 		for (int j = 1; j < map_size - 1; j++) {
@@ -86,6 +91,7 @@ void Map::Optimizing() {
 		}
 	}
 }
+// Make base
 void Map::Make_Base() {
 	for (int i = map_size / 2 - 6; i <= map_size / 2 + 6; i++) {
 		for (int j = map_size / 2 - 6; j <= map_size / 2 + 6; j++) {
@@ -108,6 +114,7 @@ void Map::Make_Base() {
 	delete MAP[map_size / 2][map_size / 2];
 	MAP[map_size / 2][map_size / 2] = new Tower(Math::vec2{ map_size / 2 * tile_length, map_size / 2 * tile_length });
 }
+// Checking system
 bool Map::Check_Surrounding_Cells(const int x, const int y) {
 	int count = 0;
 	for (int i = x - 1; i <= x + 1; i++) {
@@ -121,6 +128,7 @@ bool Map::Check_Surrounding_Cells(const int x, const int y) {
 	else
 		return false;
 }
+// Make colony
 void Map::Make_Colony(int number) {
 	int i = 0;
 	while (i < number) {
@@ -154,6 +162,7 @@ void Map::Make_Colony(int number) {
 	}
 	remaining_colony += number;
 }
+// Make resource
 void Map::Make_Resource(int number) {
 	for (int i = 0; i < number; i++) {
 		while (1) {
@@ -170,6 +179,7 @@ void Map::Make_Resource(int number) {
 		}
 	}
 }
+// Make warp
 void Map::Make_Warp(int number) {
 	for (int i = 0; i < number; i++) {
 		while (1) {
@@ -186,21 +196,9 @@ void Map::Make_Warp(int number) {
 		}
 	}
 }
-
-void Map::Show_Map(Math::ivec2 player_position) {
-	/*int player_x = (int)(map_length / 2 + player_position.x) / (int)tile_length;
-	int player_y = (int)(map_length / 2 + player_position.y) / (int)tile_length;*/
-
-	int player_x = player_position.x;
-	int player_y = player_position.y;
-	
-
+// Show map
+void Map::Show_Map() {
 	push_settings();
-	//apply_translate(-camera.GetPosition().x, -camera.GetPosition().y);
-	//apply_translate(-player_position.x, -player_position.y);
-	
-	//no_outline();
-	
 	if (is_day == true) {
 		if (time <= duration / 4) {
 			offset = (int)(4 * time / duration * 3) + 7; // 7 ~ 10
@@ -223,9 +221,9 @@ void Map::Show_Map(Math::ivec2 player_position) {
 			offset = (int)(4 * (time - 3 * duration / 4) / duration * 3) + 4; // 4~7
 		}
 	}
-
-	for (int i = player_x - offset - 1; i <= player_x + offset + 1; i++) {
-		for (int j = player_y - offset - 1; j <= player_y + offset + 1; j++) {
+	// Show map based on the player's position and the offset(=sight of the player)
+	for (int i = mediator->GetPlayerTilePosition().x - offset - 1; i <= mediator->GetPlayerTilePosition().x + offset + 1; i++) {
+		for (int j = mediator->GetPlayerTilePosition().y - offset - 1; j <= mediator->GetPlayerTilePosition().y + offset + 1; j++) {
 			if (i < 0 || i >= map_size || j < 0 || j >= map_size)
 				continue;
 			MAP[i][j]->Draw(is_day);
@@ -233,7 +231,24 @@ void Map::Show_Map(Math::ivec2 player_position) {
 	}
 	pop_settings();
 }
+// Show the direction of base
+void Map::Show_Arrow() {
+	push_settings();
 
+	arrow_direction = { middle_point.x - mediator->GetPlayerPosition().x, middle_point.y - mediator->GetPlayerPosition().y };
+	arrow_direction /= arrow_direction.GetLength();
+	arrow_direction *= 30;
+	
+	apply_translate(mediator->GetPlayerPosition().x, mediator->GetPlayerPosition().y);
+	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
+	draw_ellipse(0, 0, 60);
+	set_outline_width(15);
+
+	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
+	
+	pop_settings();
+}
+// Check if the specified tile has attacked
 void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 
 	if (attack_point.x > 0 && attack_point.x < map_length && attack_point.y > 0 && attack_point.y < map_length
@@ -283,7 +298,6 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			if (MAP[x][y]->GetHP() <= 0) {
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-				//mediator->Warp();
 				mediator->IncreaseWarpResource();
 			}
 
@@ -293,15 +307,5 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			break;
 		}
 	}
-	
-
-	/*if (MAP[x][y]->Get_State() == TILES::WALL || MAP[x][y]->Get_State() == TILES::COLONY_CORE || MAP[x][y]->Get_State() == TILES::RESOURCE) {
-		MAP[x][y]->Attacked(attack_point);
-		if (MAP[x][y]->GetHP() <= 0) {
-			delete MAP[x][y];
-			MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-			std::cout << "Changed" << std::endl;
-		}
-	}*/
 	
 }
