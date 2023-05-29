@@ -38,6 +38,9 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 // ---------------------------------------------------------------------------------------------------
 // Tiles below are very similar. The major difference is hp and state.
 
+
+#include <iostream>
+
 // Wall
 Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
@@ -52,6 +55,7 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 void Wall::Update() {
 	if (hp == 1 && rockbroken == false){
 		rockbroken = true;
+		std::cout << "broken \n";
 		sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
 	}
 }
@@ -71,7 +75,12 @@ void Wall::Draw(bool is_day) {
 	//		/*set_fill_color(HexColor{ 0x444444ff }*/);
 	//}
 	//draw_rectangle(position.x, position.y, size, size);
-	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	if (hp == 1 && rockbroken == false) {
+		rockbroken = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
+	}
+
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	doodle::pop_settings();
 }
@@ -189,22 +198,28 @@ void Base_Inside::Draw(bool is_day) {
 // Resource
 Resource::Resource(Math::vec2 position) : Tile(position) {
 	state = TILES::RESOURCE;
-	hp = 1;
+	hp = 3;
+	sprite.Load("Assets/resource.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(resource_animations::basic));
 }
 void Resource::Update() {
 	
 }
 void Resource::Draw(bool is_day) {
 	doodle::push_settings();
-	if (is_day) {
+	/*if (is_day) {
 		set_fill_color(HexColor{ 0xffd966ff });
 	}
 	else {
 		set_fill_color(HexColor{ 0xbb9522ff });
-	}
-	
-	draw_rectangle(position.x, position.y, size, size);
+	}*/
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	doodle::pop_settings();
+}
+void Resource::Attacked() {
+	--hp;
 }
 // Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {

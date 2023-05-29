@@ -108,6 +108,7 @@ public:
 	Resource(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	virtual void Attacked();
 	enum class resource_animations
 	{
 		basic,
