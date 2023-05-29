@@ -95,6 +95,10 @@ public:
 	void Draw(bool is_day);
 	virtual void Attacked();
 	bool AbleToBeAttacked() { if (invincibility_count > invincibility_time) { invincibility_count = 0; return true; } else { return false; } }
+	enum class basewall_animations
+	{
+		basic
+	};
 private:
 	double invincibility_count = 0;
 	const double invincibility_time = 1.0;
@@ -105,6 +109,10 @@ public:
 	Base_Inside(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class baseinside_animations
+	{
+		basic
+	};
 };
 // Resource tile
 class Resource : public Tile {
@@ -133,4 +141,5 @@ public:
 	Tower(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	
 };

@@ -53,11 +53,11 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
 void Wall::Update() {
-	if (hp == 1 && rockbroken == false){
+	/*if (hp == 1 && rockbroken == false){
 		rockbroken = true;
 		std::cout << "broken \n";
 		sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
-	}
+	}*/
 }
 void Wall::Draw(bool is_day) {
 	doodle::push_settings();
@@ -159,6 +159,10 @@ void Colony_Side::Attacked() {
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_WALL;
 	hp = 10;
+	sprite.Load("Assets/wall.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(basewall_animations::basic));
 }
 void Base_Wall::Update() {
 
@@ -166,13 +170,12 @@ void Base_Wall::Update() {
 void Base_Wall::Draw(bool is_day) {
 	doodle::push_settings();
 	if (is_day) {
-		set_fill_color(HexColor{ 0x496f35ff });
+		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	else {
-		set_fill_color(HexColor{ 0x052c01ff });
+		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	
-	draw_rectangle(position.x, position.y, size, size);
 	doodle::pop_settings();
 }
 void Base_Wall::Attacked() {
@@ -181,6 +184,10 @@ void Base_Wall::Attacked() {
 // Base_Inside
 Base_Inside::Base_Inside(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_INSIDE;
+	sprite.Load("Assets/wallinside.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(baseinside_animations::basic));
 }
 void Base_Inside::Update() {
 	
@@ -188,13 +195,11 @@ void Base_Inside::Update() {
 void Base_Inside::Draw(bool is_day) {
 	doodle::push_settings();
 	if (is_day) {
-		set_fill_color(HexColor{ 0xffffffff });
+		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	else {
-		set_fill_color(HexColor{ 0xbbbbbbff });
+		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
-	
-	draw_rectangle(position.x, position.y, size, size);
 	doodle::pop_settings();
 }
 // Resource
@@ -247,6 +252,7 @@ void Warp::Draw(bool is_day) {
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
 	hp = 10;
+	
 }
 void Tower::Update() {
 
@@ -259,6 +265,5 @@ void Tower::Draw(bool is_day) {
 	else {
 		set_fill_color(HexColor{ 0x0000ffff });
 	}
-	draw_rectangle(position.x, position.y, size);
 	pop_settings();
 }
