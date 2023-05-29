@@ -58,6 +58,10 @@ public:
 	Void(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class void_animations
+	{
+		basic
+	};
 };
 // Colony_Core tile
 class Colony_Core : public Tile {

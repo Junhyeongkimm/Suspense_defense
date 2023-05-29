@@ -91,7 +91,9 @@ void Wall::Attacked() {
 Void::Void(Math::vec2 position) : Tile(position) {
 	state = TILES::VOID;
 	sprite.Load("Assets/tile.spt");
-	
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(void_animations::basic));
 }
 void Void::Update() {
 
