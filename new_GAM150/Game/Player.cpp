@@ -64,7 +64,7 @@ void Player::Update(double dt) {
 			attack_mode = MELEE;
 	}
 	// Player warp
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMapState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
 		is_warping = true;
 	}
 	if (is_warping) {
@@ -85,8 +85,8 @@ void Player::Update(double dt) {
 		dodging_count += dt;
 		invincibility_count = invincibility_time - dodging_time;
 		// Check collision while dodging
-		if ((mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
-			(mediator->GetMapState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE)) {
+		if ((mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
+			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE)) {
 			position += dodge_direction * 2 * speed * dt;
 		}
 		if (dodging_count >= dodging_time) {
@@ -98,22 +98,22 @@ void Player::Update(double dt) {
 		// Player moving with W, A, S, D
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
-			if ((mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
 				direction.y += 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
-			if ((mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetMapState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
 				direction.y -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-			if ((mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
 				direction.x -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-			if ((mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetMapState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
 				direction.x += 1;
 			}
 		}

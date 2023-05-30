@@ -1,45 +1,22 @@
 #include "Monster.h"
 #include "Mediator.h"
-
+#include <vector>
+#include <algorithm>
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
-
+	tile_position.x = (int)((position.x) / mediator->GetTileLength());
+	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 }
 // Update
 void Monster::Update(double dt) {
-	
 	// Paralyze. Monster will do nothing while the paralyze_count is smaller than the paralyze_time
 	paralyze_count += dt;
 	if (paralyze_count < paralyze_time)
 		return;
 	// During the daytime, it will move to the player.
 	if (mediator->Is_Day()) {
-		double x_direction = (mediator->GetPlayerPosition().x - position.x) / GetDistance(mediator->GetPlayerPosition());
-		double y_direction = (mediator->GetPlayerPosition().y - position.y) / GetDistance(mediator->GetPlayerPosition());
-		
-		double half_size = size / 2.0;
-
-		Math::vec2 next_position_x = { position.x + speed * dt * x_direction, position.y };
-		Math::vec2 next_position_y = { position.x, position.y + speed * dt * y_direction };
-
-		bool can_move_x = (
-			mediator->GetMapState({ next_position_x.x - half_size, next_position_x.y }) != TILES::WALL &&
-			mediator->GetMapState({ next_position_x.x + half_size, next_position_x.y }) != TILES::WALL &&
-			mediator->GetMapState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
-			mediator->GetMapState({ next_position_x.x + half_size, next_position_x.y }) != TILES::BASE_WALL);
-
-		bool can_move_y = (
-			mediator->GetMapState({ next_position_y.x, next_position_y.y - half_size }) != TILES::WALL &&
-			mediator->GetMapState({ next_position_y.x, next_position_y.y + half_size }) != TILES::WALL &&
-			mediator->GetMapState({ next_position_y.x, next_position_y.y - half_size }) != TILES::BASE_WALL &&
-			mediator->GetMapState({ next_position_y.x, next_position_y.y + half_size }) != TILES::BASE_WALL);
-
-		if (can_move_x) {
-			position.x = next_position_x.x;
-		}
-		if (can_move_y) {
-			position.y = next_position_y.y;
-		}
+		Math::ivec2 direction = MoveToTarget(mediator->GetPlayerTilePosition(), dt);
+		position += direction * speed * dt;
 	}
 	// During the night time, it will move to the base
 	else {
@@ -54,12 +31,12 @@ void Monster::Update(double dt) {
 		Math::vec2 next_position_y = { position.x, position.y + speed * dt * y_direction };
 
 		bool can_move_x = (
-			mediator->GetMapState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
-			mediator->GetMapState({ next_position_x.x + half_size, next_position_x.y }) != TILES::BASE_WALL);
+			mediator->GetTileState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
+			mediator->GetTileState({ next_position_x.x + half_size, next_position_x.y }) != TILES::BASE_WALL);
 
 		bool can_move_y = (
-			mediator->GetMapState({ next_position_y.x, next_position_y.y - half_size }) != TILES::BASE_WALL &&
-			mediator->GetMapState({ next_position_y.x, next_position_y.y + half_size }) != TILES::BASE_WALL);
+			mediator->GetTileState({ next_position_y.x, next_position_y.y - half_size }) != TILES::BASE_WALL &&
+			mediator->GetTileState({ next_position_y.x, next_position_y.y + half_size }) != TILES::BASE_WALL);
 
 		if (can_move_x) {
 			position.x = next_position_x.x;
@@ -69,6 +46,9 @@ void Monster::Update(double dt) {
 			position.y = next_position_y.y;
 		}
 	}
+	// Tile position update
+	tile_position.x = (int)((position.x) / mediator->GetTileLength());
+	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 }
 // Draw
 void Monster::Draw() {
@@ -97,4 +77,80 @@ void Monster::Attacked(Math::vec2 attack_position) {
 // Destructor
 Monster::~Monster() {
 
+}
+// Pathfinding
+Math::ivec2 Monster::MoveToTarget(const Math::ivec2& target, double dt) {
+	// A* algorithm
+	// Clear vectors
+	openList.clear();
+	closedList.clear();
+	cameFrom.clear();
+	// Push back the start position
+	openList.push_back(tile_position);
+
+	Math::ivec2 current;
+	while (!openList.empty()) {
+		// Select the lowest cost location on the openList and erase it from the openList
+		current = openList.front();
+		openList.erase(openList.begin());
+		// If the monster arrived to the target, break
+		if (current == target) {
+			break;
+		}
+		// Check the neighbor tile from the current tile
+		std::vector<Math::ivec2> neighbors = GetNeighboringTiles(current);
+		Math::ivec2 optimalNeighbor = current; // Initialize the optimal neighbor
+		double optimalCost = std::numeric_limits<double>::max(); // Set the optimal cost to the maximum value
+		for (const Math::ivec2& neighbor : neighbors) {
+			// Skip if the tile as already explored
+			if (std::find_if(closedList.begin(), closedList.end(),
+				[&](const Math::ivec2& element) { return element == neighbor; }) != closedList.end()) {
+				continue;
+			}
+			// Skip if the tile is WALL
+			if (mediator->GetTileStateInt(neighbor) == TILES::WALL) {
+				continue;
+			}
+			cameFrom[neighbor] = current;
+			openList.push_back(neighbor);
+			// Calculate Manhattan Distance Cost
+			int actualCost = (int)cameFrom.size();
+			int ManhattanDistanceCost = (abs(target.x - neighbor.x) + abs(target.y - neighbor.y));
+			int neighborCost = actualCost + ManhattanDistanceCost;
+
+			if (neighborCost < optimalCost) {
+				optimalCost = neighborCost;
+				optimalNeighbor = neighbor;
+			}
+		}
+
+		// Push back current tile to the closed list
+		closedList.push_back(current);
+
+		// Choose optimal neighbor
+		if (optimalNeighbor != current) {
+			current = optimalNeighbor;
+		}
+	}
+	// Backtracking the route
+	Math::ivec2 nextPosition = current;
+	while (cameFrom.count(current) > 0) {
+		nextPosition = current;
+		current = cameFrom[current];
+		if (current == tile_position) {
+			break;
+		}
+	}
+	// Set next position to the direction
+	nextPosition -= tile_position;
+	return nextPosition;
+}
+
+std::vector<Math::ivec2> Monster::GetNeighboringTiles(const Math::ivec2& position) {
+	std::vector<Math::ivec2> neighbors;
+	neighbors.push_back({ position.x + 1, position.y });
+	neighbors.push_back({ position.x - 1, position.y });
+	neighbors.push_back({ position.x, position.y + 1 });
+	neighbors.push_back({ position.x, position.y - 1 });
+	return neighbors;
 }

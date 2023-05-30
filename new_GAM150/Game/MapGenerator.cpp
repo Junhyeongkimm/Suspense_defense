@@ -52,7 +52,7 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
-	Make_Colony(10);
+	Make_Colony(100);
 	Make_Resource(100);
 	Make_Warp(100);
 }
@@ -267,7 +267,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 										MAP[x + i + k][y + j + l] = new Void(Math::vec2{ (x + i + k) * tile_length, (y + j + l) * tile_length });
 									}
 								}
-								mediator->AddMonster(MAP[x + i][y + j]->GetPosition());
+								mediator->AddMonster(MAP[x + i][y + j]->GetPosition() + Math::vec2{ tile_length / 2, tile_length / 2 });
 								--remaining_colony;
 							}
 						}

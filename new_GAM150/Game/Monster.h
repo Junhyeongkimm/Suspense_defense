@@ -1,5 +1,7 @@
 #pragma once
 #include "../Engine/Vec2.h"
+#include <vector>
+#include <unordered_map>
 
 class Mediator;
 
@@ -7,9 +9,11 @@ class Monster {
 private:
 	Mediator* mediator;
 	Math::vec2 position;
+	Math::ivec2 tile_position;
+	Math::vec2 direction;
 	int hp = 1;
 	double size = 40;
-	double speed = 200;
+	double speed = 100;
 	// The monster will not move when it is paralyzed (when it spawned)
 	const double paralyze_time = 1.0;
 	double paralyze_count = 0;
@@ -30,4 +34,11 @@ public:
 	void Reduce_hp();
 	// Destructor
 	~Monster();
+	// Pathfinding
+	std::vector<Math::ivec2> openList;
+	std::vector<Math::ivec2> closedList;
+	std::unordered_map<Math::ivec2, Math::ivec2> cameFrom;
+	//double GetDistance(const Math::vec2& target);
+	Math::ivec2 MoveToTarget(const Math::ivec2& target, double dt);
+	std::vector<Math::ivec2> GetNeighboringTiles(const Math::ivec2& position);
 };
