@@ -15,7 +15,7 @@ void Monster::Update(double dt) {
 		return;
 	// During the daytime, it will move to the player.
 	if (mediator->Is_Day()) {
-		Math::ivec2 direction = MoveToTarget(mediator->GetPlayerTilePosition(), dt);
+		Math::ivec2 direction = FindPath(mediator->GetPlayerTilePosition());
 		position += direction * speed * dt;
 	}
 	// During the night time, it will move to the base
@@ -79,7 +79,7 @@ Monster::~Monster() {
 
 }
 // Pathfinding
-Math::ivec2 Monster::MoveToTarget(const Math::ivec2& target, double dt) {
+Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
 	// A* algorithm
 	// Clear vectors
 	openList.clear();

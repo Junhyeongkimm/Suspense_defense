@@ -39,6 +39,6 @@ public:
 	std::vector<Math::ivec2> closedList;
 	std::unordered_map<Math::ivec2, Math::ivec2> cameFrom;
 	//double GetDistance(const Math::vec2& target);
-	Math::ivec2 MoveToTarget(const Math::ivec2& target, double dt);
+	Math::ivec2 FindPath(const Math::ivec2& target);
 	std::vector<Math::ivec2> GetNeighboringTiles(const Math::ivec2& position);
 };
