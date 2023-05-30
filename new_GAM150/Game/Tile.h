@@ -139,7 +139,7 @@ public:
 		basic,
 		resourceattacked,
 		broken
-	}
+	};
 };
 // Tower tile
 class Tower : public Tile {
@@ -147,5 +147,11 @@ public:
 	Tower(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class Tower_animations
+	{
+		basic,
+		resourceattacked,
+		broken
+	};
 	
 };
