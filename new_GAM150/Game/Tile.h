@@ -134,6 +134,12 @@ public:
 	Warp(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class warp_resource_animations
+	{
+		basic,
+		resourceattacked,
+		broken
+	}
 };
 // Tower tile
 class Tower : public Tile {

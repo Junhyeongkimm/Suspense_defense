@@ -231,21 +231,26 @@ void Resource::Attacked() {
 // Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {
 	state = TILES::WARP;
-	hp = 1;
+	hp = 2;
+	sprite.Load("Assets/resource.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(warp_resource_animations::basic));
 }
 void Warp::Update() {
 
 }
 void Warp::Draw(bool is_day) {
 	push_settings();
-	if (is_day) {
+	/*if (is_day) {
 		set_fill_color(HexColor{ 0x0000ffff });
 	}
 	else {
 		set_fill_color(HexColor{ 0x0000ffff });
 	}
 
-	draw_rectangle(position.x, position.y, size);
+	draw_rectangle(position.x, position.y, size);*/
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	pop_settings();
 }
 // Tower
