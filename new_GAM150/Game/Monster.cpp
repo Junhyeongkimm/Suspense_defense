@@ -15,20 +15,32 @@ void Monster::Update(double dt) {
 		return;
 	// During the daytime, it will move to the player.
 	if (mediator->Is_Day()) {
-		Math::ivec2 direction = FindPath(mediator->GetPlayerTilePosition());
+		/*if (GetDistance(mediator->GetPlayerPosition()) < size) {
+			direction = mediator->GetPlayerPosition() - position;
+			direction /= direction.GetLength();
+			position += direction * speed * dt;
+		}
+		else {
+			Math::ivec2 path_direction = FindPath(mediator->GetPlayerTilePosition());
+			position += path_direction * speed * dt;
+		}*/
+		Math::ivec2 target_tile = FindPath(mediator->GetPlayerTilePosition());
+		Math::vec2 target = { ((double)target_tile.x + 1 / 2.0) * mediator->GetTileLength(), ((double)target_tile.y + 1 / 2.0) * mediator->GetTileLength() };
+		direction = target - position;
+		direction /= direction.GetLength();
 		position += direction * speed * dt;
 	}
 	// During the night time, it will move to the base
 	else {
 		Math::vec2 middle_point{ mediator->GetMapLength() / 2 + mediator->GetTileLength()/2, mediator->GetMapLength() / 2 + mediator->GetTileLength()/2 };
 
-		double x_direction = (middle_point.x - position.x) / GetDistance(middle_point);
-		double y_direction = (middle_point.y - position.y) / GetDistance(middle_point);
+		direction.x = (middle_point.x - position.x) / GetDistance(middle_point);
+		direction.y = (middle_point.y - position.y) / GetDistance(middle_point);
 
 		double half_size = size / 2.0;
 
-		Math::vec2 next_position_x = { position.x + speed * dt * x_direction, position.y };
-		Math::vec2 next_position_y = { position.x, position.y + speed * dt * y_direction };
+		Math::vec2 next_position_x = { position.x + speed * dt * direction.x, position.y };
+		Math::vec2 next_position_y = { position.x, position.y + speed * dt * direction.y };
 
 		bool can_move_x = (
 			mediator->GetTileState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
@@ -108,7 +120,7 @@ Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
 				continue;
 			}
 			// Skip if the tile is WALL
-			if (mediator->GetTileStateInt(neighbor) == TILES::WALL) {
+			if (mediator->GetTileStateInt(neighbor) == TILES::WALL || mediator->GetTileStateInt(neighbor) == TILES::COLONY_SIDE) {
 				continue;
 			}
 			cameFrom[neighbor] = current;
@@ -142,7 +154,7 @@ Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
 		}
 	}
 	// Set next position to the direction
-	nextPosition -= tile_position;
+	//nextPosition -= tile_position;
 	return nextPosition;
 }
 

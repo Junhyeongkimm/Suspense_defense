@@ -13,7 +13,7 @@ private:
 	Math::vec2 direction;
 	int hp = 1;
 	double size = 40;
-	double speed = 100;
+	double speed = 200;
 	// The monster will not move when it is paralyzed (when it spawned)
 	const double paralyze_time = 1.0;
 	double paralyze_count = 0;
