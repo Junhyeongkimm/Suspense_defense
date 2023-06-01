@@ -159,6 +159,8 @@ void Player::Reduce_hp() {
 	if (invincibility_count > invincibility_time) {
 		--hp;
 		invincibility_count = 0;
+		is_warping = false;
+		warp_count = 0;
 	}
 }
 // Get distacne from the player to the target
@@ -170,7 +172,7 @@ void Player::Attack() {
 	SetAttackPosition(GetAttackPosition() - position);
 	if (attack_mode == MELEE) {
 		is_attacking = true;
-		mediator->Check_Monster_Attacked();
+		//mediator->Check_Monster_Attacked();
 		mediator->Check_Map_Attacked();
 		attack_count = 0;
 	}

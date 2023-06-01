@@ -17,6 +17,7 @@ private:
 	// The monster will not move when it is paralyzed (when it spawned)
 	const double paralyze_time = 0.5;
 	double paralyze_count = 0;
+	bool created_at_day;
 public:
 	// Constructor
 	Monster(Math::vec2 position, Mediator* mediator);
@@ -38,7 +39,6 @@ public:
 	std::vector<Math::ivec2> openList;
 	std::vector<Math::ivec2> closedList;
 	std::unordered_map<Math::ivec2, Math::ivec2> cameFrom;
-	//double GetDistance(const Math::vec2& target);
 	Math::ivec2 FindPath(const Math::ivec2& target);
 	std::vector<Math::ivec2> GetNeighboringTiles(const Math::ivec2& position);
 };
