@@ -26,7 +26,7 @@ public:
     // Check attacked and true or false
     bool Attacked(Math::vec2 attack_point, int i);
     // Getter functions
-    const Math::vec2& GetPosition() const { return position; }
+    Math::vec2& GetPosition() { return position; }
     double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
     int Get_State();
     int GetHP() { return hp; }
