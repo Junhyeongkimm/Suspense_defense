@@ -16,7 +16,7 @@ Updated:    April 26, 2023
 CS230::Texture* CS230::TextureManager::Load(const std::filesystem::path& file_path) {
     auto find = textures.find(file_path);
     if (find != textures.end()) {
-        Engine::GetLogger().LogEvent("Loading texture: " + file_path.string());
+        //Engine::GetLogger().LogEvent("Loading texture: " + file_path.string());
         return find->second;
     }
     else {
