@@ -15,7 +15,7 @@ private:
 	double size = 40;
 	double speed = 200;
 	// The monster will not move when it is paralyzed (when it spawned)
-	const double paralyze_time = 1.0;
+	const double paralyze_time = 0.5;
 	double paralyze_count = 0;
 public:
 	// Constructor
