@@ -24,12 +24,16 @@ private:
 	const double duration = 50;
 	bool is_day = true;
 	int date = 0;
+	int offset = 0;
 	// Remainging colony
 	int remaining_colony = 0;
 	// Map!
 	Tile* MAP[map_size][map_size];
 	// Mediator
 	Mediator* mediator;
+	// Middle point
+	Math::vec2 middle_point{ map_length / 2 + tile_length / 2, map_length / 2 + tile_length / 2 };
+	Math::vec2 arrow_direction{ 0, 0 };
 public:
 	// Constructor
 	Map(Mediator* mediator);
@@ -52,25 +56,20 @@ public:
 	// Make "number" numbers of warp
 	void Make_Warp(int number);
 	// Show the map based on the player's position.
-	void Show_Map(Math::ivec2 player_position);
-	// Return the map size
+	void Show_Map();
+	// Draw arrow to the base
+	void Show_Arrow();
+	// Getter functions
 	int Get_Map_Size() { return map_size; }
-	// Return the map length
 	double Get_Map_Length() { return map_length; }
-	// Return the tile length
 	double Get_Tile_Length() { return tile_length; }
-	// Return the tile state based on the "position"
 	int GetTileState(Math::vec2 position) { return MAP[(int)(position.x/tile_length)][(int)(position.y/tile_length)]->Get_State(); }
-	// Check attacked based on x, y, attack_point
+	int GetTileStateInt(Math::ivec2 position) { return MAP[position.x][position.y]->Get_State(); }//{ return TILES::VOID; }//
 	void CheckAttacked(int x, int y, Math::vec2 attack_point);
-	// Get time
 	double GetTime() { return time; }
-	// Get duration
 	double GetDuration() { return duration; }
-	// Get is_day
 	bool IsDay() { return is_day; }
-	// Get the remaining colony
 	int GetColony() { return remaining_colony; }
-	// Get the date
 	int GetDate() { return date; }
+	int GetOffset() { return offset; }
 };

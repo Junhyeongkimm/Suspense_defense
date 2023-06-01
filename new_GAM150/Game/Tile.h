@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Engine/Sprite.h"
 #include "../Engine/Vec2.h"
 #include "doodle/drawing.hpp"
 using namespace doodle;
@@ -26,16 +25,19 @@ public:
 	 // Check attacked and true or false
 	 bool Attacked(Math::vec2 attack_point, int i);
 	 // Getter functions
-	const Math::vec2& GetPosition() const { return position; }
+	Math::vec2 GetPosition() { return position; }
 	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
 	int Get_State();
 	int GetHP() { return hp; }
 	CS230::Sprite sprite;
 	// Reduce hp of the tile
 	void ReduceHP() { --hp; }
+
 	double scale_x;
 	double scale_y;
 	
+
+
 };
 // Wall tile
 class Wall : public Tile {
@@ -44,6 +46,7 @@ public:
 	void Update();
 	void Draw(bool is_day);
 	virtual void Attacked();
+
 	enum class rock_animations
 	{
 		basic,
@@ -51,6 +54,7 @@ public:
 	};
 private:
 	bool rockbroken = false;
+
 };
 // Void tile
 class Void : public Tile {
@@ -70,14 +74,6 @@ public:
 	void Update();
 	void Draw(bool is_day);
 	virtual void Attacked();
-	enum class colonycore_animations
-	{
-		basic,
-		attacked1,
-		attacked2,
-		attacked3,
-		attacked4
-	};
 };
 // Colony_Side tile
 class Colony_Side : public Tile {
