@@ -6,6 +6,11 @@
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
+
+	if (mediator->Is_Day())
+		created_at_day = true;
+	else
+		created_at_day = false;
 }
 // Update
 void Monster::Update(double dt) {
@@ -14,16 +19,7 @@ void Monster::Update(double dt) {
 	if (paralyze_count < paralyze_time)
 		return;
 	// During the daytime, it will move to the player.
-	if (mediator->Is_Day()) {
-		/*if (GetDistance(mediator->GetPlayerPosition()) < size) {
-			direction = mediator->GetPlayerPosition() - position;
-			direction /= direction.GetLength();
-			position += direction * speed * dt;
-		}
-		else {
-			Math::ivec2 path_direction = FindPath(mediator->GetPlayerTilePosition());
-			position += path_direction * speed * dt;
-		}*/
+	if (created_at_day) {
 		Math::ivec2 target_tile = FindPath(mediator->GetPlayerTilePosition());
 		Math::vec2 target = { ((double)target_tile.x + 1 / 2.0) * mediator->GetTileLength(), ((double)target_tile.y + 1 / 2.0) * mediator->GetTileLength() };
 		direction = target - position;
