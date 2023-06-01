@@ -7,7 +7,8 @@ std::vector<Tile*> tiles;
 
 // Constructor
 Tile::Tile(Math::vec2 position) : position(position) {
-
+	scale_x = 0;
+	scale_y = 0;
 }
 // Update
 void Tile::Update() {

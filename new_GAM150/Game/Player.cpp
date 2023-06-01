@@ -98,22 +98,34 @@ void Player::Update(double dt) {
 		// Player moving with W, A, S, D
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
-			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && (mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
+				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
+				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
+				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP)) {
 				direction.y += 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
-			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && (mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && 
+				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
+				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::RESOURCE) &&
+				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP)) {
 				direction.y -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) && (mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) && 
+				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
+				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::RESOURCE) &&
+				(mediator->GetTileState({ position.x - size / 2, position.y}) != TILES::WARP)) {
 				direction.x -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
-			if ((mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) && (mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE)) {
+			if ((mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) && 
+				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
+				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
+				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WARP)) {
 				direction.x += 1;
 			}
 		}

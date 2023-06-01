@@ -116,7 +116,10 @@ Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
 				continue;
 			}
 			// Skip if the tile is WALL
-			if (mediator->GetTileStateInt(neighbor) == TILES::WALL || mediator->GetTileStateInt(neighbor) == TILES::COLONY_SIDE) {
+			if (mediator->GetTileStateInt(neighbor) == TILES::WALL || 
+				mediator->GetTileStateInt(neighbor) == TILES::COLONY_SIDE ||
+				mediator->GetTileStateInt(neighbor) == TILES::RESOURCE || 
+				mediator->GetTileStateInt(neighbor) == TILES::WARP) {
 				continue;
 			}
 			cameFrom[neighbor] = current;
