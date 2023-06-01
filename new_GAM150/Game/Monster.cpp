@@ -2,6 +2,7 @@
 #include "Mediator.h"
 #include <vector>
 #include <algorithm>
+
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
@@ -62,6 +63,20 @@ void Monster::Update(double dt) {
 	// Tile position update
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
+
+	if (mediator->GetTileStateInt({ tile_position.x + 1, tile_position.y }) == TILES::BASE_WALL) {
+		mediator->BaseAttacked({ tile_position.x + 1, tile_position.y });
+	}
+	if (mediator->GetTileStateInt({ tile_position.x - 1, tile_position.y }) == TILES::BASE_WALL) {
+		mediator->BaseAttacked({ tile_position.x - 1, tile_position.y });
+	}
+	if (mediator->GetTileStateInt({ tile_position.x, tile_position.y + 1 }) == TILES::BASE_WALL) {
+		mediator->BaseAttacked({ tile_position.x, tile_position.y + 1 });
+	}
+	if (mediator->GetTileStateInt({ tile_position.x, tile_position.y - 1 }) == TILES::BASE_WALL) {
+		mediator->BaseAttacked({ tile_position.x, tile_position.y - 1 });
+	}
+
 }
 // Draw
 void Monster::Draw() {

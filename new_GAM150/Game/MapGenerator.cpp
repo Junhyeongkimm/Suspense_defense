@@ -42,6 +42,13 @@ void Map::Update(double dt) {
 		}
 		time = 0;
 	}
+
+	for (int i = 0; i < map_size; i++) {
+		for (int j = 0; j < map_size; j++) {
+			if (MAP[i][j]->Get_State() == TILES::BASE_WALL)
+				MAP[i][j]->Update(dt);
+		}
+	}
 }
 // Map making system
 void Map::MapMaking() {
@@ -247,6 +254,14 @@ void Map::Show_Arrow() {
 	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
 	
 	pop_settings();
+}
+// Attacked
+void Map::Attacked(Math::ivec2 position) {
+	MAP[position.x][position.y]->ReduceHP();
+	if (MAP[position.x][position.y]->GetHP() <= 0) {
+		delete MAP[position.x][position.y];
+		MAP[position.x][position.y] = new Void({ position.x * tile_length, position.y * tile_length });
+	}
 }
 // Check if the specified tile has attacked
 void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {

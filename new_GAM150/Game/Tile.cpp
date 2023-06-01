@@ -11,7 +11,7 @@ Tile::Tile(Math::vec2 position) : position(position) {
 	scale_y = 0;
 }
 // Update
-void Tile::Update() {
+void Tile::Update(double dt) {
 
 }
 // Draw based on it is day or night
@@ -40,8 +40,6 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 // Tiles below are very similar. The major difference is hp and state.
 
 
-#include <iostream>
-
 // Wall
 Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
@@ -53,19 +51,16 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
-void Wall::Update() {
+void Wall::Update(double dt) {
 
 }
 void Wall::Draw(bool is_day) {
-	doodle::push_settings();
 	if (hp == 1 && rockbroken == false) {
 		rockbroken = true;
-		std::cout << "broken \n";
 		sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
 	}
 
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	doodle::pop_settings();
 }
 void Wall::Attacked() {
 	--hp;
@@ -78,26 +73,23 @@ Void::Void(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(void_animations::basic));
 }
-void Void::Update() {
+void Void::Update(double dt) {
 
 }
 void Void::Draw(bool is_day) {
-	doodle::push_settings();
 	if (is_day) {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	else {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
-
-	doodle::pop_settings();
 }
 // Colony_Core
 Colony_Core::Colony_Core(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_CORE;
 	hp = 3;
 }
-void Colony_Core::Update() {
+void Colony_Core::Update(double dt) {
 
 }
 void Colony_Core::Draw(bool is_day) {
@@ -120,7 +112,7 @@ Colony_Side::Colony_Side(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_SIDE;
 	hp = 2;
 }
-void Colony_Side::Update() {
+void Colony_Side::Update(double dt) {
 
 }
 void Colony_Side::Draw(bool is_day) {
@@ -145,8 +137,8 @@ Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(basewall_animations::basic));
 }
-void Base_Wall::Update() {
-
+void Base_Wall::Update(double dt) {
+	invincibility_count += dt;
 }
 void Base_Wall::Draw(bool is_day) {
 	if (is_day) {
@@ -156,8 +148,19 @@ void Base_Wall::Draw(bool is_day) {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 }
+bool Base_Wall::AbleToBeAttacked() { 
+	if (invincibility_count > invincibility_time) { 
+		invincibility_count = 0; 
+		return true; 
+	} 
+	else { 
+		return false; 
+	} 
+}
 void Base_Wall::Attacked() {
-	--hp;
+	if (AbleToBeAttacked()) {
+		--hp;
+	}
 }
 // Base_Inside
 Base_Inside::Base_Inside(Math::vec2 position) : Tile(position) {
@@ -167,7 +170,7 @@ Base_Inside::Base_Inside(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(baseinside_animations::basic));
 }
-void Base_Inside::Update() {
+void Base_Inside::Update(double dt) {
 
 }
 void Base_Inside::Draw(bool is_day) {
@@ -187,7 +190,7 @@ Resource::Resource(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(resource_animations::basic));
 }
-void Resource::Update() {
+void Resource::Update(double dt) {
 
 }
 void Resource::Draw(bool is_day) {
@@ -205,7 +208,7 @@ Warp::Warp(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(warp_resource_animations::basic));
 }
-void Warp::Update() {
+void Warp::Update(double dt) {
 
 }
 void Warp::Draw(bool is_day) {
@@ -220,7 +223,7 @@ Tower::Tower(Math::vec2 position) : Tile(position) {
 	sprite.PlayAnimation(static_cast<int>(Tower_animations::basic));
 
 }
-void Tower::Update() {
+void Tower::Update(double dt) {
 
 }
 void Tower::Draw(bool is_day) {

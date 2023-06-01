@@ -10,7 +10,6 @@ Updated:    April 28, 2023
 */
 
 #include <iostream>
-
 #include "Engine/Engine.h"
 #include "Game/Splash.h"
 #include "Game/Game.h"

@@ -59,6 +59,8 @@ public:
 	void Show_Map();
 	// Draw arrow to the base
 	void Show_Arrow();
+	// Attacked
+	void Attacked(Math::ivec2 position);
 	// Getter functions
 	int Get_Map_Size() { return map_size; }
 	double Get_Map_Length() { return map_length; }

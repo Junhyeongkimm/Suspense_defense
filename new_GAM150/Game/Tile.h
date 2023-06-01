@@ -19,7 +19,7 @@ public:
     // Constructor
     Tile(Math::vec2 position);
     // Update
-    virtual void Update();
+    virtual void Update(double dt);
     // Draw
     virtual void Draw(bool is_day) = 0;
     // Check attacked
@@ -33,7 +33,7 @@ public:
     int GetHP() { return hp; }
     CS230::Sprite sprite;
     // Reduce hp of the tile
-    void ReduceHP() { --hp; }
+    virtual void ReduceHP() { --hp; }
     double scale_x;
     double scale_y;
 
@@ -42,7 +42,7 @@ public:
 class Wall : public Tile {
 public:
     Wall(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     virtual void Attacked();
     enum class rock_animations {
@@ -56,7 +56,7 @@ private:
 class Void : public Tile {
 public:
     Void(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     enum class void_animations {
         basic
@@ -66,7 +66,7 @@ public:
 class Colony_Core : public Tile {
 public:
     Colony_Core(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     virtual void Attacked();
     enum class colonycore_animations {
@@ -81,7 +81,7 @@ public:
 class Colony_Side : public Tile {
 public:
     Colony_Side(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     virtual void Attacked();
 };
@@ -89,13 +89,14 @@ public:
 class Base_Wall : public Tile {
 public:
     Base_Wall(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     virtual void Attacked();
-    bool AbleToBeAttacked() { if (invincibility_count > invincibility_time) { invincibility_count = 0; return true; } else { return false; } }
+    bool AbleToBeAttacked();
     enum class basewall_animations {
         basic
     };
+    virtual void ReduceHP() { if (AbleToBeAttacked()) { --hp; } }
 private:
     double invincibility_count = 0;
     const double invincibility_time = 1.0;
@@ -104,7 +105,7 @@ private:
 class Base_Inside : public Tile {
 public:
     Base_Inside(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     enum class baseinside_animations {
         basic
@@ -114,7 +115,7 @@ public:
 class Resource : public Tile {
 public:
     Resource(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     virtual void Attacked();
     enum class resource_animations {
@@ -127,7 +128,7 @@ public:
 class Warp :public Tile {
 public:
     Warp(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     enum class warp_resource_animations {
         basic,
@@ -139,7 +140,7 @@ public:
 class Tower : public Tile {
 public:
     Tower(Math::vec2 position);
-    void Update();
+    void Update(double dt);
     void Draw(bool is_day);
     enum class Tower_animations {
         basic,

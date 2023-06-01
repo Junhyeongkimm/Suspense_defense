@@ -37,6 +37,7 @@ public:
 	void IncreaseMapResource() { player->IncreaseMapResource(); }
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
 	void IncreaseWarpResource() { player->IncreaseWarpResource(); }
+	void BaseAttacked(Math::ivec2 position);
 	// Warp to the base
 	void Warp() { player->GoToBase(); }
 	// Check if it is day
