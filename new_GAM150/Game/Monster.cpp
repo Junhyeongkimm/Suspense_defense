@@ -24,7 +24,7 @@ void Monster::Update(double dt) {
 	if (paralyze_count < paralyze_time)
 		return;
 	// During the daytime, it will move to the player.
-	if (created_at_day) {
+	if (created_at_day && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != BASE_INSIDE)) {
 		Math::ivec2 target_tile = FindPath(mediator->GetPlayerTilePosition());
 		Math::vec2 target = { ((double)target_tile.x + 1 / 2.0) * mediator->GetTileLength(), ((double)target_tile.y + 1 / 2.0) * mediator->GetTileLength() };
 		direction = target - position;
@@ -93,6 +93,15 @@ Monster::~Monster() {
 }
 // Pathfinding
 Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
+	if (mediator->GetTileStateInt(target) == TILES::WALL ||
+		mediator->GetTileStateInt(target) == TILES::COLONY_SIDE ||
+		mediator->GetTileStateInt(target) == TILES::RESOURCE ||
+		mediator->GetTileStateInt(target) == TILES::WARP)
+		return tile_position;
+	if (mediator->GetTileStateInt(target) == TILES::BASE_INSIDE ||
+		mediator->GetTileStateInt(target) == TILES::BASE_WALL)
+		return tile_position;
+
 	// A* algorithm
 	// Clear vectors
 	openList.clear();
@@ -124,7 +133,9 @@ Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
 			if (mediator->GetTileStateInt(neighbor) == TILES::WALL || 
 				mediator->GetTileStateInt(neighbor) == TILES::COLONY_SIDE ||
 				mediator->GetTileStateInt(neighbor) == TILES::RESOURCE || 
-				mediator->GetTileStateInt(neighbor) == TILES::WARP) {
+				mediator->GetTileStateInt(neighbor) == TILES::WARP ||
+				mediator->GetTileStateInt(neighbor) == TILES::BASE_INSIDE || 
+				mediator->GetTileStateInt(neighbor) == TILES::BASE_WALL) {
 				continue;
 			}
 			cameFrom[neighbor] = current;
