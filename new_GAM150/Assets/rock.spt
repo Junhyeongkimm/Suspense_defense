@@ -1,0 +1,6 @@
+Assets/rock.png
+FrameSize 300 264
+HotSpot 0 0
+NumFrames 2
+Anim Assets/None.anm
+Anim Assets/Rockdestroy.anm

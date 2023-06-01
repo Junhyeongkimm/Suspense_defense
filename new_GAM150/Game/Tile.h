@@ -12,6 +12,7 @@ protected:
 	int state = 0;
 	int hp = 0;
 	HexColor color = 0;
+	
 public:
 	// Constructor
 	Tile(Math::vec2 position);
@@ -28,8 +29,15 @@ public:
 	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
 	int Get_State();
 	int GetHP() { return hp; }
+	CS230::Sprite sprite;
 	// Reduce hp of the tile
 	void ReduceHP() { --hp; }
+
+	double scale_x;
+	double scale_y;
+	
+
+
 };
 // Wall tile
 class Wall : public Tile {
@@ -38,6 +46,15 @@ public:
 	void Update();
 	void Draw(bool is_day);
 	virtual void Attacked();
+
+	enum class rock_animations
+	{
+		basic,
+		broken
+	};
+private:
+	bool rockbroken = false;
+
 };
 // Void tile
 class Void : public Tile {
@@ -45,6 +62,10 @@ public:
 	Void(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class void_animations
+	{
+		basic
+	};
 };
 // Colony_Core tile
 class Colony_Core : public Tile {
@@ -70,6 +91,10 @@ public:
 	void Draw(bool is_day);
 	virtual void Attacked();
 	bool AbleToBeAttacked() { if (invincibility_count > invincibility_time) { invincibility_count = 0; return true; } else { return false; } }
+	enum class basewall_animations
+	{
+		basic
+	};
 private:
 	double invincibility_count = 0;
 	const double invincibility_time = 1.0;
@@ -80,6 +105,10 @@ public:
 	Base_Inside(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class baseinside_animations
+	{
+		basic
+	};
 };
 // Resource tile
 class Resource : public Tile {
@@ -87,6 +116,13 @@ public:
 	Resource(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	virtual void Attacked();
+	enum class resource_animations
+	{
+		basic,
+		resourceattacked,
+		broken
+	};
 };
 // Warp tile
 class Warp :public Tile {
@@ -94,6 +130,12 @@ public:
 	Warp(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class warp_resource_animations
+	{
+		basic,
+		resourceattacked,
+		broken
+	};
 };
 // Tower tile
 class Tower : public Tile {
@@ -101,4 +143,11 @@ public:
 	Tower(Math::vec2 position);
 	void Update();
 	void Draw(bool is_day);
+	enum class Tower_animations
+	{
+		basic,
+		resourceattacked,
+		broken
+	};
+	
 };

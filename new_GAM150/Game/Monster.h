@@ -34,6 +34,20 @@ public:
 	void Reduce_hp();
 	// Destructor
 	~Monster();
+
+
+	enum class monster_action{
+		left,
+		leftattack,
+		right,
+		rightattack,
+		up,
+		upattack,
+		down,
+		downattack
+
+	};
+
 	// Pathfinding
 	std::vector<Math::ivec2> openList;
 	std::vector<Math::ivec2> closedList;
@@ -41,4 +55,5 @@ public:
 	//double GetDistance(const Math::vec2& target);
 	Math::ivec2 FindPath(const Math::ivec2& target);
 	std::vector<Math::ivec2> GetNeighboringTiles(const Math::ivec2& position);
+
 };
