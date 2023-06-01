@@ -7,10 +7,15 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 
-	if (mediator->Is_Day())
+	if (mediator->Is_Day()) {
 		created_at_day = true;
-	else
+		speed = 300;
+	}
+	else {
 		created_at_day = false;
+		speed = 100;
+	}
+		
 }
 // Update
 void Monster::Update(double dt) {

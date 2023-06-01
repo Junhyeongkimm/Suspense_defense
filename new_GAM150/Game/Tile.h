@@ -3,6 +3,7 @@
 #include "../Engine/Sprite.h"
 #include "../Engine/Vec2.h"
 #include "doodle/drawing.hpp"
+
 using namespace doodle;
 // enum values below is the tiles
 // enum TILES { WALL, VOID, COLONY_CORE, COLONY_SIDE, BASE_WALL, BASE_INSIDE, RESOURCE, WARP, TOWER };
@@ -44,8 +45,7 @@ public:
     void Update();
     void Draw(bool is_day);
     virtual void Attacked();
-    enum class rock_animations
-    {
+    enum class rock_animations {
         basic,
         broken
     };
@@ -58,8 +58,7 @@ public:
     Void(Math::vec2 position);
     void Update();
     void Draw(bool is_day);
-    enum class void_animations
-    {
+    enum class void_animations {
         basic
     };
 };
@@ -70,8 +69,7 @@ public:
     void Update();
     void Draw(bool is_day);
     virtual void Attacked();
-    enum class colonycore_animations
-    {
+    enum class colonycore_animations {
         basic,
         attacked1,
         attacked2,
@@ -95,8 +93,7 @@ public:
     void Draw(bool is_day);
     virtual void Attacked();
     bool AbleToBeAttacked() { if (invincibility_count > invincibility_time) { invincibility_count = 0; return true; } else { return false; } }
-    enum class basewall_animations
-    {
+    enum class basewall_animations {
         basic
     };
 private:
@@ -109,8 +106,7 @@ public:
     Base_Inside(Math::vec2 position);
     void Update();
     void Draw(bool is_day);
-    enum class baseinside_animations
-    {
+    enum class baseinside_animations {
         basic
     };
 };
@@ -121,8 +117,7 @@ public:
     void Update();
     void Draw(bool is_day);
     virtual void Attacked();
-    enum class resource_animations
-    {
+    enum class resource_animations {
         basic,
         resourceattacked,
         broken
@@ -134,8 +129,7 @@ public:
     Warp(Math::vec2 position);
     void Update();
     void Draw(bool is_day);
-    enum class warp_resource_animations
-    {
+    enum class warp_resource_animations {
         basic,
         resourceattacked,
         broken
@@ -147,8 +141,7 @@ public:
     Tower(Math::vec2 position);
     void Update();
     void Draw(bool is_day);
-    enum class Tower_animations
-    {
+    enum class Tower_animations {
         basic,
         resourceattacked,
         broken
