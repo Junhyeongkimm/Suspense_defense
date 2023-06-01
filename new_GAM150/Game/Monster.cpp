@@ -2,6 +2,7 @@
 #include "Mediator.h"
 #include <vector>
 #include <algorithm>
+#include "State.h"
 
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
@@ -75,6 +76,10 @@ void Monster::Update(double dt) {
 	}
 	if (mediator->GetTileStateInt({ tile_position.x, tile_position.y - 1 }) == TILES::BASE_WALL) {
 		mediator->BaseAttacked({ tile_position.x, tile_position.y - 1 });
+	}
+
+	if (mediator->GetTileStateInt(tile_position) == TILES::TOWER) {
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 
 }
