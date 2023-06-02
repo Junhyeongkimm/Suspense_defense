@@ -59,7 +59,7 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
-	Make_Colony(110);
+	Make_Colony(10);
 	Make_Resource(50);
 	Make_Warp(20);
 }

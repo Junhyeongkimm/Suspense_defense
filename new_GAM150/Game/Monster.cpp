@@ -26,7 +26,7 @@ void Monster::Update(double dt) {
 	if (paralyze_count < paralyze_time)
 		return;
 	// During the daytime, it will move to the player.
-	if (created_at_day && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != BASE_INSIDE)) {
+	if (created_at_day && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != BASE_INSIDE) && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != TOWER)) {
 		Math::ivec2 target_tile = FindPath(mediator->GetPlayerTilePosition());
 		Math::vec2 target = { ((double)target_tile.x + 1 / 2.0) * mediator->GetTileLength(), ((double)target_tile.y + 1 / 2.0) * mediator->GetTileLength() };
 		direction = target - position;
@@ -119,7 +119,8 @@ Math::ivec2 Monster::FindPath(const Math::ivec2& target) {
 		mediator->GetTileStateInt(target) == TILES::WARP)
 		return tile_position;
 	if (mediator->GetTileStateInt(target) == TILES::BASE_INSIDE ||
-		mediator->GetTileStateInt(target) == TILES::BASE_WALL)
+		mediator->GetTileStateInt(target) == TILES::BASE_WALL ||
+		mediator->GetTileStateInt(target) == TILES::TOWER)
 		return tile_position;
 
 	// A* algorithm
