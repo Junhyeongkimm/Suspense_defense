@@ -124,9 +124,11 @@ public:
 	enum class resource_animations
 	{
 		basic,
+		attacked,
 		broken
 	};
 private:
+	bool resourceattacked =false;
 	bool resourcebroken = false;
 };
 // Warp tile

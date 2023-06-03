@@ -75,6 +75,7 @@ void Wall::Draw(bool is_day) {
 	//		/*set_fill_color(HexColor{ 0x444444ff }*/);
 	//}
 	//draw_rectangle(position.x, position.y, size, size);
+	
 	if (hp == 1 && rockbroken == false) {
 		rockbroken = true;
 		std::cout << "broken \n";
@@ -205,7 +206,7 @@ void Base_Inside::Draw(bool is_day) {
 // Resource
 Resource::Resource(Math::vec2 position) : Tile(position) {
 	state = TILES::RESOURCE;
-	hp = 2;
+	hp = 3;
 	sprite.Load("Assets/resource.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
@@ -216,6 +217,11 @@ void Resource::Update() {
 }
 void Resource::Draw(bool is_day) {
 	doodle::push_settings();
+	if (hp == 2 && resourceattacked == false) {
+		resourceattacked = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(resource_animations::attacked));
+	}
 	if (hp == 1 && resourcebroken == false) {
 		resourcebroken = true;
 		std::cout << "broken \n";
