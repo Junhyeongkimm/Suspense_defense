@@ -86,7 +86,9 @@ void Player::Update(double dt) {
 		invincibility_count = invincibility_time - dodging_time;
 		// Check collision while dodging
 		if ((mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
-			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE)) {
+			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE) &&
+			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::RESOURCE) &&
+			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP)) {
 			position += dodge_direction * 2 * speed * dt;
 		}
 		if (dodging_count >= dodging_time) {
