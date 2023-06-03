@@ -22,7 +22,7 @@ void Tile::Draw(bool is_day) {
 int Tile::Get_State() {
 	return state;
 }
-// Check attcked6
+// Check attcked
 void Tile::Attacked(Math::vec2 attack_point) {
 	if (attack_point.x > position.x && attack_point.x < position.x + size && attack_point.y > position.y && attack_point.y < position.y + size) {
 		--hp;
@@ -61,9 +61,6 @@ void Wall::Draw(bool is_day) {
 	}
 
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-}
-void Wall::Attacked() {
-	--hp;
 }
 // Void
 Void::Void(Math::vec2 position) : Tile(position) {
@@ -104,9 +101,6 @@ void Colony_Core::Draw(bool is_day) {
 	draw_rectangle(position.x, position.y, size, size);
 	doodle::pop_settings();
 }
-void Colony_Core::Attacked() {
-	--hp;
-}
 // Colony_Side
 Colony_Side::Colony_Side(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_SIDE;
@@ -124,9 +118,6 @@ void Colony_Side::Draw(bool is_day) {
 	}
 
 	draw_rectangle(position.x, position.y, size, size);
-}
-void Colony_Side::Attacked() {
-
 }
 // Base_Wall
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
@@ -195,9 +186,6 @@ void Resource::Update(double dt) {
 }
 void Resource::Draw(bool is_day) {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-}
-void Resource::Attacked() {
-	--hp;
 }
 // Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {

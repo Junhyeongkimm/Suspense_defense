@@ -44,7 +44,6 @@ public:
     Wall(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
-    virtual void Attacked();
     enum class rock_animations {
         basic,
         broken
@@ -68,7 +67,6 @@ public:
     Colony_Core(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
-    virtual void Attacked();
     enum class colonycore_animations {
         basic,
         attacked1,
@@ -83,7 +81,6 @@ public:
     Colony_Side(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
-    virtual void Attacked();
 };
 // Base_Wall tile
 class Base_Wall : public Tile {
@@ -91,7 +88,7 @@ public:
     Base_Wall(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
-    virtual void Attacked();
+    void Attacked();
     bool AbleToBeAttacked();
     enum class basewall_animations {
         basic
@@ -117,7 +114,6 @@ public:
     Resource(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
-    virtual void Attacked();
     enum class resource_animations {
         basic,
         resourceattacked,

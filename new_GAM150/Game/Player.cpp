@@ -88,7 +88,8 @@ void Player::Update(double dt) {
 		if ((mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
 			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE) &&
 			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::RESOURCE) &&
-			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP)) {
+			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
+			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
 			position += dodge_direction * 2 * speed * dt;
 		}
 		if (dodging_count >= dodging_time) {
@@ -103,7 +104,8 @@ void Player::Update(double dt) {
 			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
-				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP)) {
+				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
+				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
 			}
 		}
@@ -111,15 +113,17 @@ void Player::Update(double dt) {
 			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::RESOURCE) &&
-				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP)) {
+				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
+				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
-			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) && 
+			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::RESOURCE) &&
-				(mediator->GetTileState({ position.x - size / 2, position.y}) != TILES::WARP)) {
+				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WARP) &&
+				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::TREASURE)) {
 				direction.x -= 1;
 			}
 		}
@@ -127,7 +131,8 @@ void Player::Update(double dt) {
 			if ((mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
-				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WARP)) {
+				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WARP) &&
+				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::TREASURE)) {
 				direction.x += 1;
 			}
 		}
@@ -186,7 +191,7 @@ void Player::Attack() {
 	SetAttackPosition(GetAttackPosition() - position);
 	if (attack_mode == MELEE) {
 		is_attacking = true;
-		//mediator->Check_Monster_Attacked();
+		mediator->Check_Monster_Attacked();
 		mediator->Check_Map_Attacked();
 		attack_count = 0;
 	}

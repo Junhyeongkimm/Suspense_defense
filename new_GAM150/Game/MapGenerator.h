@@ -81,6 +81,7 @@ public:
 	int GetDate() { return date; }
 	int GetOffset() { return offset; }
 	// Unlock things
+	int unlock_count = 0;
 	void UnlockBaseArraw() { base_compass_unlocked = true; }
 	void UnlockColonyArraw() { colony_copass_unlocked = true; }
 };

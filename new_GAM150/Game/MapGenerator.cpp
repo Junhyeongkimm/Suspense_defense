@@ -147,7 +147,8 @@ void Map::Make_Colony(int number) {
 		for (int i = rand_x - 4; i <= rand_x + 4; i++) {
 			for (int j = rand_y - 4; j <= rand_y + 4; j++) {
 				if (MAP[i][j]->Get_State() == TILES::COLONY_CORE || 
-					MAP[i][j]->Get_State() == TILES::BASE_INSIDE || 
+					MAP[i][j]->Get_State() == TILES::BASE_INSIDE ||
+					MAP[i][j]->Get_State() == TILES::TREASURE ||
 					((mediator->GetPlayerTilePosition().x == i) && (mediator->GetPlayerTilePosition().y == j)))
 					not_make = true;
 			}
@@ -210,7 +211,17 @@ void Map::Make_Warp(int number) {
 }
 // Make unlock things camp
 void Map::Make_Treasure() {
+	Math::ivec2 middle{ map_size / 2, map_size / 2 };
 
+	delete MAP[middle.x + 30][middle.y];
+	delete MAP[middle.x - 30][middle.y];
+	delete MAP[middle.x][middle.y + 30];
+	delete MAP[middle.x][middle.y - 30];
+
+	MAP[middle.x + 30][middle.y] = new Treasure(Math::vec2{ (middle.x + 30) * tile_length, middle.y * tile_length } );
+	MAP[middle.x - 30][middle.y] = new Treasure(Math::vec2{ (middle.x - 30) * tile_length, middle.y * tile_length } );
+	MAP[middle.x][middle.y + 30] = new Treasure(Math::vec2{ middle.x * tile_length, (middle.y + 30) * tile_length } );
+	MAP[middle.x][middle.y - 30] = new Treasure(Math::vec2{ middle.x * tile_length, (middle.y - 30) * tile_length } );
 }
 // Show map
 void Map::Show_Map() {
@@ -334,16 +345,16 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 					}
 				}
 			}
-
 			break;
+
 		case TILES::WALL:
 			MAP[x][y]->Attacked(attack_point);
 			if (MAP[x][y]->GetHP() <= 0) {
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 			}
-
 			break;
+
 		case TILES::RESOURCE:
 			MAP[x][y]->Attacked(attack_point);
 			if (MAP[x][y]->GetHP() <= 0) {
@@ -351,8 +362,8 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 				mediator->IncreaseMapResource();
 			}
-
 			break;
+
 		case TILES::WARP:
 			MAP[x][y]->Attacked(attack_point);
 			if (MAP[x][y]->GetHP() <= 0) {
@@ -360,8 +371,32 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 				mediator->IncreaseWarpResource();
 			}
-
 			break;
+
+		case TILES::TREASURE:
+			MAP[x][y]->Attacked(attack_point);
+			if (MAP[x][y]->GetHP() <= 0) {
+				delete MAP[x][y];
+				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+
+				switch (unlock_count) {
+				case 0:
+					mediator->UnlockBaseArraw();
+					break;
+				case 1:
+					mediator->UnlockRangedAttack();
+					break;
+				case 2:
+					mediator->UnlockDodge();
+					break;
+				case 3:
+					mediator->UnlockColonyArraw();
+					break;
+				}
+				++unlock_count;
+			}
+			break;
+
 		default:
 
 			break;

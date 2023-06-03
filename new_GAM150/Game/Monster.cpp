@@ -11,12 +11,14 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 
 	if (mediator->Is_Day()) {
+
 		created_at_day = true;
 		speed = 350;
 	}
 	else {
+
 		created_at_day = false;
-		speed = 150;
+		speed = 175;
 	}
 		
 }

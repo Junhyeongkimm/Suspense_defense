@@ -50,7 +50,8 @@ Math::ivec2 FindPath(const Math::ivec2& tile_position, const Math::ivec2& target
 				mediator->GetTileStateInt(neighbor) == TILES::RESOURCE ||
 				mediator->GetTileStateInt(neighbor) == TILES::WARP ||
 				mediator->GetTileStateInt(neighbor) == TILES::BASE_INSIDE ||
-				mediator->GetTileStateInt(neighbor) == TILES::BASE_WALL) {
+				mediator->GetTileStateInt(neighbor) == TILES::BASE_WALL ||
+				mediator->GetTileStateInt(neighbor) == TILES::TREASURE) {
 				continue;
 			}
 			cameFrom[neighbor] = current;
