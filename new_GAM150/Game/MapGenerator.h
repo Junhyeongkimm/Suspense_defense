@@ -14,7 +14,7 @@ private:
 	static inline const double map_length = 10000;
 	static inline const int map_size = 200;
 	// Optimize for optimize_number times
-	static inline const int optimize_number = 6;
+	static inline const int optimize_number = 5;
 	// When initializing, make WALL tile by initialize_chance.
 	static inline const double initialize_chance = 30.0;
 	// Tile length
