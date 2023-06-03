@@ -124,7 +124,6 @@ public:
 	enum class resource_animations
 	{
 		basic,
-		resourceattacked,
 		broken
 	};
 private:
