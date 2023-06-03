@@ -205,7 +205,7 @@ void Base_Inside::Draw(bool is_day) {
 // Resource
 Resource::Resource(Math::vec2 position) : Tile(position) {
 	state = TILES::RESOURCE;
-	hp = 3;
+	hp = 2;
 	sprite.Load("Assets/resource.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
@@ -216,12 +216,11 @@ void Resource::Update() {
 }
 void Resource::Draw(bool is_day) {
 	doodle::push_settings();
-	/*if (is_day) {
-		set_fill_color(HexColor{ 0xffd966ff });
+	if (hp == 1 && resourcebroken == false) {
+		resourcebroken = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(resource_animations::broken));
 	}
-	else {
-		set_fill_color(HexColor{ 0xbb9522ff });
-	}*/
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	doodle::pop_settings();
 }
