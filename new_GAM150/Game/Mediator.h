@@ -51,4 +51,9 @@ public:
 	int GetDamage() { return player->GetDamage(); }
 	int GetTileState(Math::vec2 position) {return map->GetTileState(position); }
 	int GetTileStateInt(Math::ivec2 position) { return map->GetTileStateInt(position); }
+	// Unlock things
+	void UnlockDodge() { player->UnlockDodge(); }
+	void UnlockRangedAttack() { player->UnlockRangedAttack(); }
+	void UnlockBaseArraw() { map->UnlockBaseArraw(); }
+	void UnlockColonyArraw() { map->UnlockColonyArraw(); }
 };

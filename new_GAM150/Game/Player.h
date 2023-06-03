@@ -28,6 +28,7 @@ private:
 	bool is_attacking = false;
 	enum ATTACK_MODE { MELEE = 0, RANGE = 1 };
 	int attack_mode = MELEE;
+	bool ranged_attack_unlocked = false;
 	// Invincibility
 	const double invincibility_time = 1.0;
 	double invincibility_count = 0;
@@ -40,6 +41,7 @@ private:
 	const double warp_time = 2.0;
 	double warp_count = 0;
 	// Dodge
+	bool dodge_unlocked = false;
 	bool is_dodging = false;
 	const double dodging_time = 0.2;
 	double dodging_count = 0;
@@ -83,4 +85,8 @@ public:
 	void GoToBase();
 	// Upgrade the player
 	void Upgrade();
+	// Unlock Dodge
+	void UnlockDodge() { dodge_unlocked = true; }
+	// Unlock rnged attack
+	void UnlockRangedAttack() { ranged_attack_unlocked = true; }
 };

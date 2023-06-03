@@ -207,6 +207,22 @@ void Map::Make_Warp(int number) {
 		}
 	}
 }
+// Make "Dodge" camp
+void Map::Make_Dodge() {
+
+}
+// Make "Ranged attack" camp
+void Map::Make_RangedAttack() {
+
+}
+// Make "compass to the base" camp
+void Map::Make_BaseCompass() {
+
+}
+// Make "compass to the colony" camp
+void Map::Make_ColonyCompass() {
+
+}
 // Show map
 void Map::Show_Map() {
 	push_settings();
@@ -243,7 +259,9 @@ void Map::Show_Map() {
 	pop_settings();
 }
 // Show the direction of base
-void Map::Show_Arrow() {
+void Map::Base_Show_Arrow() {
+	if (base_compass_unlocked == false)
+		return;
 	push_settings();
 
 	arrow_direction = { middle_point.x - mediator->GetPlayerPosition().x, middle_point.y - mediator->GetPlayerPosition().y };
@@ -257,6 +275,40 @@ void Map::Show_Arrow() {
 
 	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
 	
+	pop_settings();
+}
+// Draw arrow to the closest colony
+void Map::Colony_Show_Arrow() {
+	if (colony_copass_unlocked == false || remaining_colony == 0)
+		return;
+
+	push_settings();
+
+	Math::vec2 current;
+	double distance = std::numeric_limits<double>::max();
+
+	for (int i = 0; i < map_size; i++) {
+		for (int j = 0; j < map_size; j++) {
+			if (MAP[i][j]->Get_State() == TILES::COLONY_CORE) {
+				if (MAP[i][j]->GetDistance(mediator->GetPlayerPosition()) < distance) {
+					current = MAP[i][j]->GetPosition();
+					distance = MAP[i][j]->GetDistance(mediator->GetPlayerPosition());
+				}
+			}
+		}
+	}
+
+	arrow_direction = { current.x - mediator->GetPlayerPosition().x, current.y - mediator->GetPlayerPosition().y };
+	arrow_direction /= arrow_direction.GetLength();
+	arrow_direction *= 30;
+
+	apply_translate(mediator->GetPlayerPosition().x, mediator->GetPlayerPosition().y);
+	apply_translate(150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
+	draw_ellipse(0, 0, 60);
+	set_outline_width(15);
+
+	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
+
 	pop_settings();
 }
 // Attacked

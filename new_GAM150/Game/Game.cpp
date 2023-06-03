@@ -94,7 +94,8 @@ void Game::Draw() {
 	// No outline only for the map. Maybe need to be changed after we apply the images.
 	map->Show_Map();
 	pop_settings();
-	map->Show_Arrow();
+	map->Base_Show_Arrow();
+	map->Colony_Show_Arrow();
 	// Draw player
 	player->Draw();
 	// Draw monsters if they are near the screen.

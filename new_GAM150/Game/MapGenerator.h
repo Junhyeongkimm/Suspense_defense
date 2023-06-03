@@ -55,10 +55,22 @@ public:
 	void Make_Resource(int number);
 	// Make "number" numbers of warp
 	void Make_Warp(int number);
+	// Make "Dodge" camp
+	void Make_Dodge();
+	// Make "Ranged attack" camp
+	void Make_RangedAttack();
+	// Make "compass to the base" camp
+	void Make_BaseCompass();
+	// Make "compass to the colony" camp
+	void Make_ColonyCompass();
 	// Show the map based on the player's position.
 	void Show_Map();
 	// Draw arrow to the base
-	void Show_Arrow();
+	bool base_compass_unlocked = false;
+	void Base_Show_Arrow();
+	// Draw arrow to the closest colony
+	bool colony_copass_unlocked = false;
+	void Colony_Show_Arrow();
 	// Attacked
 	void Attacked(Math::ivec2 position);
 	// Getter functions
@@ -74,4 +86,7 @@ public:
 	int GetColony() { return remaining_colony; }
 	int GetDate() { return date; }
 	int GetOffset() { return offset; }
+	// Unlock things
+	void UnlockBaseArraw() { base_compass_unlocked = true; }
+	void UnlockColonyArraw() { colony_copass_unlocked = true; }
 };

@@ -27,7 +27,7 @@ void Player::Update(double dt) {
 		if (Able_To_Attack() && MouseButton == MouseButtons::Left) { // If the player is able to attack and clicked the left button of mouse, attack
 			Attack();
 		}
-		if (MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
+		if (dodge_unlocked && MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 				dodge_direction.y += 1;
@@ -57,7 +57,7 @@ void Player::Update(double dt) {
 		is_attacking = false;
 	}
 	// Change the attack mode by 'Tab'
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
+	if (ranged_attack_unlocked && Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
 		if (attack_mode == MELEE)
 			attack_mode = RANGE;
 		else
