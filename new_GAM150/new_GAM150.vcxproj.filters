@@ -76,6 +76,12 @@
     <ClCompile Include="Game\Boss.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\PopupBox.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\AStar.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera.h">
@@ -154,6 +160,12 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Game\Boss.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PopupBox.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\AStar.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
