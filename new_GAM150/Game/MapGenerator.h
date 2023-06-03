@@ -66,7 +66,7 @@ public:
 	double Get_Map_Length() { return map_length; }
 	double Get_Tile_Length() { return tile_length; }
 	int GetTileState(Math::vec2 position) { return MAP[(int)(position.x/tile_length)][(int)(position.y/tile_length)]->Get_State(); }
-	int GetTileStateInt(Math::ivec2 position) { return MAP[position.x][position.y]->Get_State(); }//{ return TILES::VOID; }//
+	int GetTileStateInt(Math::ivec2 position) { return MAP[position.x][position.y]->Get_State(); }
 	void CheckAttacked(int x, int y, Math::vec2 attack_point);
 	double GetTime() { return time; }
 	double GetDuration() { return duration; }

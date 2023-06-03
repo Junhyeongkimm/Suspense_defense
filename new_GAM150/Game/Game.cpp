@@ -4,8 +4,8 @@
 #include <vector>
 #include "doodle/input.hpp"
 #include "doodle/angle.hpp"
-
 using namespace doodle;
+
 // Constructor of Game
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
@@ -42,7 +42,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		bullet->Update(dt);
 		// Check collision with monsters
 		for (Monster* monster : monsters) {
-			if (monster->GetDistance(bullet->GetPosition()) < monster->GetSize()) {
+			if (monster->GetDistance(bullet->GetPosition()) < (monster->GetSize() / 2 + bullet->GetSize() / 2)) {
 				mediator->DeleteBullet(bullet);
 				mediator->DeleteMonster(monster);
 			}

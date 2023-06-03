@@ -12,11 +12,11 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 
 	if (mediator->Is_Day()) {
 		created_at_day = true;
-		speed = 300;
+		speed = 350;
 	}
 	else {
 		created_at_day = false;
-		speed = 100;
+		speed = 150;
 	}
 		
 }

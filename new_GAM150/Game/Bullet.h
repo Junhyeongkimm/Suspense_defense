@@ -23,5 +23,5 @@ public:
 	void Draw();
 	// Get position
 	Math::vec2 GetPosition() { return position; }
-
+	double GetSize() { return size; }
 };
