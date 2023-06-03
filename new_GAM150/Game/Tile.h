@@ -127,6 +127,8 @@ public:
 		resourceattacked,
 		broken
 	};
+private:
+	bool resourcebroken = false;
 };
 // Warp tile
 class Warp :public Tile {
@@ -137,9 +139,10 @@ public:
 	enum class warp_resource_animations
 	{
 		basic,
-		resourceattacked,
 		broken
 	};
+private:
+	bool warpbroken = false;
 };
 // Tower tile
 class Tower : public Tile {

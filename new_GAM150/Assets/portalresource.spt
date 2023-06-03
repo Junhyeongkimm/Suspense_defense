@@ -1,6 +1,6 @@
-Assets/portalresource.png
-FrameSize 215 220
+Assets/potalresource.png
+FrameSize 300 303
 HotSpot 0 0
-NumFrames 3
+NumFrames 2
 Anim Assets/None.anm
 Anim Assets/resourcedestroy.anm

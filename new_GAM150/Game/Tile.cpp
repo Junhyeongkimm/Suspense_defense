@@ -250,6 +250,11 @@ void Warp::Draw(bool is_day) {
 	}
 
 	draw_rectangle(position.x, position.y, size);*/
+	if (hp == 1 && warpbroken == false) {
+		warpbroken = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(warp_resource_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	pop_settings();
 }
