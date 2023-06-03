@@ -55,14 +55,8 @@ public:
 	void Make_Resource(int number);
 	// Make "number" numbers of warp
 	void Make_Warp(int number);
-	// Make "Dodge" camp
-	void Make_Dodge();
-	// Make "Ranged attack" camp
-	void Make_RangedAttack();
-	// Make "compass to the base" camp
-	void Make_BaseCompass();
-	// Make "compass to the colony" camp
-	void Make_ColonyCompass();
+	// Make unlock things
+	void Make_Treasure();
 	// Show the map based on the player's position.
 	void Show_Map();
 	// Draw arrow to the base

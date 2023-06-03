@@ -59,6 +59,7 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
+	Make_Treasure();
 	Make_Colony(10);
 	Make_Resource(50);
 	Make_Warp(20);
@@ -207,20 +208,8 @@ void Map::Make_Warp(int number) {
 		}
 	}
 }
-// Make "Dodge" camp
-void Map::Make_Dodge() {
-
-}
-// Make "Ranged attack" camp
-void Map::Make_RangedAttack() {
-
-}
-// Make "compass to the base" camp
-void Map::Make_BaseCompass() {
-
-}
-// Make "compass to the colony" camp
-void Map::Make_ColonyCompass() {
+// Make unlock things camp
+void Map::Make_Treasure() {
 
 }
 // Show map
