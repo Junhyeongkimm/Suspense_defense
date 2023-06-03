@@ -6,7 +6,7 @@
 
 using namespace doodle;
 // enum values below is the tiles
-// enum TILES { WALL, VOID, COLONY_CORE, COLONY_SIDE, BASE_WALL, BASE_INSIDE, RESOURCE, WARP, TOWER };
+// enum TILES { WALL, VOID, COLONY_CORE, COLONY_SIDE, BASE_WALL, BASE_INSIDE, RESOURCE, WARP, TOWER, TREASURE };
 class Tile {
 protected:
     static inline const double size = 50;
@@ -148,4 +148,16 @@ public:
         broken
     };
 
+};
+// Treasure tile
+class Treasure : public Tile {
+public:
+    Treasure(Math::vec2 position);
+    void Update(double dt);
+    void Draw(bool is_day);
+    enum class treasure_animations {
+        basic,
+        resourceattacked,
+        broken
+    };
 };

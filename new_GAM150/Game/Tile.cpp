@@ -229,3 +229,17 @@ void Tower::Update(double dt) {
 void Tower::Draw(bool is_day) {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
+// Treasure
+Treasure::Treasure(Math::vec2 position) : Tile(position) {
+	state = TILES::TREASURE;
+	hp = 3;
+}
+void Treasure::Update(double dt) {
+
+}
+void Treasure::Draw(bool is_day) {
+	push_settings();
+	set_fill_color(HexColor{ 0x882222ff });
+	draw_rectangle(position.x, position.y, size);
+	pop_settings();
+}
