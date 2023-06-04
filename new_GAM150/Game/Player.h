@@ -2,6 +2,7 @@
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
 #include "../Engine/Matrix.h"
+#include "../Engine/Sprite.h"
 
 class Mediator;
 
@@ -78,17 +79,21 @@ public:
 	// Warp to the base
 	void GoToBase();
 
+	CS230::Sprite sprite;
+
+	double scale_x;
+	double scale_y;
+
 	enum class player_action {
-		daywaiting,
-		dayleft,
-		dayright,
-		dayup,
-		daydown,
-		nightwaiting,
-		nightleft,
-		nightright,
-		nightup,
-		nightdown
+		waiting,
+		left,
+		dodgeleft,
+		right,
+		dodgeright,
+		up,
+		dodgeup,
+		down,
+		dodgedown
 	};
 		
 };

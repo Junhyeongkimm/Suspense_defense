@@ -8,7 +8,10 @@ using namespace doodle;
 
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
-	
+	sprite.Load("Assets/player.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(player_action::waiting));
 }
 // Update
 void Player::Update(double dt) {
@@ -131,16 +134,9 @@ void Player::Update(double dt) {
 }
 // Draw player
 void Player::Draw() {
-	push_settings();
-	if (is_dodging) {
-		set_fill_color(HexColor(0x000000ff));
-	}
-	else {
-		set_fill_color(HexColor(0x888888ff));
-	}
+
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
-	draw_ellipse(position.x, position.y, size, size);
-	pop_settings();
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();

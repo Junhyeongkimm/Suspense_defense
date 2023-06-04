@@ -128,7 +128,7 @@ public:
 		broken
 	};
 private:
-	bool resourceattacked =false;
+	bool resourceattacked = false;
 	bool resourcebroken = false;
 };
 // Warp tile
