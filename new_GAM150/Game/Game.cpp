@@ -9,7 +9,7 @@ using namespace doodle;
 // Constructor of Game
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
-	player(nullptr), monsters(), bullets(), map(nullptr), mediator(nullptr), target(nullptr)
+	player(nullptr), monsters(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { }
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
@@ -27,11 +27,19 @@ void Game::Load() {
 	mediator->SetMonsters(&monsters);
 	// Give bullets to the mediator
 	mediator->SetBullets(&bullets);
+	// Give monster bullets to the mediator
+	mediator->SetMBullets(&monster_bullets);
 	// Create map by function MapMaking()
 	map->MapMaking();
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
+		mediator->UnlockBaseArraw();
+		mediator->UnlockColonyArraw();
+		mediator->UnlockDodge();
+		mediator->UnlockRangedAttack();
+	}
 	// Update player, map, monster, bullets
 	player->Update(dt);
 	map->Update(dt);
@@ -46,6 +54,13 @@ void Game::Update([[maybe_unused]] double dt) {
 				mediator->DeleteBullet(bullet);
 				mediator->DeleteMonster(monster);
 			}
+		}
+	}
+	for (MBullet* bullet : monster_bullets) {
+		bullet->Update(dt);
+		if (player->GetDistance(bullet->GetPosition()) < (player->GetSize() + bullet->GetSize()) / 2) {
+			player->Reduce_hp();
+			mediator->DeleteMBullet(bullet);
 		}
 	}
 	// Update camera. (Meaningless)
@@ -108,6 +123,9 @@ void Game::Draw() {
 			monster->Draw();
 	}
 	for (Bullet* bullet : bullets) {
+		bullet->Draw();
+	}
+	for (MBullet* bullet : monster_bullets) {
 		bullet->Draw();
 	}
 	pop_settings();

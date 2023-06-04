@@ -71,6 +71,7 @@ public:
 	bool Able_To_Attack() { return attack_count > attack_delay; }
 	double GetSize() { return size; }
 	int GetDamage() { return damage; }
+	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
 	// Increase the resource
 	void IncreaseMapResource() { ++map_resource; }
 	void IncreaseMonsterResource() { ++monster_resource; }

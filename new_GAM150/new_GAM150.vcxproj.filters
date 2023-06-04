@@ -82,6 +82,9 @@
     <ClCompile Include="Game\AStar.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\MBullet.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera.h">
@@ -166,6 +169,9 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\AStar.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\MBullet.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

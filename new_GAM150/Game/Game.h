@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "MapGenerator.h"
+#include "MBullet.h"
 #include "Bullet.h"
 #include "Mediator.h"
 
@@ -36,6 +37,7 @@ private:
     Player* player;
     std::vector<Monster*>monsters;
     std::vector<Bullet*>bullets;
+    std::vector<MBullet*>monster_bullets;
     Map* map;
     Mediator* mediator;
     //CS230::GameObjectManager gameobjectmanager;

@@ -6,12 +6,14 @@
 #include "Bullet.h"
 #include <vector>
 #include "../Engine/Vec2.h"
+#include "MBullet.h"
 
 class Mediator {
 private:
 	Player* player;
 	std::vector<Monster*>* monsters;
 	std::vector<Bullet*>* bullets;
+	std::vector<MBullet*>* monster_bullets;
 	Map* map;
 public:
 	// Constructor
@@ -24,6 +26,7 @@ public:
 	void SetPlayer(Player* player);
 	void SetMonsters(std::vector<Monster*>*monsters);
 	void SetBullets(std::vector<Bullet*>*bullets);
+	void SetMBullets(std::vector<MBullet*>* monster_bullets);
 	void SetMap(Map* map);
 	// Add monster at the position, push back to the monsters
 	void AddMonster(Math::vec2 position);
@@ -31,8 +34,12 @@ public:
 	void DeleteMonster(Monster* monster);
 	// Add bullet at the position, directed to the direction, push back to the bullets
 	void AddBullet(Math::vec2 position, Math::vec2 direction);
+	// Add monster bullet at the position, directed to the direction, push back to the bullets
+	void AddMBullet(Math::vec2 position, Math::vec2 direction);
 	// Delete the bullet from the vector bullets
 	void DeleteBullet(Bullet* bullet);
+	// Delete the bullet from the vector bullets
+	void DeleteMBullet(MBullet* monster_bullet);
 	// Increase the resources
 	void IncreaseMapResource() { player->IncreaseMapResource(); }
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
