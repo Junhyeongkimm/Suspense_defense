@@ -2,6 +2,7 @@
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
 #include "../Engine/Matrix.h"
+#include "../Engine/Sprite.h"
 
 class Mediator;
 
@@ -89,4 +90,21 @@ public:
 	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock rnged attack
 	void UnlockRangedAttack() { ranged_attack_unlocked = true; }
+
+	CS230::Sprite sprite;
+
+	double scale_x;
+	double scale_y;
+
+	enum class player_action {
+		waiting,
+		left,
+		dodgeleft,
+		right,
+		dodgeright,
+		up,
+		dodgeup,
+		down,
+		dodgedown
+	};
 };

@@ -22,7 +22,7 @@ void Tile::Draw(bool is_day) {
 int Tile::Get_State() {
 	return state;
 }
-// Check attcked
+// Check attcked6
 void Tile::Attacked(Math::vec2 attack_point) {
 	if (attack_point.x > position.x && attack_point.x < position.x + size && attack_point.y > position.y && attack_point.y < position.y + size) {
 		--hp;
@@ -39,7 +39,6 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 // ---------------------------------------------------------------------------------------------------
 // Tiles below are very similar. The major difference is hp and state.
 
-
 // Wall
 Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
@@ -51,6 +50,7 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
+
 void Wall::Update(double dt) {
 
 }
@@ -61,6 +61,10 @@ void Wall::Draw(bool is_day) {
 	}
 
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+}
+
+void Wall::Attacked() {
+	--hp;
 }
 // Void
 Void::Void(Math::vec2 position) : Tile(position) {
@@ -185,7 +189,20 @@ void Resource::Update(double dt) {
 
 }
 void Resource::Draw(bool is_day) {
+	if (hp == 2 && resourceattacked == false) {
+		resourceattacked = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(resource_animations::attacked));
+	}
+	if (hp == 1 && resourcebroken == false) {
+		resourcebroken = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(resource_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+}
+void Resource::Attacked() {
+	--hp;
 }
 // Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {
@@ -200,7 +217,13 @@ void Warp::Update(double dt) {
 
 }
 void Warp::Draw(bool is_day) {
+
+	if (hp == 1 && warpbroken == false) {
+		warpbroken = true;
+		sprite.PlayAnimation(static_cast<int>(warp_resource_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
 }
 // Tower
 Tower::Tower(Math::vec2 position) : Tile(position) {
@@ -209,7 +232,6 @@ Tower::Tower(Math::vec2 position) : Tile(position) {
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(Tower_animations::basic));
-
 }
 void Tower::Update(double dt) {
 
@@ -226,8 +248,8 @@ void Treasure::Update(double dt) {
 
 }
 void Treasure::Draw(bool is_day) {
-	push_settings();
 	set_fill_color(HexColor{ 0x882222ff });
 	draw_rectangle(position.x, position.y, size);
-	pop_settings();
+	//sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
 }
