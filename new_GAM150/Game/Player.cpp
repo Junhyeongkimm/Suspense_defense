@@ -7,11 +7,19 @@
 #include "State.h"
 using namespace doodle;
 
+void Player::SetWantScale(Math::vec2 new_scale)
+{
+
+		Math::ivec2 want = sprite.GetFrameSize();
+		scale_x = 1 / static_cast<double>(want.x)* new_scale.x;
+		scale_y = 1 / static_cast<double>(want.y)* new_scale.y;
+}
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
 	sprite.Load("Assets/player.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	//scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	//scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	SetWantScale({ 125,125 });
 	sprite.PlayAnimation(static_cast<int>(player_action::None));
 }
 // Update

@@ -1,46 +1,65 @@
 Assets/player.png
-FrameSize 625 500
+FrameSize 55 50
 HotSpot 0 0
 Frame 0 0
-Frame 625 0
-Frame 1250 0
-Frame 0 500
-Frame 625 500
-Frame 1250 500
-Frame 1875 500
-Frame 2500 500
-Frame 3125 500
-Frame 3750 500
-Frame 4375 500
-Frame 5000 500
-Frame 0 1000
-Frame 625 1000
-Frame 1250 1000
-Frame 1875 1000
-Frame 2500 1000
-Frame 3125 1000
-Frame 3750 1000
-Frame 4375 1000
-Frame 5000 1000
-Frame 0 1500
-Frame 625 1500
-Frame 1250 1500
-Frame 1875 1500
-Frame 2500 1500
-Frame 3125 1500
-Frame 3750 1500
-Frame 4375 1500
-Frame 4500 1500
+Frame 55 0
+Frame 110 0
+Frame 0 50
+Frame 55 50
+Frame 110 50
+Frame 165 50
+Frame 220 50
+Frame 275 50
+Frame 330 50
+Frame 385 50
+Frame 0 100
+Frame 55 100
+Frame 110 100
+Frame 165 100
+Frame 220 100
+Frame 275 100
+Frame 330 100
+Frame 385 100
+Frame 440 100
+Frame 495 100
+Frame 0 150
+Frame 55 150
+Frame 110 150
+Frame 165 150
+Frame 220 150
+Frame 275 150
+Frame 330 150
+Frame 385 150
+Frame 440 150
 Frame 0 200
-Frame 625 200
-Frame 1250 200
-Frame 1875 200
-Frame 2500 200
-Frame 3125 200
-Frame 3750 200
-Frame 4375 200
-Frame 5000 200
+Frame 55 200
+Frame 110 200
+Frame 165 200
+Frame 220 200
+Frame 275 200
+Frame 330 200
+Frame 385 200
+Frame 0 250
+Frame 55 250
+Frame 110 250
+Frame 165 250
+Frame 220 250
+Frame 275 250
+Frame 330 250
+Frame 385 250
+Frame 440 250
+Frame 0 300
+Frame 55 300
+Frame 110 300
+Frame 165 300
+Frame 220 300
+Frame 275 300
+Frame 330 300
+Frame 385 300
 Anim Assets/None.anm
 Anim Assets/wait.anm
-
+Anim Assets/left.anm
+Anim Assets/dodgeleft.anm
+Anim Assets/dodgedown.anm
+Anim Assets/down.anm
 
