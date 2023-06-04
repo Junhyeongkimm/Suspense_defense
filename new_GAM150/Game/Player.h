@@ -97,6 +97,7 @@ public:
 	double scale_y;
 
 	enum class player_action {
+		None,
 		waiting,
 		left,
 		dodgeleft,

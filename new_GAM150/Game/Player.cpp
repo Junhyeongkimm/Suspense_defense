@@ -9,10 +9,10 @@ using namespace doodle;
 
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
-	//sprite.Load("Assets/player.spt");
+	sprite.Load("Assets/player.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(player_action::waiting));
+	sprite.PlayAnimation(static_cast<int>(player_action::None));
 }
 // Update
 void Player::Update(double dt) {
@@ -158,7 +158,7 @@ void Player::Update(double dt) {
 // Draw player
 void Player::Draw() {
 
-	//sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking == true && attack_mode == MELEE) {
