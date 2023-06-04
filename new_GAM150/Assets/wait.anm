@@ -1,4 +1,4 @@
-PlayFrame 0
-PlayFrame 1
-PlayFrame 2
+PlayFrame 0 .01
+PlayFrame 1 .01
+PlayFrame 2 .01
 Loop 0
