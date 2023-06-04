@@ -141,6 +141,14 @@ void Player::Update(double dt) {
 			direction /= sqrt(2);
 		}
 		position += direction * speed * dt;
+
+		if (mediator->GetTileState(position) == TILES::WALL ||
+			mediator->GetTileState(position) == TILES::RESOURCE ||
+			mediator->GetTileState(position) == TILES::COLONY_SIDE ||
+			mediator->GetTileState(position) == TILES::WARP ||
+			mediator->GetTileState(position) == TILES::TREASURE) {
+			position -= direction * speed * dt;
+		}
 	}
 	// Tile_position update based on the player's position
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
