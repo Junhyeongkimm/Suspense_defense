@@ -1,5 +1,7 @@
 #pragma once
 #include "../Engine/Vec2.h"
+#include <vector>
+#include <unordered_map>
 
 class Mediator;
 
@@ -7,17 +9,20 @@ class Monster {
 private:
 	Mediator* mediator;
 	Math::vec2 position;
+	Math::ivec2 tile_position;
+	Math::vec2 direction;
 	int hp = 1;
 	double size = 40;
-	double speed = 200;
+	double speed;
 	// The monster will not move when it is paralyzed (when it spawned)
-	const double paralyze_time = 1.0;
+	const double paralyze_time = 0.5;
 	double paralyze_count = 0;
+	bool created_at_day;
 public:
 	// Constructor
 	Monster(Math::vec2 position, Mediator* mediator);
 	// Update by dt and will move the the target
-	void Update(double dt, Math::vec2 target);
+	void Update(double dt);
 	// Draw
 	void Draw();
 	// Getter functions

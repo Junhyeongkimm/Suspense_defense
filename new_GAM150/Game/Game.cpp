@@ -4,8 +4,8 @@
 #include <vector>
 #include "doodle/input.hpp"
 #include "doodle/angle.hpp"
-
 using namespace doodle;
+
 // Constructor of Game
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
@@ -36,32 +36,25 @@ void Game::Update([[maybe_unused]] double dt) {
 	player->Update(dt);
 	map->Update(dt);
 	for (Monster* monster : monsters) {
-		monster->Update(dt, player->GetPosition());
+		monster->Update(dt);
 	}
 	for (Bullet* bullet : bullets) {
 		bullet->Update(dt);
-	}
-	camera.Update(player->GetPosition());
-	// If the hp of player go to negative, game over, and change the scene to the mainmenu
-	if (player->GetHP() <= 0) {
-		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-	}
-	// If the player press "Escape" key, change the scene to the mainmenu
-	if (Key == KeyboardButtons::Escape) {
-		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-	}
-	// Check bullet collsion to the map(Wall) and monster
-	for (Bullet* bullet : bullets) {
-		if (map->GetTileState(bullet->GetPosition()) == TILES::WALL) {
-			mediator->DeleteBullet(bullet);
-		}
+		// Check collision with monsters
 		for (Monster* monster : monsters) {
-			if (monster->GetDistance(bullet->GetPosition()) < monster->GetSize()) {
+			if (monster->GetDistance(bullet->GetPosition()) < (monster->GetSize() / 2 + bullet->GetSize() / 2)) {
 				mediator->DeleteBullet(bullet);
 				mediator->DeleteMonster(monster);
 			}
 		}
 	}
+	// Update camera. (Meaningless)
+	camera.Update(player->GetPosition());
+	// If the player press "Escape" key, change the scene to the mainmenu
+	if (Key == KeyboardButtons::Escape) {
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+	}
+	// ------------------------------- TOWER -------------------------------
 	// Find the closest monster and set the target
 	target = nullptr;
 	for (Monster* monster : monsters) {
@@ -94,22 +87,31 @@ void Game::Draw() {
 
 	// Draw map, player, monster, bullet
 	push_settings();
+	// Translate
 	apply_translate(-mediator->GetPlayerPosition().x + (double)Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayerPosition().y + (double)Engine::GetWindow().GetSize().y / 2);
-
 	push_settings();
 	no_outline();
-	map->Show_Map(player->GetTilePosition());
+	// No outline only for the map. Maybe need to be changed after we apply the images.
+	map->Show_Map();
 	pop_settings();
-
+	map->Base_Show_Arrow();
+	map->Colony_Show_Arrow();
+	// Draw player
 	player->Draw();
-
+	// Draw monsters if they are near the screen.
 	for (Monster* monster : monsters) {
-		monster->Draw();
+		if( monster->GetPosition().x < player->GetPosition().x + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+			monster->GetPosition().x > player->GetPosition().x - map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+			monster->GetPosition().y < player->GetPosition().y + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+			monster->GetPosition().y > player->GetPosition().y - map->Get_Tile_Length() * (map->GetOffset() + 2)
+			)
+			monster->Draw();
 	}
 	for (Bullet* bullet : bullets) {
 		bullet->Draw();
 	}
 	pop_settings();
+
 	// Draw texts
 	push_settings();
 	set_font_size(25);
@@ -121,7 +123,7 @@ void Game::Draw() {
 	draw_text("C: " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
 	draw_text("M: " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);
 
-	draw_text("Hp: " + std::to_string(player->GetMaxHP()) + " / " + std::to_string(player->GetHP()), 10, 30);
+	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
 
 	draw_text("Day " + std::to_string(map->GetDate()), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
 	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
