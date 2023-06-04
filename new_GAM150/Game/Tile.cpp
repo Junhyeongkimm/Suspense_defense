@@ -191,12 +191,10 @@ void Resource::Update(double dt) {
 void Resource::Draw(bool is_day) {
 	if (hp == 2 && resourceattacked == false) {
 		resourceattacked = true;
-		std::cout << "broken \n";
 		sprite.PlayAnimation(static_cast<int>(resource_animations::attacked));
 	}
 	if (hp == 1 && resourcebroken == false) {
 		resourcebroken = true;
-		std::cout << "broken \n";
 		sprite.PlayAnimation(static_cast<int>(resource_animations::broken));
 	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
