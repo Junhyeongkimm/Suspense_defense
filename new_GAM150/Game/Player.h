@@ -2,6 +2,7 @@
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
 #include "../Engine/Matrix.h"
+#include "../Engine/Sprite.h"
 
 class Mediator;
 
@@ -83,6 +84,25 @@ public:
 	void SetAttackPosition(Math::vec2 position) { attack_direction = position; }
 	// Warp to the base
 	void GoToBase();
+
+
+	CS230::Sprite sprite;
+
+	double scale_x;
+	double scale_y;
+
+	enum class player_action {
+		waiting,
+		left,
+		dodgeleft,
+		right,
+		dodgeright,
+		up,
+		dodgeup,
+		down,
+		dodgedown
+	};
+		
 	// Upgrade the player
 	void Upgrade();
 	// Unlock Dodge

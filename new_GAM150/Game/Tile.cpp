@@ -7,6 +7,7 @@ std::vector<Tile*> tiles;
 
 // Constructor
 Tile::Tile(Math::vec2 position) : position(position) {
+
 	scale_x = 0;
 	scale_y = 0;
 }
@@ -22,7 +23,7 @@ void Tile::Draw(bool is_day) {
 int Tile::Get_State() {
 	return state;
 }
-// Check attcked
+// Check attcked6
 void Tile::Attacked(Math::vec2 attack_point) {
 	if (attack_point.x > position.x && attack_point.x < position.x + size && attack_point.y > position.y && attack_point.y < position.y + size) {
 		--hp;
@@ -40,6 +41,7 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 // Tiles below are very similar. The major difference is hp and state.
 
 
+#include <iostream>
 // Wall
 Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
@@ -51,6 +53,13 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
+void Wall::Update() {
+}
+void Wall::Draw(bool is_day) {
+	doodle::push_settings();
+	if (hp == 1 && rockbroken == false) {
+		rockbroken = true;
+		std::cout << "broken \n";
 void Wall::Update(double dt) {
 
 }
@@ -61,6 +70,11 @@ void Wall::Draw(bool is_day) {
 	}
 
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
+	doodle::pop_settings();
+}
+void Wall::Attacked() {
+	--hp;
 }
 // Void
 Void::Void(Math::vec2 position) : Tile(position) {
@@ -80,6 +94,8 @@ void Void::Draw(bool is_day) {
 	else {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
+	
+	doodle::pop_settings();
 }
 // Colony_Core
 Colony_Core::Colony_Core(Math::vec2 position) : Tile(position) {
@@ -138,6 +154,8 @@ void Base_Wall::Draw(bool is_day) {
 	else {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
+	
+	doodle::pop_settings();
 }
 bool Base_Wall::AbleToBeAttacked() { 
 	if (invincibility_count > invincibility_time) { 
@@ -171,6 +189,7 @@ void Base_Inside::Draw(bool is_day) {
 	else {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
+	doodle::pop_settings();
 }
 // Resource
 Resource::Resource(Math::vec2 position) : Tile(position) {
@@ -185,7 +204,24 @@ void Resource::Update(double dt) {
 
 }
 void Resource::Draw(bool is_day) {
+	doodle::push_settings();
+	if (hp == 2 && resourceattacked == false) {
+		resourceattacked = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(resource_animations::attacked));
+	}
+	if (hp == 1 && resourcebroken == false) {
+		resourcebroken = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(resource_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	doodle::pop_settings();
+=======
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+}
+void Resource::Attacked() {
+	--hp;
 }
 // Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {
@@ -200,6 +236,14 @@ void Warp::Update(double dt) {
 
 }
 void Warp::Draw(bool is_day) {
+	push_settings();
+	if (hp == 1 && warpbroken == false) {
+		warpbroken = true;
+		std::cout << "broken \n";
+		sprite.PlayAnimation(static_cast<int>(warp_resource_animations::broken));
+	}
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	pop_settings();
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
 // Tower
@@ -209,7 +253,6 @@ Tower::Tower(Math::vec2 position) : Tile(position) {
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(Tower_animations::basic));
-
 }
 void Tower::Update(double dt) {
 
@@ -227,6 +270,14 @@ void Treasure::Update(double dt) {
 }
 void Treasure::Draw(bool is_day) {
 	push_settings();
+
+	/*if (is_day) {
+		set_fill_color(HexColor{ 0x0000ffff });
+	}
+	else {
+		set_fill_color(HexColor{ 0x0000ffff });
+	}*/
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	set_fill_color(HexColor{ 0x882222ff });
 	draw_rectangle(position.x, position.y, size);
 	pop_settings();

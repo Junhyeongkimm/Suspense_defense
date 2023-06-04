@@ -41,6 +41,17 @@ public:
 // Wall tile
 class Wall : public Tile {
 public:
+	Wall(Math::vec2 position);
+	void Update();
+	void Draw(bool is_day);
+	virtual void Attacked();
+	enum class rock_animations
+	{
+		basic,
+		broken
+	};
+private:
+	bool rockbroken = false;
     Wall(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
@@ -48,18 +59,17 @@ public:
         basic,
         broken
     };
-private:
-    bool rockbroken = false;
 };
 // Void tile
 class Void : public Tile {
 public:
-    Void(Math::vec2 position);
-    void Update(double dt);
-    void Draw(bool is_day);
-    enum class void_animations {
-        basic
-    };
+	Void(Math::vec2 position);
+	void Update(double dt);
+	void Draw(bool is_day);
+	enum class void_animations
+	{
+		basic
+	};
 };
 // Colony_Core tile
 class Colony_Core : public Tile {
@@ -119,6 +129,10 @@ public:
         resourceattacked,
         broken
     };
+private:
+	bool resourceattacked = false;
+	bool resourcebroken = false;
+
 };
 // Warp tile
 class Warp :public Tile {
@@ -128,9 +142,10 @@ public:
     void Draw(bool is_day);
     enum class warp_resource_animations {
         basic,
-        resourceattacked,
         broken
     };
+private:
+	  bool warpbroken = false;
 };
 // Tower tile
 class Tower : public Tile {
