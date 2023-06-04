@@ -191,6 +191,7 @@ void Resource::Update(double dt) {
 void Resource::Draw(bool is_day) {
 	if (hp == 2 && resourceattacked == false) {
 		resourceattacked = true;
+	
 		sprite.PlayAnimation(static_cast<int>(resource_animations::attacked));
 	}
 	if (hp == 1 && resourcebroken == false) {
