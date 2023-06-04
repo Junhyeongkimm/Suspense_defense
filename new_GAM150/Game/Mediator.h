@@ -37,6 +37,7 @@ public:
 	void IncreaseMapResource() { player->IncreaseMapResource(); }
 	void IncreaseMonsterResource() {player->IncreaseMonsterResource(); }
 	void IncreaseWarpResource() { player->IncreaseWarpResource(); }
+	void BaseAttacked(Math::ivec2 position);
 	// Warp to the base
 	void Warp() { player->GoToBase(); }
 	// Check if it is day
@@ -46,5 +47,13 @@ public:
 	double GetTileLength() { return map->Get_Tile_Length(); }
 	int GetMapSize() { return map->Get_Map_Size(); }
 	Math::vec2 GetPlayerPosition() { return player->GetPosition(); }
-	int GetMapState(Math::vec2 position) { return map->GetTileState(position); }
+	Math::ivec2 GetPlayerTilePosition() { return player->GetTilePosition(); }
+	int GetDamage() { return player->GetDamage(); }
+	int GetTileState(Math::vec2 position) {return map->GetTileState(position); }
+	int GetTileStateInt(Math::ivec2 position) { return map->GetTileStateInt(position); }
+	// Unlock things
+	void UnlockDodge() { player->UnlockDodge(); }
+	void UnlockRangedAttack() { player->UnlockRangedAttack(); }
+	void UnlockBaseArraw() { map->UnlockBaseArraw(); }
+	void UnlockColonyArraw() { map->UnlockColonyArraw(); }
 };

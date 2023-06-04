@@ -61,3 +61,6 @@ void Mediator::DeleteBullet(Bullet* bullet) {
 	bullets->erase(std::remove(bullets->begin(), bullets->end(), bullet), bullets->end());
 	delete bullet;
 }
+void Mediator::BaseAttacked(Math::ivec2 position) {
+	map->Attacked(position);
+}

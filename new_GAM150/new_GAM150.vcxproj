@@ -139,6 +139,8 @@
     <ClCompile Include="Engine\TextureManager.cpp" />
     <ClCompile Include="Engine\Vec2.cpp" />
     <ClCompile Include="Engine\Window.cpp" />
+    <ClCompile Include="Game\AStar.cpp" />
+    <ClCompile Include="Game\Boss.cpp" />
     <ClCompile Include="Game\Bullet.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\MainMenu.cpp" />
@@ -146,6 +148,7 @@
     <ClCompile Include="Game\Mediator.cpp" />
     <ClCompile Include="Game\Monster.cpp" />
     <ClCompile Include="Game\Player.cpp" />
+    <ClCompile Include="Game\PopupBox.cpp" />
     <ClCompile Include="Game\Splash.cpp" />
     <ClCompile Include="Game\Tile.cpp" />
     <ClCompile Include="main.cpp" />
@@ -165,6 +168,8 @@
     <ClInclude Include="Engine\TextureManager.h" />
     <ClInclude Include="Engine\Vec2.h" />
     <ClInclude Include="Engine\Window.h" />
+    <ClInclude Include="Game\AStar.h" />
+    <ClInclude Include="Game\Boss.h" />
     <ClInclude Include="Game\Bullet.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\MainMenu.h" />
@@ -172,6 +177,7 @@
     <ClInclude Include="Game\Mediator.h" />
     <ClInclude Include="Game\Monster.h" />
     <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\PopupBox.h" />
     <ClInclude Include="Game\Splash.h" />
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\Tile.h" />

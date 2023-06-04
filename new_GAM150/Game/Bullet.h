@@ -7,7 +7,7 @@ class Mediator;
 class Bullet {
 private:
 	Math::vec2 position;
-	const double speed = 450;
+	const double speed = 600;
 	const double size = 20;
 
 	Math::vec2 direction;
@@ -23,5 +23,5 @@ public:
 	void Draw();
 	// Get position
 	Math::vec2 GetPosition() { return position; }
-
+	double GetSize() { return size; }
 };

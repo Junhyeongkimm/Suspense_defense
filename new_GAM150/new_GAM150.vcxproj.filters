@@ -73,6 +73,15 @@
     <ClCompile Include="Engine\Input.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Boss.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\PopupBox.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\AStar.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera.h">
@@ -149,6 +158,15 @@
     </ClInclude>
     <ClInclude Include="Engine\Input.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Boss.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PopupBox.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\AStar.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
