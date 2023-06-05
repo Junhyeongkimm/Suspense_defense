@@ -40,29 +40,49 @@ void Game::Update([[maybe_unused]] double dt) {
 		mediator->UnlockDodge();
 		mediator->UnlockRangedAttack();
 	}
-	// Update player, map, monster, bullets
+	// Update player, map, monster update
 	player->Update(dt);
 	map->Update(dt);
 	for (Monster* monster : monsters) {
 		monster->Update(dt);
 	}
-	for (Bullet* bullet : bullets) {
-		bullet->Update(dt);
-		// Check collision with monsters
+	// Bullets update
+	for (int i = 0; i < bullets.size(); i++) {
+		bullets[i]->Update(dt);
+
+		// Check collision with Wall
+		if (mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WALL ||
+			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
+			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::RESOURCE ||
+			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WARP) {
+			mediator->DeleteBullet(bullets[i]);
+		}
+	}
+	for (int i = 0; i < bullets.size(); i++) {
 		for (Monster* monster : monsters) {
-			if (monster->GetDistance(bullet->GetPosition()) < (monster->GetSize() / 2 + bullet->GetSize() / 2)) {
-				mediator->DeleteBullet(bullet);
+			if (monster->GetDistance(bullets[i]->GetPosition()) < (monster->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
+				mediator->DeleteBullet(bullets[i]);
 				mediator->DeleteMonster(monster);
 			}
 		}
 	}
-	for (MBullet* bullet : monster_bullets) {
-		bullet->Update(dt);
-		if (player->GetDistance(bullet->GetPosition()) < (player->GetSize() + bullet->GetSize()) / 2) {
-			player->Reduce_hp();
-			mediator->DeleteMBullet(bullet);
+	// Monster bullets update
+	for (int i = 0; i < monster_bullets.size(); i++) {
+		monster_bullets[i]->Update(dt);
+		if (mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WALL ||
+			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
+			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::RESOURCE ||
+			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WARP) {
+			mediator->DeleteMBullet(monster_bullets[i]);
 		}
 	}
+	for (int i = 0; i < monster_bullets.size(); i++) {
+		if (player->GetDistance(monster_bullets[i]->GetPosition()) < (player->GetSize() + monster_bullets[i]->GetSize()) / 2) {
+			player->Reduce_hp();
+			mediator->DeleteMBullet(monster_bullets[i]);
+		}
+	}
+
 	// Update camera. (Meaningless)
 	camera.Update(player->GetPosition());
 	// If the player press "Escape" key, change the scene to the mainmenu

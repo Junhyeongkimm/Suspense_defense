@@ -1,22 +1,14 @@
 #include "MBullet.h"
 #include "Mediator.h"
 #include "../Engine/Engine.h"
-#include <iostream>
-MBullet::MBullet(Math::vec2 starat_position, Math::vec2 direction, Mediator* mediator) : position(starat_position), direction(direction), mediator(mediator){
+
+MBullet::MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : position(start_position), direction(direction), mediator(mediator){
 
 }
 
 void MBullet::Update(double dt) {
+	// Update position
 	position += direction * speed * dt;
-
-	if (mediator->GetTileState(position) == TILES::WALL ||
-		mediator->GetTileState(position) == TILES::COLONY_SIDE ||
-		mediator->GetTileState(position) == TILES::RESOURCE ||
-		mediator->GetTileState(position) == TILES::WARP) {
-		mediator->DeleteMBullet(this);
-	}
-
-
 }
 
 void MBullet::Draw() {

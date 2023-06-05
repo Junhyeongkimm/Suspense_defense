@@ -50,8 +50,7 @@ void Mediator::AddMonster(Math::vec2 position) {
 	monsters->push_back(new Monster(position, this));
 }
 void Mediator::DeleteMonster(Monster* monster) {
-	auto it = std::find(monsters->begin(), monsters->end(), monster);
-	monsters->erase(std::remove(monsters->begin(), monsters->end(), monster), monsters->end());
+	monsters->erase(remove(monsters->begin(), monsters->end(), monster), monsters->end());
 	delete monster;
 	this->IncreaseMonsterResource();
 }
@@ -60,8 +59,7 @@ void Mediator::AddBullet(Math::vec2 position, Math::vec2 direction) {
 	bullets->push_back(new Bullet(position, direction, this));
 }
 void Mediator::DeleteBullet(Bullet* bullet) {
-	auto it = std::find(bullets->begin(), bullets->end(), bullet);
-	bullets->erase(std::remove(bullets->begin(), bullets->end(), bullet), bullets->end());
+	bullets->erase(remove(bullets->begin(), bullets->end(), bullet), bullets->end());
 	delete bullet;
 }
 // Add and delete monster bullet
@@ -69,8 +67,7 @@ void Mediator::AddMBullet(Math::vec2 position, Math::vec2 direction) {
 	monster_bullets->push_back(new MBullet(position, direction, this));
 }
 void Mediator::DeleteMBullet(MBullet* bullet) {
-	auto it = std::find(monster_bullets->begin(), monster_bullets->end(), bullet);
-	monster_bullets->erase(std::remove(monster_bullets->begin(), monster_bullets->end(), bullet), monster_bullets->end());
+	monster_bullets->erase(remove(monster_bullets->begin(), monster_bullets->end(), bullet), monster_bullets->end());
 	delete bullet;
 }
 void Mediator::BaseAttacked(Math::ivec2 position) {

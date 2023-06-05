@@ -7,8 +7,8 @@ class Mediator;
 class MBullet {
 protected:
 	Math::vec2 position;
-	double speed = 600;
-	double size = 20;
+	const double speed = 600;
+	const double size = 20;
 
 	Math::vec2 direction;
 
@@ -16,7 +16,7 @@ protected:
 
 public:
 
-	MBullet(Math::vec2 starat_position, Math::vec2 direction, Mediator* mediator);
+	MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator);
 	
 	void Update(double dt);
 
