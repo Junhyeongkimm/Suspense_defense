@@ -236,7 +236,7 @@ void Tower::SetWantScale(Math::vec2 new_scale)
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
 	hp = 10; sprite.Load("Assets/basecore.spt");
-	SetWantScale({ 25, 25 });
+	SetWantScale({ 50, 50 });
 	sprite.PlayAnimation(static_cast<int>(Tower_animations::None));
 }
 void Tower::Update(double dt) {
