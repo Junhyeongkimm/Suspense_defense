@@ -171,9 +171,17 @@ void Player::Draw() {
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();
-		set_outline_width(10);
-		draw_line(position.x, position.y, position.x + size * attack_direction.x, position.y + size * attack_direction.y);
+		sprite.Load("Assets/sword.spt");
+		SetWantScale({ 25,25 });
+		sprite.PlayAnimation(static_cast<int>(player_action::None));
 		//draw_line(position.x, position.y, position.x + (size * (GetAttackPosition().x - position.x)), position.y + (size * (GetAttackPosition().y - position.y)));
+		pop_settings();
+	}
+	else if (is_attacking == true && attack_mode == RANGE) {
+		push_settings();
+		sprite.Load("Assets/gun.spt");
+		SetWantScale({ 25,25 });
+		sprite.PlayAnimation(static_cast<int>(player_action::None));
 		pop_settings();
 	}
 }
