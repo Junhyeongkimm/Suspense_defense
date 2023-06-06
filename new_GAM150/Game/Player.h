@@ -30,7 +30,7 @@ private:
 	int attack_mode = MELEE;
 	bool ranged_attack_unlocked = false;
 	// Invincibility
-	const double invincibility_time = 1.0;
+	const double invincibility_time = 0.3;
 	double invincibility_count = 0;
 	// Resources
 	int map_resource = 0;
@@ -48,6 +48,9 @@ private:
 	const double dodge_cool_time = 1.0;
 	double dodge_cool_count = 0;
 	Math::vec2 dodge_direction{ 0, 0 };
+	// HP recovery
+	double recover_count = 0.0;
+	const double recover_cool = 1.0;
 	// Upgrade count
 	int upgrade_count = 0;
 public:
