@@ -3,6 +3,8 @@
 #include "../Engine/Camera.h"
 #include "../Engine/Matrix.h"
 #include "PopupBox.h"
+#include "../Engine/Sprite.h"
+
 
 class Mediator;
 
@@ -42,9 +44,9 @@ private:
 	const double warp_time = 2.0;
 	double warp_count = 0;
 	// Dodge
-	bool dodge_unlocked = false;
+	bool dodge_unlocked = true;
 	bool is_dodging = false;
-	const double dodging_time = 0.2;
+	const double dodging_time = 1.0;
 	double dodging_count = 0;
 	const double dodge_cool_time = 1.0;
 	double dodge_cool_count = 0;
@@ -58,6 +60,8 @@ private:
 	// Box
 	PopupBox* box;
 public:
+	//scale
+	void SetWantScale(Math::vec2 new_scale);
 	// Constructor
 	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
 	// Update
@@ -98,4 +102,23 @@ public:
 	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock rnged attack
 	void UnlockRangedAttack() { ranged_attack_unlocked = true; }
+
+	CS230::Sprite sprite;
+	CS230::Sprite weaponsprite;
+
+	double scale_x;
+	double scale_y;
+
+	enum class player_action {
+		None,
+		waiting,
+		left,
+		dodgeleft,
+		up,
+		dodgeup,
+		down,
+		dodgedown
+	};
+
+	bool flipped = false;
 };

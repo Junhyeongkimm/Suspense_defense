@@ -4,21 +4,33 @@
 #include <algorithm>
 #include "State.h"
 #include "AStar.h"
+#include <iostream>
 
+
+void Monster::SetWantScale(Math::vec2 new_scale)
+{
+	Math::ivec2 want = sprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
 
+	
 	if (mediator->Is_Day()) {
 
 		created_at_day = true;
-		speed = 350;
+		speed = 250;
 	}
 	else {
-
+		sprite.Load("Assets/flymonster.spt");
+		sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
+		SetWantScale({ 60,60 });
 		created_at_day = false;
 		speed = 175;
+		
 	}
 		
 }
@@ -44,6 +56,7 @@ void Monster::Update(double dt) {
 	}
 	// During the night time, it will move to the base
 	else {
+		sprite.PlayAnimation(static_cast<int>(flymonster_action::flymove));
 		Math::vec2 middle_point{ mediator->GetMapLength() / 2 + mediator->GetTileLength()/2, mediator->GetMapLength() / 2 + mediator->GetTileLength()/2 };
 
 		direction.x = (middle_point.x - position.x) / GetDistance(middle_point);
@@ -94,10 +107,9 @@ void Monster::Update(double dt) {
 }
 // Draw
 void Monster::Draw() {
-	push_settings();
-	set_fill_color(HexColor(0x888888ff));
-	draw_ellipse(position.x, position.y, size);
-	pop_settings();
+
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
 }
 // Getter distance from the monster to the target
 double Monster::GetDistance(Math::vec2 target) {

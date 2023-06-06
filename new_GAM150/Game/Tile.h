@@ -36,24 +36,28 @@ public:
     virtual void ReduceHP() { --hp; }
     double scale_x;
     double scale_y;
-
 };
+
 // Wall tile
 class Wall : public Tile {
 public:
+
     Wall(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
+    void Attacked();
     enum class rock_animations {
         basic,
         broken
     };
 private:
     bool rockbroken = false;
+
 };
 // Void tile
 class Void : public Tile {
 public:
+
     Void(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
@@ -94,6 +98,7 @@ public:
         basic
     };
     virtual void ReduceHP() { if (AbleToBeAttacked()) { --hp; } }
+
 private:
     double invincibility_count = 0;
     const double invincibility_time = 1.0;
@@ -111,15 +116,21 @@ public:
 // Resource tile
 class Resource : public Tile {
 public:
+
     Resource(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
+    void Attacked();
     enum class resource_animations {
         basic,
-        resourceattacked,
+        attacked,
         broken
     };
+private:
+	bool resourceattacked = false;
+	bool resourcebroken = false;
 };
+
 // Warp tile
 class Warp :public Tile {
 public:
@@ -128,23 +139,25 @@ public:
     void Draw(bool is_day);
     enum class warp_resource_animations {
         basic,
-        resourceattacked,
         broken
     };
+private:
+	bool warpbroken = false;
 };
+
 // Tower tile
 class Tower : public Tile {
 public:
+    void SetWantScale(Math::vec2 new_scale);
     Tower(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
     enum class Tower_animations {
-        basic,
-        resourceattacked,
+        None,
         broken
     };
-
 };
+
 // Treasure tile
 class Treasure : public Tile {
 public:
@@ -152,8 +165,7 @@ public:
     void Update(double dt);
     void Draw(bool is_day);
     enum class treasure_animations {
-        basic,
-        resourceattacked,
+        None,
         broken
     };
 };

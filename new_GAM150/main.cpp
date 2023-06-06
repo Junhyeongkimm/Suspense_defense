@@ -12,6 +12,8 @@ Updated:    April 28, 2023
 #include <iostream>
 #include "Engine/Engine.h"
 #include "Game/Splash.h"
+#include "Game/Splash1.h"
+#include "Game/Splash2.h"
 #include "Game/Game.h"
 #include "Game/MainMenu.h"
 
@@ -27,9 +29,12 @@ int main() {
     try {
         Engine& engine = Engine::Instance();
         engine.Start("Suspense Defense");
-
         Splash splash;
         engine.GetGameStateManager().AddGameState(splash);
+        Splash1 splash1;
+        engine.GetGameStateManager().AddGameState(splash1);
+        Splash2 splash2;
+        engine.GetGameStateManager().AddGameState(splash2);
         MainMenu mainmenu;
         engine.GetGameStateManager().AddGameState(mainmenu);
         Game game;

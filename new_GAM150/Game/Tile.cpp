@@ -16,13 +16,13 @@ void Tile::Update(double dt) {
 }
 // Draw based on it is day or night
 void Tile::Draw(bool is_day) {
-	//draw_rectangle(position.x, position.y, size, size);
+
 }
 // Getter function
 int Tile::Get_State() {
 	return state;
 }
-// Check attcked
+// Check attcked6
 void Tile::Attacked(Math::vec2 attack_point) {
 	if (attack_point.x > position.x && attack_point.x < position.x + size && attack_point.y > position.y && attack_point.y < position.y + size) {
 		--hp;
@@ -39,7 +39,6 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 // ---------------------------------------------------------------------------------------------------
 // Tiles below are very similar. The major difference is hp and state.
 
-
 // Wall
 Wall::Wall(Math::vec2 position) : Tile(position) {
 	tiles.push_back(this);
@@ -51,6 +50,7 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
+
 void Wall::Update(double dt) {
 
 }
@@ -61,6 +61,10 @@ void Wall::Draw(bool is_day) {
 	}
 
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+}
+
+void Wall::Attacked() {
+	--hp;
 }
 // Void
 Void::Void(Math::vec2 position) : Tile(position) {
@@ -123,7 +127,7 @@ void Colony_Side::Draw(bool is_day) {
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_WALL;
 	hp = 10;
-	sprite.Load("Assets/wall.spt");
+	//sprite.Load("Assets/wall.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(basewall_animations::basic));
@@ -185,7 +189,19 @@ void Resource::Update(double dt) {
 
 }
 void Resource::Draw(bool is_day) {
+	if (hp == 2 && resourceattacked == false) {
+		resourceattacked = true;
+	
+		sprite.PlayAnimation(static_cast<int>(resource_animations::attacked));
+	}
+	if (hp == 1 && resourcebroken == false) {
+		resourcebroken = true;
+		sprite.PlayAnimation(static_cast<int>(resource_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+}
+void Resource::Attacked() {
+	--hp;
 }
 // Warp
 Warp::Warp(Math::vec2 position) : Tile(position) {
@@ -200,16 +216,29 @@ void Warp::Update(double dt) {
 
 }
 void Warp::Draw(bool is_day) {
+
+	if (hp == 1 && warpbroken == false) {
+		warpbroken = true;
+		sprite.PlayAnimation(static_cast<int>(warp_resource_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
 }
 // Tower
+void Tower::SetWantScale(Math::vec2 new_scale)
+{
+
+	Math::ivec2 want = sprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
+
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
-	hp = 10; sprite.Load("Assets/basecore.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(Tower_animations::basic));
-
+	hp = 10;
+	sprite.Load("Assets/basecore.spt");
+	SetWantScale({ 50, 50 });
+	sprite.PlayAnimation(static_cast<int>(Tower_animations::None));
 }
 void Tower::Update(double dt) {
 
@@ -221,13 +250,17 @@ void Tower::Draw(bool is_day) {
 Treasure::Treasure(Math::vec2 position) : Tile(position) {
 	state = TILES::TREASURE;
 	hp = 3;
+	sprite.Load("Assets/chest.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(treasure_animations::None));
 }
 void Treasure::Update(double dt) {
 
 }
 void Treasure::Draw(bool is_day) {
-	push_settings();
-	set_fill_color(HexColor{ 0x882222ff });
-	draw_rectangle(position.x, position.y, size);
-	pop_settings();
+	/*set_fill_color(HexColor{ 0x882222ff });
+	draw_rectangle(position.x, position.y, size);*/
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
 }

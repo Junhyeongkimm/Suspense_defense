@@ -1,6 +1,8 @@
-Assets/resource.png
+Assets/newresource.png
 FrameSize 300 264
 HotSpot 0 0
 NumFrames 3
 Anim Assets/None.anm
-Anim Assets/resourcedestroy.anm
+Anim Assets/resourcedestroy1.anm
+Anim Assets/resourcedestroy2.anm
+

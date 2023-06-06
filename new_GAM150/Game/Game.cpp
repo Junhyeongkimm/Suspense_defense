@@ -6,11 +6,25 @@
 #include "doodle/angle.hpp"
 using namespace doodle;
 
+
+void Game::SetWantScale(Math::vec2 new_scale)
+{
+
+	Math::ivec2 want = sprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
 // Constructor of Game
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
+
 	player(nullptr), monsters(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
-{ }
+{ 
+	sprite.Load("Assets/bullet.spt");
+
+	SetWantScale({ 125,125 });
+	sprite.PlayAnimation(static_cast<int>(bullet::None));
+}
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
 	camera.SetPosition({ 0, 0 }); // Camera is not used for now LOL
@@ -108,6 +122,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
 			direction /= direction.GetLength();
 			mediator->AddBullet(middle_point, direction);
+
 			tower_attack_count = 0;
 		}
 	}

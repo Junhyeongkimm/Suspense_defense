@@ -7,18 +7,17 @@
 using namespace doodle;
 // Need to be updated
 
-MainMenu::MainMenu()
+MainMenu::MainMenu():texture(texture)
 { }
 
 void MainMenu::Load() {
-
+    texture = Engine::GetTextureManager().Load("Assets/maintitle.png");
 }
 
 void MainMenu::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-
-    draw_ellipse(Engine::GetWindow().GetSize().x / 2, Engine::GetWindow().GetSize().y / 2, 100);
-    
+    texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
+ 
 }
 
 void MainMenu::Update([[maybe_unused]] double dt) {

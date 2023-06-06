@@ -7,9 +7,20 @@
 #include "State.h"
 using namespace doodle;
 
+void Player::SetWantScale(Math::vec2 new_scale)
+{
+
+		Math::ivec2 want = sprite.GetFrameSize();
+		scale_x = 1 / static_cast<double>(want.x)* new_scale.x;
+		scale_y = 1 / static_cast<double>(want.y)* new_scale.y;
+}
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
+  
 	box = new PopupBox(mediator);
+	sprite.Load("Assets/player.spt");
+	SetWantScale({ 125,125 });
+	sprite.PlayAnimation(static_cast<int>(player_action::waiting));
 }
 // Update
 void Player::Update(double dt) {
@@ -27,6 +38,7 @@ void Player::Update(double dt) {
 	}
 
 	// Increase attack_count and invincibility_count, dodge_count by dt
+
 	attack_count += dt;
 	invincibility_count += dt;
 	//dodging_count += dt;
@@ -104,6 +116,7 @@ void Player::Update(double dt) {
 			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
 			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
 			position += dodge_direction * 2 * speed * dt;
+			sprite.PlayAnimation(static_cast<int>(player_action::dodgeleft));
 		}
 		if (dodging_count >= dodging_time) {
 			dodging_count = 0;
@@ -120,6 +133,8 @@ void Player::Update(double dt) {
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
+				//sprite.PlayAnimation(static_cast<int>(player_action::up));
+
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
@@ -129,6 +144,8 @@ void Player::Update(double dt) {
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
+				//sprite.PlayAnimation(static_cast<int>(player_action::down));
+
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
@@ -185,6 +202,7 @@ void Player::Update(double dt) {
 // Draw player
 void Player::Draw() {
 
+
 	if (box->is_activated())
 		box->Draw();
 
@@ -195,15 +213,23 @@ void Player::Draw() {
 	else {
 		set_fill_color(HexColor(0x888888ff));
 	}
+
+	//player draw
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
-	draw_ellipse(position.x, position.y, size, size);
-	pop_settings();
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();
-		set_outline_width(10);
-		draw_line(position.x, position.y, position.x + size * attack_direction.x, position.y + size * attack_direction.y);
-		//draw_line(position.x, position.y, position.x + (size * (GetAttackPosition().x - position.x)), position.y + (size * (GetAttackPosition().y - position.y)));
+		weaponsprite.Load("Assets/sword.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(player_action::None));
+		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		pop_settings();
+	}
+	else if (is_attacking == true && attack_mode == RANGE) {
+		push_settings();
+		weaponsprite.Load("Assets/gun.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(player_action::None));
+		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		pop_settings();
 	}
 }
