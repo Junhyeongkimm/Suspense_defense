@@ -9,7 +9,6 @@
 
 void Monster::SetWantScale(Math::vec2 new_scale)
 {
-
 	Math::ivec2 want = sprite.GetFrameSize();
 	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
 	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
