@@ -181,7 +181,7 @@ void Map::Make_Resource(int number) {
 			int rand_y = random(10, map_size - 10);
 
 			if (MAP[rand_x][rand_y]->Get_State() == TILES::VOID &&
-				(!(mediator->GetPlayerTilePosition().x == rand_x) && (mediator->GetPlayerTilePosition().y == rand_y))) {
+				(!((mediator->GetPlayerTilePosition().x == rand_x) && (mediator->GetPlayerTilePosition().y == rand_y)))) {
 				delete MAP[rand_x][rand_y];
 				MAP[rand_x][rand_y] = new Resource(Math::vec2{ rand_x * tile_length, rand_y * tile_length });
 				break;
@@ -199,7 +199,7 @@ void Map::Make_Warp(int number) {
 			int rand_y = random(10, map_size - 10);
 
 			if (MAP[rand_x][rand_y]->Get_State() == TILES::VOID &&
-				(!(mediator->GetPlayerTilePosition().x == rand_x) && (mediator->GetPlayerTilePosition().y == rand_y))) {
+				(!((mediator->GetPlayerTilePosition().x == rand_x) && (mediator->GetPlayerTilePosition().y == rand_y)))) {
 				delete MAP[rand_x][rand_y];
 				MAP[rand_x][rand_y] = new Warp(Math::vec2{ rand_x * tile_length, rand_y * tile_length });
 				break;

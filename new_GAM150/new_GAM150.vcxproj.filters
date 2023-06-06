@@ -82,6 +82,9 @@
     <ClCompile Include="Game\AStar.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+
+    <ClCompile Include="Game\MBullet.cpp">
+
     <ClCompile Include="Game\Splash1.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -174,6 +177,7 @@
     <ClInclude Include="Game\AStar.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\MBullet.h">
     <ClInclude Include="Game\Splash1.h">
       <Filter>Game</Filter>
     </ClInclude>

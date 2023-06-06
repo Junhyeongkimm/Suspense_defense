@@ -3,14 +3,26 @@
 #include <iostream>
 #include "../Engine/Vec2.h"
 
+class Mediator;
+
 class PopupBox {
-private:
-	Math::vec2 position;
-	double width;
-	double height;
-	std::string string;
+protected:
+	const Math::vec2 position{ 5000, 5000 };
+	const double width = 400;
+	const double height = 200;
+
+	int menu = 0;
+	int state = 0;
+
+	bool activated = false;
+
+	Mediator* mediator;
 public:
-	PopupBox(Math::vec2 position, double width, double height, std::string string);
+	PopupBox(Mediator* mediator);
 	void Draw();
 	void Update();
+	void Activate() { activated = true; }
+	void Deactivate() { activated = false; menu = 0; state = 0; }
+	bool is_activated() { return activated;  }
 };
+

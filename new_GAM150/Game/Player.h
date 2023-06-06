@@ -2,7 +2,9 @@
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
 #include "../Engine/Matrix.h"
+#include "PopupBox.h"
 #include "../Engine/Sprite.h"
+
 
 class Mediator;
 
@@ -31,7 +33,7 @@ private:
 	int attack_mode = MELEE;
 	bool ranged_attack_unlocked = false;
 	// Invincibility
-	const double invincibility_time = 1.0;
+	const double invincibility_time = 0.3;
 	double invincibility_count = 0;
 	// Resources
 	int map_resource = 0;
@@ -49,8 +51,14 @@ private:
 	const double dodge_cool_time = 1.0;
 	double dodge_cool_count = 0;
 	Math::vec2 dodge_direction{ 0, 0 };
+	// HP recovery
+	double recover_count = 0.0;
+	const double recover_cool = 1.0;
 	// Upgrade count
-	int upgrade_count = 0;
+	int attack_upgrade_count = 0;
+	int utility_upgrade_count = 0;
+	// Box
+	PopupBox* box;
 public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
@@ -74,6 +82,7 @@ public:
 	bool Able_To_Attack() { return attack_count > attack_delay; }
 	double GetSize() { return size; }
 	int GetDamage() { return damage; }
+	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
 	// Increase the resource
 	void IncreaseMapResource() { ++map_resource; }
 	void IncreaseMonsterResource() { ++monster_resource; }
@@ -87,7 +96,8 @@ public:
 	// Warp to the base
 	void GoToBase();
 	// Upgrade the player
-	void Upgrade();
+	void Attack_Upgrade();
+	void Utility_Upgrade();
 	// Unlock Dodge
 	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock rnged attack

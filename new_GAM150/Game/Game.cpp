@@ -17,7 +17,8 @@ void Game::SetWantScale(Math::vec2 new_scale)
 // Constructor of Game
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
-	player(nullptr), monsters(), bullets(), map(nullptr), mediator(nullptr), target(nullptr)
+
+	player(nullptr), monsters(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { 
 	sprite.Load("Assets/bullet.spt");
 
@@ -40,27 +41,67 @@ void Game::Load() {
 	mediator->SetMonsters(&monsters);
 	// Give bullets to the mediator
 	mediator->SetBullets(&bullets);
+	// Give monster bullets to the mediator
+	mediator->SetMBullets(&monster_bullets);
 	// Create map by function MapMaking()
 	map->MapMaking();
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
-	// Update player, map, monster, bullets
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
+		mediator->UnlockBaseArraw();
+		mediator->UnlockColonyArraw();
+		mediator->UnlockDodge();
+		mediator->UnlockRangedAttack();
+	}
+	// Update player, map, monster update
 	player->Update(dt);
 	map->Update(dt);
 	for (Monster* monster : monsters) {
 		monster->Update(dt);
 	}
-	for (Bullet* bullet : bullets) {
-		bullet->Update(dt);
-		// Check collision with monsters
-		for (Monster* monster : monsters) {
-			if (monster->GetDistance(bullet->GetPosition()) < (monster->GetSize() / 2 + bullet->GetSize() / 2)) {
-				mediator->DeleteBullet(bullet);
-				mediator->DeleteMonster(monster);
+	// Bullets update
+	for (int i = 0; i < bullets.size(); i++) {
+		// Update bullet's position
+		bullets[i]->Update(dt);
+		// Check collision with tiles
+		if (mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WALL ||
+			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
+			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::RESOURCE ||
+			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WARP) {
+			mediator->DeleteBullet(bullets[i]);
+			continue;
+		}
+		// Check collision with monster
+		for (int j = 0; j < monsters.size(); j++) {
+			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
+				mediator->DeleteBullet(bullets[i]);
+				mediator->DeleteMonster(monsters[j]);
+				break;	
 			}
 		}
 	}
+
+	// Monster bullets update
+	for (int i = 0; i < monster_bullets.size(); i++) {
+		// Update monster bullet's position
+		monster_bullets[i]->Update(dt);
+		// Check collision with tiles
+		if (mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WALL ||
+			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
+			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::RESOURCE ||
+			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WARP) {
+			mediator->DeleteMBullet(monster_bullets[i]);
+			continue;
+		}
+		// Check collision with player
+		if (player->GetDistance(monster_bullets[i]->GetPosition()) < (player->GetSize() + monster_bullets[i]->GetSize()) / 2) {
+			player->Reduce_hp();
+			mediator->DeleteMBullet(monster_bullets[i]);
+			continue;
+		}
+	}
+
 	// Update camera. (Meaningless)
 	camera.Update(player->GetPosition());
 	// If the player press "Escape" key, change the scene to the mainmenu
@@ -122,6 +163,9 @@ void Game::Draw() {
 			monster->Draw();
 	}
 	for (Bullet* bullet : bullets) {
+		bullet->Draw();
+	}
+	for (MBullet* bullet : monster_bullets) {
 		bullet->Draw();
 	}
 	pop_settings();

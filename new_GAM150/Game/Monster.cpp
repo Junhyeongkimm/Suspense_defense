@@ -40,6 +40,11 @@ void Monster::Update(double dt) {
 	paralyze_count += dt;
 	if (paralyze_count < paralyze_time)
 		return;
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::M)) {
+		Math::vec2 direct = mediator->GetPlayerPosition() - position;
+		direct /= direct.GetLength();
+		mediator->AddMBullet(position, direct);
+	}
 	// During the daytime, it will move to the player.
 	if (created_at_day && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != BASE_INSIDE) && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != TOWER)) {
 		

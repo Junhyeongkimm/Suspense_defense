@@ -16,14 +16,27 @@ void Player::SetWantScale(Math::vec2 new_scale)
 }
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
+  
+	box = new PopupBox(mediator);
 	sprite.Load("Assets/player.spt");
-	//scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	//scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	SetWantScale({ 125,125 });
 	sprite.PlayAnimation(static_cast<int>(player_action::waiting));
 }
 // Update
 void Player::Update(double dt) {
+
+	if (mediator->GetTileStateInt(tile_position) == TILES::TOWER) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E) && !box->is_activated()) {
+			box->Activate();
+			return;
+		}
+	}
+
+	if (box->is_activated()) {
+		box->Update();
+		return;
+	}
+
 	// Increase attack_count and invincibility_count, dodge_count by dt
 
 	attack_count += dt;
@@ -158,6 +171,14 @@ void Player::Update(double dt) {
 			direction /= sqrt(2);
 		}
 		position += direction * speed * dt;
+
+		if (mediator->GetTileState(position) == TILES::WALL ||
+			mediator->GetTileState(position) == TILES::RESOURCE ||
+			mediator->GetTileState(position) == TILES::COLONY_SIDE ||
+			mediator->GetTileState(position) == TILES::WARP ||
+			mediator->GetTileState(position) == TILES::TREASURE) {
+			position -= direction * speed * dt;
+		}
 	}
 	// Tile_position update based on the player's position
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
@@ -165,12 +186,34 @@ void Player::Update(double dt) {
 	// Check player attacked
 	mediator->CheckPlayerAttacked();
 
+	// HP recovery
+	recover_count += dt;
+	if (mediator->GetTileStateInt(tile_position) == TILES::BASE_INSIDE) {
+		if (hp < max_hp && recover_count >= recover_cool) {
+			++hp;
+			recover_count = 0;
+		}
+	}
+	// Game over
 	if (hp <= 0) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 }
 // Draw player
 void Player::Draw() {
+
+
+	if (box->is_activated())
+		box->Draw();
+
+	push_settings();
+	if (is_dodging) {
+		set_fill_color(HexColor(0x000000ff));
+	}
+	else {
+		set_fill_color(HexColor(0x888888ff));
+	}
+
 	//player draw
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
@@ -232,6 +275,9 @@ void Player::GoToBase() {
 	position = { mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2, mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2 };
 }
 // Upgrade the player
-void Player::Upgrade() {
+void Player::Attack_Upgrade() {
+
+}
+void Player::Utility_Upgrade() {
 
 }
