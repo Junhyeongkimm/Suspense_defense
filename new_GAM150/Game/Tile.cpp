@@ -242,13 +242,17 @@ void Tower::Draw(bool is_day) {
 Treasure::Treasure(Math::vec2 position) : Tile(position) {
 	state = TILES::TREASURE;
 	hp = 3;
+	sprite.Load("Assets/chest.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(treasure_animations::None));
 }
 void Treasure::Update(double dt) {
 
 }
 void Treasure::Draw(bool is_day) {
-	set_fill_color(HexColor{ 0x882222ff });
-	draw_rectangle(position.x, position.y, size);
-	//sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	/*set_fill_color(HexColor{ 0x882222ff });
+	draw_rectangle(position.x, position.y, size);*/
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 
 }

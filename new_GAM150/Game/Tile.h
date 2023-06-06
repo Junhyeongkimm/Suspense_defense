@@ -153,7 +153,6 @@ public:
     void Draw(bool is_day);
     enum class Tower_animations {
         basic,
-        resourceattacked,
         broken
     };
 };
@@ -165,8 +164,7 @@ public:
     void Update(double dt);
     void Draw(bool is_day);
     enum class treasure_animations {
-        basic,
-        resourceattacked,
+        None,
         broken
     };
 };
