@@ -127,7 +127,7 @@ void Colony_Side::Draw(bool is_day) {
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_WALL;
 	hp = 10;
-	//sprite.Load("Assets/wall.spt");
+	sprite.Load("Assets/wall.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(basewall_animations::basic));
@@ -136,12 +136,8 @@ void Base_Wall::Update(double dt) {
 	invincibility_count += dt;
 }
 void Base_Wall::Draw(bool is_day) {
-	if (is_day) {
 		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	}
-	else {
-		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	}
+	
 }
 bool Base_Wall::AbleToBeAttacked() { 
 	if (invincibility_count > invincibility_time) { 
