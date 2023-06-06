@@ -52,7 +52,7 @@ void Monster::Update(double dt) {
 	}
 	// During the night time, it will move to the base
 	else {
-		sprite.PlayAnimation(static_cast<int>(flymonster_action::Move));
+		sprite.PlayAnimation(static_cast<int>(flymonster_action::flymove));
 		Math::vec2 middle_point{ mediator->GetMapLength() / 2 + mediator->GetTileLength()/2, mediator->GetMapLength() / 2 + mediator->GetTileLength()/2 };
 
 		direction.x = (middle_point.x - position.x) / GetDistance(middle_point);

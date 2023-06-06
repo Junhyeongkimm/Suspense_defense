@@ -54,7 +54,7 @@ public:
 
 	enum class flymonster_action {
 		None,
-		Move
+		flymove
 
 	};
 	enum class flymonsterDirection {
