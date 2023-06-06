@@ -2,6 +2,7 @@
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
 #include "../Engine/Matrix.h"
+#include "PopupBox.h"
 
 class Mediator;
 
@@ -52,7 +53,10 @@ private:
 	double recover_count = 0.0;
 	const double recover_cool = 1.0;
 	// Upgrade count
-	int upgrade_count = 0;
+	int attack_upgrade_count = 0;
+	int utility_upgrade_count = 0;
+	// Box
+	PopupBox* box;
 public:
 	// Constructor
 	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
@@ -88,7 +92,8 @@ public:
 	// Warp to the base
 	void GoToBase();
 	// Upgrade the player
-	void Upgrade();
+	void Attack_Upgrade();
+	void Utility_Upgrade();
 	// Unlock Dodge
 	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock rnged attack

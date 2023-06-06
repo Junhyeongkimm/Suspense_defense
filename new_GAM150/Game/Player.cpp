@@ -9,10 +9,23 @@ using namespace doodle;
 
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
-	
+	box = new PopupBox(mediator);
 }
 // Update
 void Player::Update(double dt) {
+
+	if (mediator->GetTileStateInt(tile_position) == TILES::TOWER) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E) && !box->is_activated()) {
+			box->Activate();
+			return;
+		}
+	}
+
+	if (box->is_activated()) {
+		box->Update();
+		return;
+	}
+
 	// Increase attack_count and invincibility_count, dodge_count by dt
 	attack_count += dt;
 	invincibility_count += dt;
@@ -171,6 +184,10 @@ void Player::Update(double dt) {
 }
 // Draw player
 void Player::Draw() {
+
+	if (box->is_activated())
+		box->Draw();
+
 	push_settings();
 	if (is_dodging) {
 		set_fill_color(HexColor(0x000000ff));
@@ -232,6 +249,9 @@ void Player::GoToBase() {
 	position = { mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2, mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2 };
 }
 // Upgrade the player
-void Player::Upgrade() {
+void Player::Attack_Upgrade() {
+
+}
+void Player::Utility_Upgrade() {
 
 }

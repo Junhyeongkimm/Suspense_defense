@@ -63,4 +63,7 @@ public:
 	void UnlockRangedAttack() { player->UnlockRangedAttack(); }
 	void UnlockBaseArraw() { map->UnlockBaseArraw(); }
 	void UnlockColonyArraw() { map->UnlockColonyArraw(); }
+	// Upgrade
+	void UpgradePlayerAttack() { player->Attack_Upgrade(); }
+	void UpgradePlayerUtility() { player->Utility_Upgrade(); }
 };
