@@ -174,6 +174,7 @@ void Player::Draw() {
 		sprite.Load("Assets/sword.spt");
 		SetWantScale({ 25,25 });
 		sprite.PlayAnimation(static_cast<int>(player_action::None));
+		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		//draw_line(position.x, position.y, position.x + (size * (GetAttackPosition().x - position.x)), position.y + (size * (GetAttackPosition().y - position.y)));
 		pop_settings();
 	}
@@ -182,6 +183,7 @@ void Player::Draw() {
 		sprite.Load("Assets/gun.spt");
 		SetWantScale({ 25,25 });
 		sprite.PlayAnimation(static_cast<int>(player_action::None));
+		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		pop_settings();
 	}
 }

@@ -6,11 +6,24 @@
 #include "doodle/angle.hpp"
 using namespace doodle;
 
+
+void Game::SetWantScale(Math::vec2 new_scale)
+{
+
+	Math::ivec2 want = sprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
 // Constructor of Game
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
 	player(nullptr), monsters(), bullets(), map(nullptr), mediator(nullptr), target(nullptr)
-{ }
+{ 
+	sprite.Load("Assets/bullet.spt");
+
+	SetWantScale({ 125,125 });
+	sprite.PlayAnimation(static_cast<int>(bullet::None));
+}
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
 	camera.SetPosition({ 0, 0 }); // Camera is not used for now LOL
@@ -62,7 +75,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			target = monster;
 	}
 	// Attack the target monster if it is not nullptr and in range
-	//tower_attack_count += dt;
+	tower_attack_count += dt;
 	if (target != nullptr) {
 		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
