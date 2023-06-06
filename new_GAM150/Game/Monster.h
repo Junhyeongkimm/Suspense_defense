@@ -23,6 +23,8 @@ private:
 	double scale_x;
 	double scale_y;
 public:
+	//scale
+	void SetWantScale(Math::vec2 new_scale);
 	// Constructor
 	Monster(Math::vec2 position, Mediator* mediator);
 	// Update by dt and will move the the target

@@ -52,6 +52,7 @@ private:
 	// Upgrade count
 	int upgrade_count = 0;
 public:
+	//scale
 	void SetWantScale(Math::vec2 new_scale);
 	// Constructor
 	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);

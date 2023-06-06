@@ -148,11 +148,12 @@ private:
 // Tower tile
 class Tower : public Tile {
 public:
+    void SetWantScale(Math::vec2 new_scale);
     Tower(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
     enum class Tower_animations {
-        basic,
+        None,
         broken
     };
 };

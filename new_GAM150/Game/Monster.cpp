@@ -6,14 +6,19 @@
 #include "AStar.h"
 #include <iostream>
 
+
+void Monster::SetWantScale(Math::vec2 new_scale)
+{
+
+	Math::ivec2 want = sprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
-	/*sprite.Load("Assets/flymonster.spt");
-	sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);*/
+
 	
 	if (mediator->Is_Day()) {
 
@@ -23,8 +28,7 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 	else {
 		sprite.Load("Assets/flymonster.spt");
 		sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
-		scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-		scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+		SetWantScale({ 75,75 });
 		created_at_day = false;
 		speed = 175;
 		

@@ -225,12 +225,19 @@ void Warp::Draw(bool is_day) {
 
 }
 // Tower
+void Tower::SetWantScale(Math::vec2 new_scale)
+{
+
+	Math::ivec2 want = sprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
+
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
 	hp = 10; sprite.Load("Assets/basecore.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(Tower_animations::basic));
+	SetWantScale({ 25, 25 });
+	sprite.PlayAnimation(static_cast<int>(Tower_animations::None));
 }
 void Tower::Update(double dt) {
 
