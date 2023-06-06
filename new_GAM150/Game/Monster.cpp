@@ -28,7 +28,7 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 	else {
 		sprite.Load("Assets/flymonster.spt");
 		sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
-		SetWantScale({ 75,75 });
+		SetWantScale({ 60,60 });
 		created_at_day = false;
 		speed = 175;
 		
@@ -103,10 +103,7 @@ void Monster::Update(double dt) {
 // Draw
 void Monster::Draw() {
 
-
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	std::cout << "skr";
-
 
 }
 // Getter distance from the monster to the target
