@@ -81,6 +81,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
 			direction /= direction.GetLength();
 			mediator->AddBullet(middle_point, direction);
+
 			tower_attack_count = 0;
 		}
 	}

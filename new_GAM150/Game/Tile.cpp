@@ -45,10 +45,10 @@ Wall::Wall(Math::vec2 position) : Tile(position) {
 	state = TILES::WALL;
 	hp = 2;
 
-	sprite.Load("Assets/rock.spt");
+	//sprite.Load("Assets/rock.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
+	//sprite.PlayAnimation(static_cast<int>(rock_animations::basic));
 }
 
 void Wall::Update(double dt) {
@@ -57,10 +57,10 @@ void Wall::Update(double dt) {
 void Wall::Draw(bool is_day) {
 	if (hp == 1 && rockbroken == false) {
 		rockbroken = true;
-		sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
+		//sprite.PlayAnimation(static_cast<int>(rock_animations::broken));
 	}
 
-	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	//sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
 
 void Wall::Attacked() {
@@ -127,7 +127,7 @@ void Colony_Side::Draw(bool is_day) {
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
 	state = TILES::BASE_WALL;
 	hp = 10;
-	sprite.Load("Assets/wall.spt");
+	//sprite.Load("Assets/wall.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(basewall_animations::basic));
@@ -235,7 +235,8 @@ void Tower::SetWantScale(Math::vec2 new_scale)
 
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
-	hp = 10; sprite.Load("Assets/basecore.spt");
+	hp = 10;
+	sprite.Load("Assets/basecore.spt");
 	SetWantScale({ 50, 50 });
 	sprite.PlayAnimation(static_cast<int>(Tower_animations::None));
 }

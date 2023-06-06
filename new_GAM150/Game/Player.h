@@ -42,9 +42,9 @@ private:
 	const double warp_time = 2.0;
 	double warp_count = 0;
 	// Dodge
-	bool dodge_unlocked = false;
+	bool dodge_unlocked = true;
 	bool is_dodging = false;
-	const double dodging_time = 0.2;
+	const double dodging_time = 1.0;
 	double dodging_count = 0;
 	const double dodge_cool_time = 1.0;
 	double dodge_cool_count = 0;
@@ -94,6 +94,7 @@ public:
 	void UnlockRangedAttack() { ranged_attack_unlocked = true; }
 
 	CS230::Sprite sprite;
+	CS230::Sprite weaponsprite;
 
 	double scale_x;
 	double scale_y;
@@ -103,11 +104,11 @@ public:
 		waiting,
 		left,
 		dodgeleft,
-		right,
-		dodgeright,
 		up,
 		dodgeup,
 		down,
 		dodgedown
 	};
+
+	bool flipped = false;
 };
