@@ -82,6 +82,12 @@
     <ClCompile Include="Game\AStar.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Splash1.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Splash2.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera.h">
@@ -166,6 +172,12 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\AStar.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Splash1.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Splash2.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

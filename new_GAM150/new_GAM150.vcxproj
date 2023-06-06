@@ -150,6 +150,8 @@
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\PopupBox.cpp" />
     <ClCompile Include="Game\Splash.cpp" />
+    <ClCompile Include="Game\Splash1.cpp" />
+    <ClCompile Include="Game\Splash2.cpp" />
     <ClCompile Include="Game\Tile.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -179,6 +181,8 @@
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\PopupBox.h" />
     <ClInclude Include="Game\Splash.h" />
+    <ClInclude Include="Game\Splash1.h" />
+    <ClInclude Include="Game\Splash2.h" />
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\Tile.h" />
     <ClInclude Include="Game\TileStates.h" />

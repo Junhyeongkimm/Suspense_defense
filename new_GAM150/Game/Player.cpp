@@ -165,7 +165,7 @@ void Player::Update(double dt) {
 }
 // Draw player
 void Player::Draw() {
-
+	//player draw
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
 	// If the player is attacking, draw the line (in the MELEE mode)

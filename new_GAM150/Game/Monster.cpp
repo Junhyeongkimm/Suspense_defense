@@ -4,21 +4,30 @@
 #include <algorithm>
 #include "State.h"
 #include "AStar.h"
+#include <iostream>
 
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
 	tile_position.x = (int)((position.x) / mediator->GetTileLength());
 	tile_position.y = (int)((position.y) / mediator->GetTileLength());
-
+	/*sprite.Load("Assets/flymonster.spt");
+	sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);*/
+	
 	if (mediator->Is_Day()) {
 
 		created_at_day = true;
 		speed = 250;
 	}
 	else {
-
+		sprite.Load("Assets/flymonster.spt");
+		sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
+		scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+		scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 		created_at_day = false;
 		speed = 175;
+		
 	}
 		
 }
@@ -89,10 +98,12 @@ void Monster::Update(double dt) {
 }
 // Draw
 void Monster::Draw() {
-	push_settings();
-	set_fill_color(HexColor(0x888888ff));
-	draw_ellipse(position.x, position.y, size);
-	pop_settings();
+
+
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	std::cout << "skr";
+
+
 }
 // Getter distance from the monster to the target
 double Monster::GetDistance(Math::vec2 target) {

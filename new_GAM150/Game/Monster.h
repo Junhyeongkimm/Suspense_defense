@@ -1,5 +1,6 @@
 #pragma once
 #include "../Engine/Vec2.h"
+#include "../Engine/Sprite.h"
 #include <vector>
 #include <unordered_map>
 
@@ -7,6 +8,7 @@ class Mediator;
 
 class Monster {
 private:
+	CS230::Sprite sprite;
 	Mediator* mediator;
 	Math::vec2 position;
 	Math::ivec2 tile_position;
@@ -18,6 +20,8 @@ private:
 	const double paralyze_time = 0.5;
 	double paralyze_count = 0;
 	bool created_at_day;
+	double scale_x;
+	double scale_y;
 public:
 	// Constructor
 	Monster(Math::vec2 position, Mediator* mediator);
@@ -38,13 +42,21 @@ public:
 
 	enum class monster_action{
 		left,
-		leftattack,
-		right,
 		rightattack,
 		up,
 		upattack,
 		down,
 		downattack
 
+	};
+
+	enum class flymonster_action {
+		None,
+		flymonsterattack
+
+	};
+	enum class flymonsterDirection {
+		Left,
+		Right
 	};
 };

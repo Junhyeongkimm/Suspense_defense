@@ -62,7 +62,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			target = monster;
 	}
 	// Attack the target monster if it is not nullptr and in range
-	tower_attack_count += dt;
+	//tower_attack_count += dt;
 	if (target != nullptr) {
 		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
