@@ -78,13 +78,13 @@ void Game::Update([[maybe_unused]] double dt) {
 			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::RESOURCE ||
 			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WARP) {
 			mediator->DeleteMBullet(monster_bullets[i]);
-			break;
+			continue;
 		}
 		// Check collision with player
 		if (player->GetDistance(monster_bullets[i]->GetPosition()) < (player->GetSize() + monster_bullets[i]->GetSize()) / 2) {
 			player->Reduce_hp();
 			mediator->DeleteMBullet(monster_bullets[i]);
-			break;
+			continue;
 		}
 	}
 
