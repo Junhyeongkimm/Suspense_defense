@@ -48,38 +48,43 @@ void Game::Update([[maybe_unused]] double dt) {
 	}
 	// Bullets update
 	for (int i = 0; i < bullets.size(); i++) {
+		// Update bullet's position
 		bullets[i]->Update(dt);
-
-		// Check collision with Wall
+		// Check collision with tiles
 		if (mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WALL ||
 			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
 			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::RESOURCE ||
 			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WARP) {
 			mediator->DeleteBullet(bullets[i]);
+			continue;
 		}
-	}
-	for (int i = 0; i < bullets.size(); i++) {
-		for (Monster* monster : monsters) {
-			if (monster->GetDistance(bullets[i]->GetPosition()) < (monster->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
+		// Check collision with monster
+		for (int j = 0; j < monsters.size(); j++) {
+			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
 				mediator->DeleteBullet(bullets[i]);
-				mediator->DeleteMonster(monster);
+				mediator->DeleteMonster(monsters[j]);
+				break;	
 			}
 		}
 	}
+
 	// Monster bullets update
 	for (int i = 0; i < monster_bullets.size(); i++) {
+		// Update monster bullet's position
 		monster_bullets[i]->Update(dt);
+		// Check collision with tiles
 		if (mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WALL ||
 			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
 			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::RESOURCE ||
 			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WARP) {
 			mediator->DeleteMBullet(monster_bullets[i]);
+			break;
 		}
-	}
-	for (int i = 0; i < monster_bullets.size(); i++) {
+		// Check collision with player
 		if (player->GetDistance(monster_bullets[i]->GetPosition()) < (player->GetSize() + monster_bullets[i]->GetSize()) / 2) {
 			player->Reduce_hp();
 			mediator->DeleteMBullet(monster_bullets[i]);
+			break;
 		}
 	}
 

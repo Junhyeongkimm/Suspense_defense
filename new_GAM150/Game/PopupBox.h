@@ -5,6 +5,9 @@
 
 class PopupBox {
 private:
+
+
+protected:
 	Math::vec2 position;
 	double width;
 	double height;
@@ -14,3 +17,4 @@ public:
 	void Draw();
 	void Update();
 };
+
