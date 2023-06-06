@@ -3,4 +3,4 @@ FrameSize 300 237
 HotSpot 90 50
 NumFrames 3
 Anim Assets/None.anm
-Anim Assets/flymonsterattack.anm
+Anim Assets/flymove.anm
