@@ -64,42 +64,21 @@ void Game::Update([[maybe_unused]] double dt) {
 	for (int i = 0; i < bullets.size(); i++) {
 		// Update bullet's position
 		bullets[i]->Update(dt);
-		// Check collision with tiles
-		if (mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WALL ||
-			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
-			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::RESOURCE ||
-			mediator->GetTileState(bullets[i]->GetPosition()) == TILES::WARP) {
-			mediator->DeleteBullet(bullets[i]);
-			continue;
-		}
+	}
+	for (int i = 0; i < bullets.size(); i++) {
 		// Check collision with monster
 		for (int j = 0; j < monsters.size(); j++) {
 			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
 				mediator->DeleteBullet(bullets[i]);
 				mediator->DeleteMonster(monsters[j]);
-				break;	
+				break;
 			}
 		}
 	}
-
 	// Monster bullets update
 	for (int i = 0; i < monster_bullets.size(); i++) {
 		// Update monster bullet's position
 		monster_bullets[i]->Update(dt);
-		// Check collision with tiles
-		if (mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WALL ||
-			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::COLONY_SIDE ||
-			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::RESOURCE ||
-			mediator->GetTileState(monster_bullets[i]->GetPosition()) == TILES::WARP) {
-			mediator->DeleteMBullet(monster_bullets[i]);
-			continue;
-		}
-		// Check collision with player
-		if (player->GetDistance(monster_bullets[i]->GetPosition()) < (player->GetSize() + monster_bullets[i]->GetSize()) / 2) {
-			player->Reduce_hp();
-			mediator->DeleteMBullet(monster_bullets[i]);
-			continue;
-		}
 	}
 
 	// Update camera. (Meaningless)
@@ -116,7 +95,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			target = monster;
 	}
 	// Attack the target monster if it is not nullptr and in range
-	tower_attack_count += dt;
+	//tower_attack_count += dt;
 	if (target != nullptr) {
 		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
@@ -137,6 +116,7 @@ void Game::Unload() {
 // Draw things
 void Game::Draw() {
 	Engine::GetWindow().Clear(0x000000FF);
+
 
 	Math::TransformationMatrix camera_matrix = camera.GetMatrix(); // Not used.
 
@@ -169,6 +149,7 @@ void Game::Draw() {
 		bullet->Draw();
 	}
 	pop_settings();
+
 
 	// Draw texts
 	push_settings();

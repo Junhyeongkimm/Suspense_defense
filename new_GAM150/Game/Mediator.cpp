@@ -25,7 +25,7 @@ void Mediator::Check_Map_Attacked() {
 void Mediator::CheckPlayerAttacked() {
 	for (Monster* monster : *monsters) {
 		if (monster->GetDistance(player->GetPosition()) < monster->GetSize() / 2) {
-			player->Reduce_hp();
+			player->Reduce_hp(1);
 		}
 	}
 }

@@ -189,10 +189,7 @@ void Player::Update(double dt) {
 	// HP recovery
 	recover_count += dt;
 	if (mediator->GetTileStateInt(tile_position) == TILES::BASE_INSIDE) {
-		if (hp < max_hp && recover_count >= recover_cool) {
-			++hp;
-			recover_count = 0;
-		}
+		Heal();
 	}
 	// Game over
 	if (hp <= 0) {
@@ -234,12 +231,19 @@ void Player::Draw() {
 	}
 }
 // Reduce hp
-void Player::Reduce_hp() {
+void Player::Reduce_hp(int damage) {
 	if (invincibility_count > invincibility_time) {
-		--hp;
+		hp -= damage;
 		invincibility_count = 0;
 		is_warping = false;
 		warp_count = 0;
+	}
+}
+// Heal
+void Player::Heal() {
+	if (hp < max_hp && recover_count >= recover_cool) {
+		++hp;
+		recover_count = 0;
 	}
 }
 // Get distacne from the player to the target
@@ -277,7 +281,51 @@ void Player::GoToBase() {
 // Upgrade the player
 void Player::Attack_Upgrade() {
 
+	switch (attack_upgrade_count) {
+	case 0:
+
+		break;
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	default:
+
+		break;
+	}
+
+	std::cout << "Player upgrade!\n";
 }
 void Player::Utility_Upgrade() {
 
+	switch (utility_upgrade_count) {
+	case 0:
+
+		break;
+	case 1:
+
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+
+		break;
+	default:
+
+		break;
+	}
+
+	std::cout << "Utility upgrade!\n";
 }
