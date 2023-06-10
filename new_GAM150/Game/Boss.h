@@ -19,7 +19,7 @@ protected:
 	Mediator* mediator;
 public:
 	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator);
-	void Update(double dt);
+	virtual void Update(double dt);
 	virtual void Draw() = 0;
 
 	virtual void Pattern1() = 0;
@@ -33,13 +33,14 @@ private:
 	const double speed = 300;
 	const double size = 100;
 
-	double pattern1_time = 2.0;
-	double pattern2_time = 2.0;
-	double pattern3_time = 2.0;
+	double pattern1_time = 0.5;
+	double pattern2_time = 0.5;
+	double pattern3_time = 0.0;
 
 public:
 	Boss1(Math::vec2 position, Mediator* mediator);
 	void Draw();
+	void Update(double dt);
 	void Pattern1();
 	void Pattern2();
 	void Pattern3();

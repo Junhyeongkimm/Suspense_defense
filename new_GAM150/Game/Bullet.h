@@ -6,7 +6,7 @@
 class Mediator;
 
 class Bullet {
-private:
+protected:
 	Math::vec2 position;
 	const double speed = 600;
 	const double size = 20;
@@ -24,6 +24,8 @@ public:
 	Bullet(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator);
 	// Update by "dt"
 	void Update(double dt);
+	// Move
+	virtual void Move(double dt);
 	// Draw
 	void Draw();
 	// Get position
@@ -32,4 +34,12 @@ public:
 	enum class bullet {
 		None
 	};
+};
+
+class HomingShot :public Bullet {
+private:
+	Math::vec2 target;
+public:
+	HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator);
+	void Move(double dt);
 };

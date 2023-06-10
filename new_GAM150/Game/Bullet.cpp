@@ -20,17 +20,20 @@ Bullet::Bullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediat
 // Update
 void Bullet::Update(double dt) {
 	// Update position
-	position += direction * speed * dt;
-
+	Move(dt);
 
 	// Check collision with tiles
-	if (mediator->GetTileState(position) == TILES::WALL ||
-		mediator->GetTileState(position) == TILES::COLONY_SIDE ||
-		mediator->GetTileState(position) == TILES::RESOURCE ||
-		mediator->GetTileState(position) == TILES::WARP) {
+	if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
+		mediator->GetMap()->GetTileState(position) == TILES::COLONY_SIDE ||
+		mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||
+		mediator->GetMap()->GetTileState(position) == TILES::WARP) {
 		mediator->DeleteBullet(this);
 		return;
 	}
+}
+// Move
+void Bullet::Move(double dt) {
+	position += direction * speed * dt;
 }
 // Draw bullet
 void Bullet::Draw() {
@@ -40,4 +43,27 @@ void Bullet::Draw() {
 	draw_ellipse(position.x, position.y, size, size);
 	pop_settings();*/
 
+}
+
+HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator) : Bullet(start_positon, direction, mediator) {
+	
+}
+void HomingShot::Move(double dt) {
+
+	if (mediator->GetMonster()->size()) {
+		Math::vec2 target = mediator->GetMonster()->front()->GetPosition();
+		double distance = mediator->GetMonster()->front()->GetDistance(position);
+
+		for (auto monster : *mediator->GetMonster()) {
+			if (monster->GetDistance(position) < distance) {
+				distance = monster->GetDistance(target);
+				target = monster->GetPosition();
+			}
+		}
+
+		direction = target - position;
+		direction /= direction.GetLength();
+	}
+
+	position += direction * speed * dt;
 }

@@ -125,11 +125,11 @@ void PopupBox::Update() {
 			switch (menu) {
 			case 0:
 				// upgrade attack
-				mediator->UpgradePlayerAttack();
+				mediator->GetPlayer()->Attack_Upgrade();
 				break;
 			case 1:
 				// upgrade utility
-				mediator->UpgradePlayerUtility();
+				mediator->GetPlayer()->Utility_Upgrade();
 				break;
 			case 2:
 				break;

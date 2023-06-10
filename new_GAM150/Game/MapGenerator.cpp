@@ -149,7 +149,7 @@ void Map::Make_Colony(int number) {
 				if (MAP[i][j]->Get_State() == TILES::COLONY_CORE || 
 					MAP[i][j]->Get_State() == TILES::BASE_INSIDE ||
 					MAP[i][j]->Get_State() == TILES::TREASURE ||
-					((mediator->GetPlayerTilePosition().x == i) && (mediator->GetPlayerTilePosition().y == j)))
+					((mediator->GetPlayer()->GetTilePosition().x == i) && (mediator->GetPlayer()->GetTilePosition().y == j)))
 					not_make = true;
 			}
 		}
@@ -181,7 +181,7 @@ void Map::Make_Resource(int number) {
 			int rand_y = random(10, map_size - 10);
 
 			if (MAP[rand_x][rand_y]->Get_State() == TILES::VOID &&
-				(!((mediator->GetPlayerTilePosition().x == rand_x) && (mediator->GetPlayerTilePosition().y == rand_y)))) {
+				(!((mediator->GetPlayer()->GetTilePosition().x == rand_x) && (mediator->GetPlayer()->GetTilePosition().y == rand_y)))) {
 				delete MAP[rand_x][rand_y];
 				MAP[rand_x][rand_y] = new Resource(Math::vec2{ rand_x * tile_length, rand_y * tile_length });
 				break;
@@ -199,7 +199,7 @@ void Map::Make_Warp(int number) {
 			int rand_y = random(10, map_size - 10);
 
 			if (MAP[rand_x][rand_y]->Get_State() == TILES::VOID &&
-				(!((mediator->GetPlayerTilePosition().x == rand_x) && (mediator->GetPlayerTilePosition().y == rand_y)))) {
+				(!((mediator->GetPlayer()->GetTilePosition().x == rand_x) && (mediator->GetPlayer()->GetTilePosition().y == rand_y)))) {
 				delete MAP[rand_x][rand_y];
 				MAP[rand_x][rand_y] = new Warp(Math::vec2{ rand_x * tile_length, rand_y * tile_length });
 				break;
@@ -249,8 +249,8 @@ void Map::Show_Map() {
 		}
 	}
 	// Show map based on the player's position and the offset(=sight of the player)
-	for (int i = mediator->GetPlayerTilePosition().x - offset - 1; i <= mediator->GetPlayerTilePosition().x + offset + 1; i++) {
-		for (int j = mediator->GetPlayerTilePosition().y - offset - 1; j <= mediator->GetPlayerTilePosition().y + offset + 1; j++) {
+	for (int i = mediator->GetPlayer()->GetTilePosition().x - offset - 1; i <= mediator->GetPlayer()->GetTilePosition().x + offset + 1; i++) {
+		for (int j = mediator->GetPlayer()->GetTilePosition().y - offset - 1; j <= mediator->GetPlayer()->GetTilePosition().y + offset + 1; j++) {
 			if (i < 0 || i >= map_size || j < 0 || j >= map_size)
 				continue;
 			MAP[i][j]->Draw(is_day);
@@ -264,11 +264,11 @@ void Map::Base_Show_Arrow() {
 		return;
 	push_settings();
 
-	arrow_direction = { middle_point.x - mediator->GetPlayerPosition().x, middle_point.y - mediator->GetPlayerPosition().y };
+	arrow_direction = { middle_point.x - mediator->GetPlayer()->GetPosition().x, middle_point.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
 	arrow_direction *= 30;
 	
-	apply_translate(mediator->GetPlayerPosition().x, mediator->GetPlayerPosition().y);
+	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 	draw_ellipse(0, 0, 60);
 	set_outline_width(15);
@@ -290,19 +290,19 @@ void Map::Colony_Show_Arrow() {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			if (MAP[i][j]->Get_State() == TILES::COLONY_CORE) {
-				if (MAP[i][j]->GetDistance(mediator->GetPlayerPosition()) < distance) {
+				if (MAP[i][j]->GetDistance(mediator->GetPlayer()->GetPosition()) < distance) {
 					current = MAP[i][j]->GetPosition();
-					distance = MAP[i][j]->GetDistance(mediator->GetPlayerPosition());
+					distance = MAP[i][j]->GetDistance(mediator->GetPlayer()->GetPosition());
 				}
 			}
 		}
 	}
 
-	arrow_direction = { current.x - mediator->GetPlayerPosition().x, current.y - mediator->GetPlayerPosition().y };
+	arrow_direction = { current.x - mediator->GetPlayer()->GetPosition().x, current.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
 	arrow_direction *= 30;
 
-	apply_translate(mediator->GetPlayerPosition().x, mediator->GetPlayerPosition().y);
+	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 	draw_ellipse(0, 0, 60);
 	set_outline_width(15);
@@ -360,7 +360,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			if (MAP[x][y]->GetHP() <= 0) {
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-				mediator->IncreaseMapResource();
+				mediator->GetPlayer()->IncreaseMapResource();
 			}
 			break;
 
@@ -369,7 +369,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			if (MAP[x][y]->GetHP() <= 0) {
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
-				mediator->IncreaseWarpResource();
+				mediator->GetPlayer()->IncreaseWarpResource();
 			}
 			break;
 
@@ -381,16 +381,16 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 
 				switch (unlock_count) {
 				case 0:
-					mediator->UnlockBaseArraw();
+					mediator->GetMap()->UnlockBaseArraw();
 					break;
 				case 1:
-					mediator->UnlockRangedAttack();
+					//mediator->UnlockRangedAttack();
 					break;
 				case 2:
-					mediator->UnlockDodge();
+					mediator->GetPlayer()->UnlockDodge();
 					break;
 				case 3:
-					mediator->UnlockColonyArraw();
+					mediator->GetMap()->UnlockColonyArraw();
 					break;
 				}
 				++unlock_count;

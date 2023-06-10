@@ -15,11 +15,11 @@ void Monster::SetWantScale(Math::vec2 new_scale)
 }
 // Constructor
 Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
-	tile_position.x = (int)((position.x) / mediator->GetTileLength());
-	tile_position.y = (int)((position.y) / mediator->GetTileLength());
+	tile_position.x = (int)((position.x) / mediator->GetMap()->Get_Tile_Length());
+	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
 
 	
-	if (mediator->Is_Day()) {
+	if (mediator->GetMap()->IsDay()) {
 
 		created_at_day = true;
 		speed = 250;
@@ -41,15 +41,15 @@ void Monster::Update(double dt) {
 	if (paralyze_count < paralyze_time)
 		return;
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::M)) {
-		Math::vec2 direct = mediator->GetPlayerPosition() - position;
+		Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
 		direct /= direct.GetLength();
-		mediator->AddMBullet(position, direct);
+		mediator->AddMBullet(position, direct, 0);
 	}
 	// During the daytime, it will move to the player.
-	if (created_at_day && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != BASE_INSIDE) && (mediator->GetTileStateInt(mediator->GetPlayerTilePosition()) != TOWER)) {
+	if (created_at_day && (mediator->GetMap()->GetTileStateInt(mediator->GetPlayer()->GetTilePosition()) != BASE_INSIDE) && (mediator->GetMap()->GetTileStateInt(mediator->GetPlayer()->GetTilePosition()) != TOWER)) {
 		
-		Math::ivec2 target_tile = FindPath(tile_position, mediator->GetPlayerTilePosition(), mediator);
-		Math::vec2 target = { ((double)target_tile.x + 1 / 2.0) * mediator->GetTileLength(), ((double)target_tile.y + 1 / 2.0) * mediator->GetTileLength() };
+		Math::ivec2 target_tile = FindPath(tile_position, mediator->GetPlayer()->GetTilePosition(), mediator);
+		Math::vec2 target = { ((double)target_tile.x + 1 / 2.0) * mediator->GetMap()->Get_Tile_Length(), ((double)target_tile.y + 1 / 2.0) * mediator->GetMap()->Get_Tile_Length() };
 		direction = target - position;
 		direction /= direction.GetLength();
 		position += direction * speed * dt;
@@ -57,7 +57,7 @@ void Monster::Update(double dt) {
 	// During the night time, it will move to the base
 	else {
 		sprite.PlayAnimation(static_cast<int>(flymonster_action::flymove));
-		Math::vec2 middle_point{ mediator->GetMapLength() / 2 + mediator->GetTileLength()/2, mediator->GetMapLength() / 2 + mediator->GetTileLength()/2 };
+		Math::vec2 middle_point{ mediator->GetMap()->Get_Map_Length() / 2 + mediator->GetMap()->Get_Tile_Length()/2, mediator->GetMap()->Get_Map_Length() / 2 + mediator->GetMap()->Get_Tile_Length()/2 };
 
 		direction.x = (middle_point.x - position.x) / GetDistance(middle_point);
 		direction.y = (middle_point.y - position.y) / GetDistance(middle_point);
@@ -68,12 +68,12 @@ void Monster::Update(double dt) {
 		Math::vec2 next_position_y = { position.x, position.y + speed * dt * direction.y };
 
 		bool can_move_x = (
-			mediator->GetTileState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
-			mediator->GetTileState({ next_position_x.x + half_size, next_position_x.y }) != TILES::BASE_WALL);
+			mediator->GetMap()->GetTileState({ next_position_x.x - half_size, next_position_x.y }) != TILES::BASE_WALL &&
+			mediator->GetMap()->GetTileState({ next_position_x.x + half_size, next_position_x.y }) != TILES::BASE_WALL);
 
 		bool can_move_y = (
-			mediator->GetTileState({ next_position_y.x, next_position_y.y - half_size }) != TILES::BASE_WALL &&
-			mediator->GetTileState({ next_position_y.x, next_position_y.y + half_size }) != TILES::BASE_WALL);
+			mediator->GetMap()->GetTileState({ next_position_y.x, next_position_y.y - half_size }) != TILES::BASE_WALL &&
+			mediator->GetMap()->GetTileState({ next_position_y.x, next_position_y.y + half_size }) != TILES::BASE_WALL);
 
 		if (can_move_x) {
 			position.x = next_position_x.x;
@@ -84,23 +84,23 @@ void Monster::Update(double dt) {
 		}
 	}
 	// Tile position update
-	tile_position.x = (int)((position.x) / mediator->GetTileLength());
-	tile_position.y = (int)((position.y) / mediator->GetTileLength());
+	tile_position.x = (int)((position.x) / mediator->GetMap()->Get_Tile_Length());
+	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
 
-	if (mediator->GetTileStateInt({ tile_position.x + 1, tile_position.y }) == TILES::BASE_WALL) {
+	if (mediator->GetMap()->GetTileStateInt({ tile_position.x + 1, tile_position.y }) == TILES::BASE_WALL) {
 		mediator->BaseAttacked({ tile_position.x + 1, tile_position.y });
 	}
-	if (mediator->GetTileStateInt({ tile_position.x - 1, tile_position.y }) == TILES::BASE_WALL) {
+	if (mediator->GetMap()->GetTileStateInt({ tile_position.x - 1, tile_position.y }) == TILES::BASE_WALL) {
 		mediator->BaseAttacked({ tile_position.x - 1, tile_position.y });
 	}
-	if (mediator->GetTileStateInt({ tile_position.x, tile_position.y + 1 }) == TILES::BASE_WALL) {
+	if (mediator->GetMap()->GetTileStateInt({ tile_position.x, tile_position.y + 1 }) == TILES::BASE_WALL) {
 		mediator->BaseAttacked({ tile_position.x, tile_position.y + 1 });
 	}
-	if (mediator->GetTileStateInt({ tile_position.x, tile_position.y - 1 }) == TILES::BASE_WALL) {
+	if (mediator->GetMap()->GetTileStateInt({ tile_position.x, tile_position.y - 1 }) == TILES::BASE_WALL) {
 		mediator->BaseAttacked({ tile_position.x, tile_position.y - 1 });
 	}
 
-	if (mediator->GetTileStateInt(tile_position) == TILES::TOWER) {
+	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 
@@ -117,7 +117,7 @@ double Monster::GetDistance(Math::vec2 target) {
 }
 // Reduce hp
 void Monster::Reduce_hp() {
-	hp -= mediator->GetDamage();
+	hp -= mediator->GetPlayer()->GetDamage();
 }
 // Check attaced, check died
 void Monster::Attacked(Math::vec2 attack_position) {

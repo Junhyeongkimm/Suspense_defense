@@ -4,6 +4,8 @@
 
 class Mediator;
 
+enum BulletState { NORMAL, HOMING, STRONG, FAST, BIG, HEAL, RICOCHET };
+
 class MBullet {
 protected:
 	Math::vec2 position;

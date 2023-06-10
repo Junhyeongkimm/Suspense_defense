@@ -3,14 +3,15 @@
 #include "Mediator.h"
 
 Math::ivec2 FindPath(const Math::ivec2& tile_position, const Math::ivec2& target, Mediator* mediator) {
-	if (mediator->GetTileStateInt(target) == TILES::WALL ||
-		mediator->GetTileStateInt(target) == TILES::COLONY_SIDE ||
-		mediator->GetTileStateInt(target) == TILES::RESOURCE ||
-		mediator->GetTileStateInt(target) == TILES::WARP)
+	
+	if (mediator->GetMap()->GetTileStateInt(target) == TILES::WALL ||
+		mediator->GetMap()->GetTileStateInt(target) == TILES::COLONY_SIDE ||
+		mediator->GetMap()->GetTileStateInt(target) == TILES::RESOURCE ||
+		mediator->GetMap()->GetTileStateInt(target) == TILES::WARP)
 		return tile_position;
-	if (mediator->GetTileStateInt(target) == TILES::BASE_INSIDE ||
-		mediator->GetTileStateInt(target) == TILES::BASE_WALL ||
-		mediator->GetTileStateInt(target) == TILES::TOWER)
+	if (mediator->GetMap()->GetTileStateInt(target) == TILES::BASE_INSIDE ||
+		mediator->GetMap()->GetTileStateInt(target) == TILES::BASE_WALL ||
+		mediator->GetMap()->GetTileStateInt(target) == TILES::TOWER)
 		return tile_position;
 
 	std::vector<Math::ivec2> openList;
@@ -45,13 +46,13 @@ Math::ivec2 FindPath(const Math::ivec2& tile_position, const Math::ivec2& target
 				continue;
 			}
 			// Skip if the tile is WALL
-			if (mediator->GetTileStateInt(neighbor) == TILES::WALL ||
-				mediator->GetTileStateInt(neighbor) == TILES::COLONY_SIDE ||
-				mediator->GetTileStateInt(neighbor) == TILES::RESOURCE ||
-				mediator->GetTileStateInt(neighbor) == TILES::WARP ||
-				mediator->GetTileStateInt(neighbor) == TILES::BASE_INSIDE ||
-				mediator->GetTileStateInt(neighbor) == TILES::BASE_WALL ||
-				mediator->GetTileStateInt(neighbor) == TILES::TREASURE) {
+			if (mediator->GetMap()->GetTileStateInt(neighbor) == TILES::WALL ||
+				mediator->GetMap()->GetTileStateInt(neighbor) == TILES::COLONY_SIDE ||
+				mediator->GetMap()->GetTileStateInt(neighbor) == TILES::RESOURCE ||
+				mediator->GetMap()->GetTileStateInt(neighbor) == TILES::WARP ||
+				mediator->GetMap()->GetTileStateInt(neighbor) == TILES::BASE_INSIDE ||
+				mediator->GetMap()->GetTileStateInt(neighbor) == TILES::BASE_WALL ||
+				mediator->GetMap()->GetTileStateInt(neighbor) == TILES::TREASURE) {
 				continue;
 			}
 			cameFrom[neighbor] = current;

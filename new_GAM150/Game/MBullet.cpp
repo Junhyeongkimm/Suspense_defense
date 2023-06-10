@@ -2,6 +2,7 @@
 #include "Mediator.h"
 #include "../Engine/Engine.h"
 
+
 // ------------------------------------------------ Basic Bullet ------------------------------------------------
 MBullet::MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : position(start_position), direction(direction), mediator(mediator){
 
@@ -10,16 +11,16 @@ MBullet::MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* medi
 void MBullet::Update(double dt) {
 	// Update position
 	Move(dt);
-	if (mediator->GetTileState(position) == TILES::WALL ||
-		mediator->GetTileState(position) == TILES::COLONY_SIDE ||
-		mediator->GetTileState(position) == TILES::RESOURCE ||
-		mediator->GetTileState(position) == TILES::WARP) {
+	if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
+		mediator->GetMap()->GetTileState(position) == TILES::COLONY_SIDE ||
+		mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||
+		mediator->GetMap()->GetTileState(position) == TILES::WARP) {
 		mediator->DeleteMBullet(this);
 		return;
 	}
 	// Check collision with player
-	if (GetDistance(mediator->GetPlayerPosition()) < size) {
-		mediator->ReducePlayerHP(damage);
+	if (GetDistance(mediator->GetPlayer()->GetPosition()) < size) {
+		mediator->GetPlayer()->Reduce_hp(damage);
 		mediator->DeleteMBullet(this);
 		return;
 	}
@@ -42,7 +43,7 @@ Homing::Homing(Math::vec2 start_position, Math::vec2 direction, Mediator* mediat
 
 }
 void Homing::Move(double dt) {
-	direction = mediator->GetPlayerPosition() - position;
+	direction = mediator->GetPlayer()->GetPosition() - position;
 	direction /= direction.GetLength();
 
 	position += direction * speed * dt;
@@ -66,16 +67,16 @@ Heal::Heal(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) 
 void Heal::Update(double dt) {
 	// Update position
 	Move(dt);
-	if (mediator->GetTileState(position) == TILES::WALL ||
-		mediator->GetTileState(position) == TILES::COLONY_SIDE ||
-		mediator->GetTileState(position) == TILES::RESOURCE ||
-		mediator->GetTileState(position) == TILES::WARP) {
+	if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
+		mediator->GetMap()->GetTileState(position) == TILES::COLONY_SIDE ||
+		mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||
+		mediator->GetMap()->GetTileState(position) == TILES::WARP) {
 		mediator->DeleteMBullet(this);
 		return;
 	}
 	// Check collision with player
-	if (GetDistance(mediator->GetPlayerPosition()) < size) {
-		mediator->HealPlayer();
+	if (GetDistance(mediator->GetPlayer()->GetPosition()) < size) {
+		mediator->GetPlayer()->Heal();
 		mediator->DeleteMBullet(this);
 		return;
 	}
@@ -87,10 +88,10 @@ Ricochet::Ricochet(Math::vec2 start_position, Math::vec2 direction, Mediator* me
 void Ricochet::Update(double dt) {
 	// Update position
 	Move(dt);
-	if (mediator->GetTileState(position) == TILES::WALL ||
-		mediator->GetTileState(position) == TILES::COLONY_SIDE ||
-		mediator->GetTileState(position) == TILES::RESOURCE ||
-		mediator->GetTileState(position) == TILES::WARP) {
+	if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
+		mediator->GetMap()->GetTileState(position) == TILES::COLONY_SIDE ||
+		mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||
+		mediator->GetMap()->GetTileState(position) == TILES::WARP) {
 
 		if (count == 0)
 			mediator->DeleteMBullet(this);
@@ -109,8 +110,8 @@ void Ricochet::Update(double dt) {
 		return;
 	}
 	// Check collision with player
-	if (GetDistance(mediator->GetPlayerPosition()) < size) {
-		mediator->ReducePlayerHP(damage);
+	if (GetDistance(mediator->GetPlayer()->GetPosition()) < size) {
+		mediator->GetPlayer()->Reduce_hp(damage);
 		mediator->DeleteMBullet(this);
 		return;
 	}
