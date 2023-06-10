@@ -89,39 +89,40 @@ void Void::Draw(bool is_day) {
 Colony_Core::Colony_Core(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_CORE;
 	hp = 3;
+	sprite.Load("Assets/colony_core.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(colonycore_animations::basic));
 }
 void Colony_Core::Update(double dt) {
 
 }
 void Colony_Core::Draw(bool is_day) {
-	doodle::push_settings();
-	if (is_day) {
-		set_fill_color(HexColor{ 0x882222ff });
+	if (hp == 2 && colonyattacked == false) {
+		colonyattacked = true;
+		sprite.PlayAnimation(static_cast<int>(colonycore_animations::attacked1));
 	}
-	else {
-		set_fill_color(HexColor{ 0x440000ff });
+	if (hp == 1 && colonybroken == false) {
+		colonybroken = true;
+		sprite.PlayAnimation(static_cast<int>(colonycore_animations::attacked2));
 	}
-
-	draw_rectangle(position.x, position.y, size, size);
-	doodle::pop_settings();
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
 // Colony_Side
 Colony_Side::Colony_Side(Math::vec2 position) : Tile(position) {
 	state = TILES::COLONY_SIDE;
 	hp = 2;
+	sprite.Load("Assets/colonyside.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(colony_side::basic));
 }
 void Colony_Side::Update(double dt) {
 
 }
 void Colony_Side::Draw(bool is_day) {
-	if (is_day) {
-		set_fill_color(HexColor{ 0x664444ff });
-	}
-	else {
-		set_fill_color(HexColor{ 0x220000ff });
-	}
-
-	draw_rectangle(position.x, position.y, size, size);
+	
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
 // Base_Wall
 Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
@@ -165,12 +166,9 @@ void Base_Inside::Update(double dt) {
 
 }
 void Base_Inside::Draw(bool is_day) {
-	if (is_day) {
-		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	}
-	else {
-		sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	}
+	
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
 }
 // Resource
 Resource::Resource(Math::vec2 position) : Tile(position) {
@@ -221,19 +219,14 @@ void Warp::Draw(bool is_day) {
 
 }
 // Tower
-void Tower::SetWantScale(Math::vec2 new_scale)
-{
 
-	Math::ivec2 want = sprite.GetFrameSize();
-	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
-	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
-}
 
 Tower::Tower(Math::vec2 position) : Tile(position) {
 	state = TILES::TOWER;
 	hp = 10;
 	sprite.Load("Assets/basecore.spt");
-	SetWantScale({ 50, 50 });
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(Tower_animations::None));
 }
 void Tower::Update(double dt) {
@@ -242,6 +235,7 @@ void Tower::Update(double dt) {
 void Tower::Draw(bool is_day) {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
+
 // Treasure
 Treasure::Treasure(Math::vec2 position) : Tile(position) {
 	state = TILES::TREASURE;
@@ -255,8 +249,11 @@ void Treasure::Update(double dt) {
 
 }
 void Treasure::Draw(bool is_day) {
-	/*set_fill_color(HexColor{ 0x882222ff });
-	draw_rectangle(position.x, position.y, size);*/
+
+	if (hp == 1 && treasurebroken == false) {
+		treasurebroken = true;
+		sprite.PlayAnimation(static_cast<int>(treasure_animations::broken));
+	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 
 }

@@ -74,10 +74,11 @@ public:
     enum class colonycore_animations {
         basic,
         attacked1,
-        attacked2,
-        attacked3,
-        attacked4
+        attacked2
     };
+private:
+    bool colonyattacked= false;
+    bool colonybroken = false;
 };
 // Colony_Side tile
 class Colony_Side : public Tile {
@@ -85,6 +86,10 @@ public:
     Colony_Side(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
+    enum class colony_side
+    {
+        basic
+    };
 };
 // Base_Wall tile
 class Base_Wall : public Tile {
@@ -148,7 +153,6 @@ private:
 // Tower tile
 class Tower : public Tile {
 public:
-    void SetWantScale(Math::vec2 new_scale);
     Tower(Math::vec2 position);
     void Update(double dt);
     void Draw(bool is_day);
@@ -168,4 +172,5 @@ public:
         None,
         broken
     };
+    bool treasurebroken = false;
 };
