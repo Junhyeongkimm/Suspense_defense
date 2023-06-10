@@ -22,6 +22,8 @@ public:
 	void Check_Monster_Attacked();
 	void Check_Map_Attacked();
 	void CheckPlayerAttacked();
+	void ReducePlayerHP(int damage) { player->Reduce_hp(damage); }
+	void HealPlayer() { player->Heal(); }
 	// Set the member variables
 	void SetPlayer(Player* player);
 	void SetMonsters(std::vector<Monster*>*monsters);

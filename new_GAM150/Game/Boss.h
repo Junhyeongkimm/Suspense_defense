@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Engine/Vec2.h"
+class Mediator;
 // --------------------------------- BOSS  ---------------------------------
 class Boss {
 protected:
@@ -14,8 +15,10 @@ protected:
 	double pattern1_time;
 	double pattern2_time;
 	double pattern3_time;
+
+	Mediator* mediator;
 public:
-	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3);
+	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator);
 	void Update(double dt);
 	virtual void Draw() = 0;
 
@@ -35,7 +38,7 @@ private:
 	double pattern3_time = 2.0;
 
 public:
-	Boss1(Math::vec2 position);
+	Boss1(Math::vec2 position, Mediator* mediator);
 	void Draw();
 	void Pattern1();
 	void Pattern2();
@@ -53,7 +56,7 @@ private:
 	double pattern3_time = 2.0;
 
 public:
-	Boss2(Math::vec2 position);
+	Boss2(Math::vec2 position, Mediator* mediator);
 	void Draw();
 	void Pattern1();
 	void Pattern2();
@@ -72,7 +75,7 @@ private:
 	double pattern3_time = 2.0;
 
 public:
-	Boss3(Math::vec2 position);
+	Boss3(Math::vec2 position, Mediator* mediator);
 	void Draw();
 	void Pattern1();
 	void Pattern2();
@@ -91,7 +94,7 @@ private:
 	double pattern3_time = 2.0;
 
 public:
-	Boss4(Math::vec2 position);
+	Boss4(Math::vec2 position, Mediator* mediator);
 	void Draw();
 	void Pattern1();
 	void Pattern2();

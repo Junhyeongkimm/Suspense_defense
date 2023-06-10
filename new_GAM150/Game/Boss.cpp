@@ -1,9 +1,11 @@
 #include "Boss.h"
 #include <doodle/doodle.hpp>
+#include "Mediator.h"
 using namespace doodle;
 
 // --------------------------------- BOSS  ---------------------------------
-Boss::Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3) : hp(hp), speed(speed), position(position), size(size), pattern1_time(time1), pattern2_time(time2), pattern3_time(time3) {
+Boss::Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator) : 
+	hp(hp), speed(speed), position(position), size(size), pattern1_time(time1), pattern2_time(time2), pattern3_time(time3), mediator(mediator) {
 
 }
 void Boss::Update(double dt) {
@@ -39,23 +41,32 @@ void Boss::Draw() {
 }
 
 // --------------------------------- BOSS 1 ---------------------------------
-Boss1::Boss1(Math::vec2 position) : Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time) {
+Boss1::Boss1(Math::vec2 position, Mediator* mediator) : 
+	Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time, mediator) {
 
 }
 void Boss1::Draw() {
-
+	draw_ellipse(position.x, position.y, size);
 }
 void Boss1::Pattern1() {
-
+	mediator->AddMBullet(position, mediator->GetPlayerPosition());
 }
 void Boss1::Pattern2() {
-
+	mediator->AddMBullet(position, Math::vec2{ 1, 0 });
+	mediator->AddMBullet(position, Math::vec2{ 1, 1 });
+	mediator->AddMBullet(position, Math::vec2{ 0, 1 });
+	mediator->AddMBullet(position, Math::vec2{ -1, 1 });
+	mediator->AddMBullet(position, Math::vec2{ -1, 0 });
+	mediator->AddMBullet(position, Math::vec2{ -1, -1 });
+	mediator->AddMBullet(position, Math::vec2{ 0, -1 });
+	mediator->AddMBullet(position, Math::vec2{ 1, -1 });
 }
 void Boss1::Pattern3() {
-
+	mediator->AddMonster(position);
 }
 // --------------------------------- BOSS 2 ---------------------------------
-Boss2::Boss2(Math::vec2 position) : Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time) {
+Boss2::Boss2(Math::vec2 position, Mediator* mediator) : 
+	Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time, mediator) {
 
 }
 void Boss2::Draw() {
@@ -71,7 +82,8 @@ void Boss2::Pattern3() {
 
 }
 // --------------------------------- BOSS 3 ---------------------------------
-Boss3::Boss3(Math::vec2 position) : Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time) {
+Boss3::Boss3(Math::vec2 position, Mediator* mediator) : 
+	Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time, mediator) {
 
 }
 void Boss3::Draw() {
@@ -87,7 +99,8 @@ void Boss3::Pattern3() {
 
 }
 // --------------------------------- BOSS 4 ---------------------------------
-Boss4::Boss4(Math::vec2 position) : Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time) {
+Boss4::Boss4(Math::vec2 position, Mediator* mediator) : 
+	Boss(hp, speed, position, size, pattern1_time, pattern2_time, pattern3_time, mediator) {
 
 }
 void Boss4::Draw() {

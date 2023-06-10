@@ -90,7 +90,9 @@ public:
 	// Attack
 	void Attack();
 	// Reduce hp
-	void Reduce_hp();
+	void Reduce_hp(int damage);
+	// Heal
+	void Heal();
 	// Set the attack position
 	void SetAttackPosition(Math::vec2 position) { attack_direction = position; }
 	// Warp to the base
