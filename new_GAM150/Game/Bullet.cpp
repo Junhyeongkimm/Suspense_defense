@@ -46,24 +46,22 @@ void Bullet::Draw() {
 }
 
 HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator) : Bullet(start_positon, direction, mediator) {
-	
-}
-void HomingShot::Move(double dt) {
-
 	if (mediator->GetMonster()->size()) {
-		Math::vec2 target = mediator->GetMonster()->front()->GetPosition();
-		double distance = mediator->GetMonster()->front()->GetDistance(position);
+		target = mediator->GetMonster()->front();
+		double distance = GetDistance(target->GetPosition());
 
 		for (auto monster : *mediator->GetMonster()) {
-			if (monster->GetDistance(position) < distance) {
-				distance = monster->GetDistance(target);
-				target = monster->GetPosition();
+			if (GetDistance(monster->GetPosition()) < distance) {
+				distance = GetDistance(monster->GetPosition());
+				target = monster;
 			}
 		}
-
-		direction = target - position;
+	}
+}
+void HomingShot::Move(double dt) {
+	if (mediator->GetMonster()->size()) {
+		direction = target->GetPosition() - position;
 		direction /= direction.GetLength();
 	}
-
 	position += direction * speed * dt;
 }

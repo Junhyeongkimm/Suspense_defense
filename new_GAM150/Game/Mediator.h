@@ -58,6 +58,7 @@ public:
 	std::vector<Monster*>* GetMonster() { return monsters; }
 	std::vector<Bullet*>* GetBullets() { return bullets; }
 	std::vector<MBullet*>* GetMBullets() { return monster_bullets; }
+	std::vector<Boss*>* GetBosses() { return bosses; }
 	Player* GetPlayer() { return player; }
 	Map* GetMap() { return map; }
 };

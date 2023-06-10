@@ -4,6 +4,7 @@
 #include "../Engine/Sprite.h"
 
 class Mediator;
+class Monster;
 
 class Bullet {
 protected:
@@ -31,6 +32,7 @@ public:
 	// Get position
 	Math::vec2 GetPosition() { return position; }
 	double GetSize() { return size; }
+	double GetDistance(Math::vec2 target) { return (position - target).GetLength(); }
 	enum class bullet {
 		None
 	};
@@ -38,7 +40,7 @@ public:
 
 class HomingShot :public Bullet {
 private:
-	Math::vec2 target;
+	Monster* target;
 public:
 	HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator);
 	void Move(double dt);
