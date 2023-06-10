@@ -91,10 +91,12 @@ void Player::Update(double dt) {
 	// Player warp
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
 		is_warping = true;
+		warpsprite.Load("Assets/teleport.spt");
 	}
 	if (is_warping) {
 		warp_count += dt;
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) ||
+			Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
 			warp_count = 0;
 			is_warping = false;
 		}
@@ -127,28 +129,31 @@ void Player::Update(double dt) {
 		// Player moving with W, A, S, D
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+			sprite.PlayAnimation(static_cast<int>(player_action::up));
 			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
-				//sprite.PlayAnimation(static_cast<int>(player_action::up));
+				
 
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
+			sprite.PlayAnimation(static_cast<int>(player_action::down));
 			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::RESOURCE) &&
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
-				//sprite.PlayAnimation(static_cast<int>(player_action::down));
+				
 
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+			sprite.PlayAnimation(static_cast<int>(player_action::left));
 			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::RESOURCE) &&
@@ -203,14 +208,6 @@ void Player::Draw() {
 	if (box->is_activated())
 		box->Draw();
 
-	push_settings();
-	if (is_dodging) {
-		set_fill_color(HexColor(0x000000ff));
-	}
-	else {
-		set_fill_color(HexColor(0x888888ff));
-	}
-
 	//player draw
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
@@ -218,16 +215,21 @@ void Player::Draw() {
 	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();
 		weaponsprite.Load("Assets/sword.spt");
-		weaponsprite.PlayAnimation(static_cast<int>(player_action::None));
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		pop_settings();
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
 		push_settings();
 		weaponsprite.Load("Assets/gun.spt");
-		weaponsprite.PlayAnimation(static_cast<int>(player_action::None));
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		pop_settings();
+	}
+
+	if (is_warping) {
+		warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
+		warpsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 }
 // Reduce hp

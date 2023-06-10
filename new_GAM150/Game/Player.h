@@ -107,6 +107,7 @@ public:
 
 	CS230::Sprite sprite;
 	CS230::Sprite weaponsprite;
+	CS230::Sprite warpsprite;
 
 	double scale_x;
 	double scale_y;
@@ -120,6 +121,16 @@ public:
 		dodgeup,
 		down,
 		dodgedown
+	};
+
+	enum class warp_action
+	{
+		warping
+	};
+
+	enum class Weapon_action
+	{
+		attack
 	};
 
 	bool flipped = false;

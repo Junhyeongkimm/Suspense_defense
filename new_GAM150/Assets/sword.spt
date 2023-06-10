@@ -1,5 +1,4 @@
 Assets/attacksword.png
 FrameSize 100 100
 HotSpot 0 0
-Anim Assets/None.anm
-Anim Assets/swordattack.anm
+Anim Assets/attack.anm

@@ -14,7 +14,7 @@ void Bullet::SetWantScale(Math::vec2 new_scale)
 Bullet::Bullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : position(start_position), direction(direction), mediator(mediator) {
 	sprite.Load("Assets/bullet.spt");
 	
-	SetWantScale({ 125,125 });
+	SetWantScale({ 50,50 });
 	sprite.PlayAnimation(static_cast<int>(bullet::None));
 }
 // Update
