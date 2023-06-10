@@ -24,7 +24,12 @@ void Mediator::Check_Map_Attacked() {
 // Check if the player is attacekd
 void Mediator::CheckPlayerAttacked() {
 	for (Monster* monster : *monsters) {
-		if (monster->GetDistance(player->GetPosition()) < monster->GetSize() / 2) {
+		if (monster->GetDistance(player->GetPosition()) < (monster->GetSize() + player->GetSize()) / 2) {
+			player->Reduce_hp(1);
+		}
+	}
+	for (Boss* boss : *bosses) {
+		if (boss->GetDistance(player->GetPosition()) < (boss->GetSize() + player->GetSize()) / 2) {
 			player->Reduce_hp(1);
 		}
 	}
@@ -62,35 +67,20 @@ void Mediator::DeleteMonster(Monster* monster) {
 void Mediator::AddBoss1(Math::vec2 position) {
 	bosses->push_back(new Boss1(position, this));
 }
-// Delete boss1
-void Mediator::DeleteBoss1(Boss* boss) {
-	bosses->erase(remove(bosses->begin(), bosses->end(), boss), bosses->end());
-	delete boss;
-}
 // Add boss2
 void Mediator::AddBoss2(Math::vec2 position) {
 	bosses->push_back(new Boss2(position, this));
 }
-// Delete boss2
-void Mediator::DeleteBoss2(Boss* boss) {
-	bosses->erase(remove(bosses->begin(), bosses->end(), boss), bosses->end());
-	delete boss;
-}
 // Add boss3
 void Mediator::AddBoss3(Math::vec2 position) {
 	bosses->push_back(new Boss3(position, this));
-}
-// Delete boss3
-void Mediator::DeleteBoss3(Boss* boss) {
-	bosses->erase(remove(bosses->begin(), bosses->end(), boss), bosses->end());
-	delete boss;
 }
 // Add boss4
 void Mediator::AddBoss4(Math::vec2 position) {
 	bosses->push_back(new Boss4(position, this));
 }
 // Delete boss4
-void Mediator::DeleteBoss4(Boss* boss) {
+void Mediator::DeleteBoss(Boss* boss) {
 	bosses->erase(remove(bosses->begin(), bosses->end(), boss), bosses->end());
 	delete boss;
 }

@@ -251,14 +251,6 @@ void Player::Draw() {
 	if (box->is_activated())
 		box->Draw();
 
-	push_settings();
-	if (is_dodging) {
-		set_fill_color(HexColor(0x000000ff));
-	}
-	else {
-		set_fill_color(HexColor(0x888888ff));
-	}
-
 	//player draw
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	

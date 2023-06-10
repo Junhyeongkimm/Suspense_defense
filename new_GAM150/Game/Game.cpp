@@ -83,6 +83,16 @@ void Game::Update([[maybe_unused]] double dt) {
 			}
 		}
 	}
+	for (int i = 0; i < bullets.size(); i++) {
+		// Check collision with bosses
+		for (int j = 0; j < bosses.size(); j++) {
+			if (bosses[j]->GetDistance(bullets[i]->GetPosition()) < (bosses[j]->GetSize() + bullets[i]->GetSize()) / 2) {
+				bosses[j]->ReduceHP(bullets[i]->GetDamage());
+				mediator->DeleteBullet(bullets[i]);
+				break;
+			}
+		}
+	}
 	// Monster bullets update
 	for (int i = 0; i < monster_bullets.size(); i++) {
 		// Update monster bullet's position

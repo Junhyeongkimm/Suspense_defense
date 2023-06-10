@@ -36,13 +36,10 @@ public:
 	void AddMonster(Math::vec2 position);
 	void DeleteMonster(Monster* monster);
 	void AddBoss1(Math::vec2 position);
-	void DeleteBoss1(Boss* boss);
 	void AddBoss2(Math::vec2 position);
-	void DeleteBoss2(Boss* boss);
 	void AddBoss3(Math::vec2 position);
-	void DeleteBoss3(Boss* boss);
 	void AddBoss4(Math::vec2 position);
-	void DeleteBoss4(Boss* boss);
+	void DeleteBoss(Boss* boss);
 
 	// Add and delete bullets and monster bullets
 	void AddBullet(Math::vec2 position, Math::vec2 direction);

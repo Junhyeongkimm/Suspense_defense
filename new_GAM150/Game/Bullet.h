@@ -11,6 +11,7 @@ protected:
 	Math::vec2 position;
 	const double speed = 600;
 	const double size = 20;
+	int damage = 1;
 	double scale_x;
 	double scale_y;
 
@@ -33,6 +34,7 @@ public:
 	Math::vec2 GetPosition() { return position; }
 	double GetSize() { return size; }
 	double GetDistance(Math::vec2 target) { return (position - target).GetLength(); }
+	int GetDamage() { return damage; }
 	enum class bullet {
 		None
 	};

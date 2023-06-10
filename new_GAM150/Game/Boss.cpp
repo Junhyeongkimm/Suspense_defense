@@ -11,6 +11,11 @@ Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double ti
 }
 void Boss::Update(double dt) {
 
+	if (hp <= 0) {
+		mediator->DeleteBoss(this);
+		return;
+	}
+
 	if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 30) {
 		if (hp < max_hp && heal_count >= heal_time) {
 			++hp;

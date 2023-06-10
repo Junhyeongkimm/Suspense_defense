@@ -25,6 +25,9 @@ public:
 	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator);
 	void Update(double dt);
 	virtual void Draw() = 0;
+	void ReduceHP(int damage) { hp -= damage; }
+	double GetDistance(Math::vec2 target) { return (position - target).GetLength(); }
+	double GetSize() { return size; }
 
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;
