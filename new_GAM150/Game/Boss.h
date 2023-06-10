@@ -6,6 +6,7 @@ class Mediator;
 class Boss {
 protected:
 	int hp;
+	int max_hp;
 	double speed;
 	Math::vec2 position;
 	double size;
@@ -15,6 +16,9 @@ protected:
 	double pattern1_time;
 	double pattern2_time;
 	double pattern3_time;
+
+	double heal_count = 0;
+	double heal_time = 1.0;
 
 	Mediator* mediator;
 public:

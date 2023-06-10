@@ -91,7 +91,7 @@ void Player::Update(double dt) {
 		not_clicked = true;
 	}
 	// Dodge
-	if (clicked) { // When the player click the mouse
+	if (not_clicked && MouseIsPressed) { // When the player click the mouse
 		if (dodge_unlocked && MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {

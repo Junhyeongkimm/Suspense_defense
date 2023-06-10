@@ -67,8 +67,6 @@ private:
 
 	bool not_clicked = false;
 
-	bool clicked = MouseIsPressed && not_clicked;
-
 public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
