@@ -26,6 +26,7 @@ CS230::Sprite::~Sprite() {
 }
 
 void CS230::Sprite::Update(double dt) {
+
     animations[current_animation]->Update(dt);
 }
 
@@ -41,7 +42,7 @@ void CS230::Sprite::Load(const std::filesystem::path& sprite_file) {
         throw std::runtime_error("Failed to load " + sprite_file.generic_string());
     }
 
-    hotspots.clear();
+    hotspots.clear(); 
     frame_texels.clear();
 
     std::string text;
@@ -118,9 +119,13 @@ void CS230::Sprite::PlayAnimation(int animation)
         return;
     }
     else {
-        current_animation = animation;
-        animations[current_animation]->Reset();
+        if (animation != current_animation)
+        {
+            current_animation = animation;
+            animations[current_animation]->Reset();
+        }
     }
+
 }
 
 bool CS230::Sprite::AnimationEnded()

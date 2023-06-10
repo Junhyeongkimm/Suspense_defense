@@ -63,6 +63,7 @@ void CS230::Animation::Reset() {
     current_command = 0;
     ended = false;
     current_frame = static_cast<PlayFrame*>(commands[current_command]);
+    is_playing = false;
 }
 
 bool CS230::Animation::Ended() {
@@ -71,7 +72,8 @@ bool CS230::Animation::Ended() {
 
 void CS230::Animation::Update(double dt) {
     current_frame->Update(dt);
-    if (current_frame->Ended() == true) {
+    if (current_frame->Ended() == true && ended == false) {
+        is_playing = true;
         current_frame->ResetTime();
         current_command++;
         if (commands[current_command]->Type() == CommandType::PlayFrame) {
@@ -90,6 +92,7 @@ void CS230::Animation::Update(double dt) {
         }
         else if (commands[current_command]->Type() == CommandType::End) {
             ended = true;
+            is_playing = false;
         }
     }
 }

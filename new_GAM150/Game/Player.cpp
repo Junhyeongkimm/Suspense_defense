@@ -25,6 +25,7 @@ Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator*
 // Update
 void Player::Update(double dt) {
 
+	is_moving = false;
 	if (mediator->GetTileStateInt(tile_position) == TILES::TOWER) {
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E) && !box->is_activated()) {
 			box->Activate();
@@ -62,6 +63,7 @@ void Player::Update(double dt) {
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 				dodge_direction.x -= 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgeleft));
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 				dodge_direction.x += 1;
@@ -89,9 +91,10 @@ void Player::Update(double dt) {
 			attack_mode = MELEE;
 	}
 	// Player warp
-	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
-		
+	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) ) {
+
 		if(is_warping==false){
+			
 			warpsprite.Load("Assets/teleport.spt");
 			warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
 		}
@@ -101,7 +104,7 @@ void Player::Update(double dt) {
 	}
 	if (is_warping) {
 		warp_count += dt;
-		
+		warpsprite.Update(dt);
 		
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) ||
 			Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
@@ -126,7 +129,7 @@ void Player::Update(double dt) {
 			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
 			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
 			position += dodge_direction * 2 * speed * dt;
-			sprite.PlayAnimation(static_cast<int>(player_action::dodgeleft));
+			
 		}
 		if (dodging_count >= dodging_time) {
 			dodging_count = 0;
@@ -137,7 +140,9 @@ void Player::Update(double dt) {
 		// Player moving with W, A, S, D
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
-			sprite.PlayAnimation(static_cast<int>(player_action::up));
+			is_moving = true;
+				sprite.PlayAnimation(static_cast<int>(player_action::up));
+			
 			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
@@ -149,6 +154,7 @@ void Player::Update(double dt) {
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
+			is_moving = true;
 			sprite.PlayAnimation(static_cast<int>(player_action::down));
 			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
@@ -161,6 +167,7 @@ void Player::Update(double dt) {
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+			is_moving = true;
 			sprite.PlayAnimation(static_cast<int>(player_action::left));
 			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
@@ -171,6 +178,7 @@ void Player::Update(double dt) {
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+			is_moving = true;
 			if ((mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) && 
 				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
@@ -208,6 +216,11 @@ void Player::Update(double dt) {
 	if (hp <= 0) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
+	if (is_moving == false && is_dodging == false)
+	{
+		sprite.PlayAnimation(static_cast<int>(player_action::waiting));
+	}
+	sprite.Update(dt);
 }
 // Draw player
 void Player::Draw() {

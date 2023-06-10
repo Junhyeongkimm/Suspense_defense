@@ -20,6 +20,7 @@ namespace CS230 {
         Animation(const std::filesystem::path& animation_file);
         ~Animation();
 
+        bool Getisplaying() { return is_playing; };
         void Update(double dt);
         int CurrentFrame();
         void Reset();
@@ -71,6 +72,7 @@ namespace CS230 {
         int current_command;
         std::vector<Command*> commands;
         bool ended;
+        bool is_playing = false;
         PlayFrame* current_frame;
     };
 }
