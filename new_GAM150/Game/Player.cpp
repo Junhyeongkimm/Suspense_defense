@@ -89,12 +89,20 @@ void Player::Update(double dt) {
 			attack_mode = MELEE;
 	}
 	// Player warp
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
+	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
+		
+		if(is_warping==false){
+			warpsprite.Load("Assets/teleport.spt");
+			warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
+		}
+			
 		is_warping = true;
-		warpsprite.Load("Assets/teleport.spt");
+		
 	}
 	if (is_warping) {
 		warp_count += dt;
+		
+		
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) ||
 			Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
 			warp_count = 0;
@@ -228,7 +236,6 @@ void Player::Draw() {
 	}
 
 	if (is_warping) {
-		warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
 		warpsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 }
