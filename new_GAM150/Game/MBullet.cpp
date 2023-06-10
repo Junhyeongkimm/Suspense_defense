@@ -27,6 +27,8 @@ void MBullet::Update(double dt) {
 	}
 }
 void MBullet::Move(double dt) {
+	if (direction.GetLength() != 1)
+		direction /= direction.GetLength();
 	position += direction * speed * dt;
 }
 void MBullet::Draw() {

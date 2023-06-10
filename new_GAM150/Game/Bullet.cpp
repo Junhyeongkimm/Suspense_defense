@@ -45,7 +45,7 @@ void Bullet::Draw() {
 
 }
 
-HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator) : Bullet(start_positon, direction, mediator) {
+HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator) : Bullet(start_positon, direction, mediator), target(nullptr) {
 	if (mediator->GetMonster()->size()) {
 		target = mediator->GetMonster()->front();
 		double distance = GetDistance(target->GetPosition());

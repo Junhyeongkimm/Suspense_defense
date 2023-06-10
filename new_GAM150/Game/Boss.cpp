@@ -10,22 +10,23 @@ Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double ti
 	hp = max_hp;
 }
 void Boss::Update(double dt) {
-
+	// Boss dead
 	if (hp <= 0) {
 		mediator->DeleteBoss(this);
 		return;
 	}
-
+	// If player is far from boss
 	if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 30) {
+		// If the hp is not max, heal
 		if (hp < max_hp && heal_count >= heal_time) {
 			++hp;
 			heal_count = 0;
 		}
+		// If the hp is full, do not call the update function
 		return;
 	}
-
+	// Pattern update
 	pattern_count += dt;
-	
 	switch (pattern_index) {
 	case 1:
 		if (pattern_count >= pattern1_time) {
@@ -49,7 +50,6 @@ void Boss::Update(double dt) {
 		}
 		break;
 	}
-
 }
 void Boss::Draw() {
 	draw_ellipse(position.x, position.y, size);
@@ -58,7 +58,6 @@ void Boss::Draw() {
 // --------------------------------- BOSS 1 ---------------------------------
 Boss1::Boss1(Math::vec2 position, Mediator* mediator) :
 	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_time = 0.5, pattern2_time = 0.5, pattern3_time = 0.5, mediator) {
-
 }
 void Boss1::Draw() {
 	draw_ellipse(position.x, position.y, size);
@@ -93,10 +92,20 @@ void Boss2::Draw() {
 	draw_ellipse(position.x, position.y, size);
 }
 void Boss2::Pattern1() {
+	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
+	direct /= direct.GetLength();
 
+	mediator->AddMBullet(position, direct, BulletState::STRONG);
 }
 void Boss2::Pattern2() {
-
+	mediator->AddMBullet(position, Math::vec2{ 1,  0 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ 1,  1 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ 0,  1 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ -1,  1 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ -1,  0 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ -1, -1 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ 0, -1 }, BulletState::FAST);
+	mediator->AddMBullet(position, Math::vec2{ 1, -1 }, BulletState::FAST);
 }
 void Boss2::Pattern3() {
 
@@ -110,10 +119,20 @@ void Boss3::Draw() {
 	draw_ellipse(position.x, position.y, size);
 }
 void Boss3::Pattern1() {
+	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
+	direct /= direct.GetLength();
 
+	mediator->AddMBullet(position, direct, BulletState::BIG);
 }
 void Boss3::Pattern2() {
-
+	mediator->AddMBullet(position, Math::vec2{ 1,  0 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ 1,  1 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ 0,  1 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ -1,  1 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ -1,  0 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ -1, -1 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ 0, -1 }, BulletState::BIG);
+	mediator->AddMBullet(position, Math::vec2{ 1, -1 }, BulletState::BIG);
 }
 void Boss3::Pattern3() {
 
@@ -127,10 +146,20 @@ void Boss4::Draw() {
 	draw_ellipse(position.x, position.y, size);
 }
 void Boss4::Pattern1() {
+	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
+	direct /= direct.GetLength();
 
+	mediator->AddMBullet(position, direct, BulletState::HOMING);
 }
 void Boss4::Pattern2() {
-
+	mediator->AddMBullet(position, Math::vec2{ 1,  0 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ 1,  1 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ 0,  1 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ -1,  1 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ -1,  0 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ -1, -1 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ 0, -1 }, BulletState::RICOCHET);
+	mediator->AddMBullet(position, Math::vec2{ 1, -1 }, BulletState::RICOCHET);
 }
 void Boss4::Pattern3() {
 

@@ -1,4 +1,5 @@
 #include "Mediator.h"
+#include "doodle/random.hpp"
 
 // Constructor
 Mediator::Mediator() : map(nullptr), player(nullptr), monsters(), bosses(), bullets(), monster_bullets() {
@@ -99,6 +100,9 @@ void Mediator::DeleteBullet(Bullet* bullet) {
 // Add and delete monster bullet
 void Mediator::AddMBullet(Math::vec2 position, Math::vec2 direction, int type) {
 	//enum BulletState { NORMAL, HOMING, STRONG, FAST, BIG, HEAL, RICOCHET };
+	direction.x += random(-0.2, 0.2);
+	direction.y += random(-0.2, 0.2);
+
 	switch (type) {
 	case BulletState::NORMAL:
 		monster_bullets->push_back(new MBullet(position, direction, this));
