@@ -18,7 +18,7 @@ protected:
 	double pattern3_time;
 
 	double heal_count = 0;
-	double heal_time = 1.0;
+	double heal_time = 0.5;
 
 	Mediator* mediator;
 public:

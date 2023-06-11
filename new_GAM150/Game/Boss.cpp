@@ -16,7 +16,8 @@ void Boss::Update(double dt) {
 		return;
 	}
 	// If player is far from boss
-	if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 30) {
+	if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 20) {
+		heal_count += dt;
 		// If the hp is not max, heal
 		if (hp < max_hp && heal_count >= heal_time) {
 			++hp;
@@ -52,7 +53,7 @@ void Boss::Update(double dt) {
 	}
 }
 void Boss::Draw() {
-	draw_ellipse(position.x, position.y, size);
+
 }
 
 // --------------------------------- BOSS 1 ---------------------------------
@@ -60,7 +61,14 @@ Boss1::Boss1(Math::vec2 position, Mediator* mediator) :
 	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_time = 0.5, pattern2_time = 0.5, pattern3_time = 0.5, mediator) {
 }
 void Boss1::Draw() {
+	push_settings();
 	draw_ellipse(position.x, position.y, size);
+	set_fill_color(HexColor(0x888888ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
+	set_fill_color(HexColor(0x444444ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, ((double)hp / max_hp) * size, size / 10);
+
+	pop_settings();
 }
 void Boss1::Pattern1() {
 	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
@@ -89,7 +97,14 @@ Boss2::Boss2(Math::vec2 position, Mediator* mediator) :
 
 }
 void Boss2::Draw() {
+	push_settings();
 	draw_ellipse(position.x, position.y, size);
+	set_fill_color(HexColor(0x888888ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
+	set_fill_color(HexColor(0x444444ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, ((double)hp / max_hp) * size, size / 10);
+
+	pop_settings();
 }
 void Boss2::Pattern1() {
 	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
@@ -116,7 +131,14 @@ Boss3::Boss3(Math::vec2 position, Mediator* mediator) :
 
 }
 void Boss3::Draw() {
+	push_settings();
 	draw_ellipse(position.x, position.y, size);
+	set_fill_color(HexColor(0x888888ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
+	set_fill_color(HexColor(0x444444ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, ((double)hp / max_hp) * size, size / 10);
+
+	pop_settings();
 }
 void Boss3::Pattern1() {
 	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
@@ -143,7 +165,14 @@ Boss4::Boss4(Math::vec2 position, Mediator* mediator) :
 
 }
 void Boss4::Draw() {
+	push_settings();
 	draw_ellipse(position.x, position.y, size);
+	set_fill_color(HexColor(0x888888ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
+	set_fill_color(HexColor(0x444444ff));
+	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, ((double)hp / max_hp) * size, size / 10);
+
+	pop_settings();
 }
 void Boss4::Pattern1() {
 	Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
