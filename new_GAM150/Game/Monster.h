@@ -8,7 +8,8 @@ class Mediator;
 
 class Monster {
 private:
-	CS230::Sprite sprite;
+	CS230::Sprite colonymonstersprite;
+	CS230::Sprite flymonstersprite;
 	Mediator* mediator;
 	Math::vec2 position;
 	Math::ivec2 tile_position;
@@ -42,19 +43,17 @@ public:
 	// Destructor
 	~Monster();
 
-	enum class monster_action{
+	enum class colonymonster_action{
 		left,
-		rightattack,
+		right,
 		up,
-		upattack,
 		down,
-		downattack
 
 	};
 
 	enum class flymonster_action {
-		None,
-		flymove
+		flymove1,
+		flymove2
 
 	};
 	enum class flymonsterDirection {
