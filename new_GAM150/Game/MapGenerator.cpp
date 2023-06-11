@@ -413,14 +413,14 @@ int Map::GetRepairCost() {
 	for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
 		for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
 			// Skip base inside
-			if (i > map_size / 2 - 4 || i < map_size / 2 + 4 || j>map_size / 2 - 4 || j < map_size / 2 + 4) {
+			if (i > map_size / 2 - 4 && i < map_size / 2 + 4 && j>map_size / 2 - 4 && j < map_size / 2 + 4) {
 				continue;
 			}
 			if (MAP[i][j]->Get_State() == TILES::VOID) {
 				++void_count;
 			}
 			else {
-				cost += MAP[i][j]->GetMaxHp() - MAP[i][j]->GetHP();
+				cost += (MAP[i][j]->GetMaxHp() - MAP[i][j]->GetHP());
 			}
 
 		}

@@ -96,7 +96,7 @@ void PopupBox::Draw() {
 			draw_text("Upgrade\t", position.x, position.y + 150);
 			draw_text("Exit", position.x + 300, position.y + 150);
 
-			draw_text("Repiar base\nYou need something cost", position.x + 25, position.y + 100);
+			draw_text("Repiar base\nYou need " + std::to_string(mediator->GetMap()->GetRepairCost()) + "monster resources", position.x + 25, position.y + 100);
 			break;
 		case 2:
 			set_font_size(25);
