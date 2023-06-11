@@ -130,6 +130,8 @@ public:
 		waiting,
 		left,
 		dodgeleft,
+		right,
+		dodgeright,
 		up,
 		dodgeup,
 		down,
@@ -145,6 +147,4 @@ public:
 	{
 		attack
 	};
-
-	bool flipped = false;
 };

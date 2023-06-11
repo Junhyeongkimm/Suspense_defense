@@ -1,0 +1,20 @@
+Assets/colonymonster.png
+FrameSize 300 294
+HotSpot 90 50
+Frame 0 0
+Frame 300 0
+Frame 600 0
+Frame 0 294
+Frame 300 294
+Frame 600 294
+Frame 0 588
+Frame 300 588
+Frame 600 588
+Frame 0 882
+Frame 300 882
+Frame 600 882
+Frame 0 1176
+Frame 300 1176
+Frame 600 1176
+Anim Assets/None.anm
+Anim Assets/monstermove.anm

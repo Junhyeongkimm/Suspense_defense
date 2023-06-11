@@ -108,6 +108,7 @@ void Player::Update(double dt) {
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 				dodge_direction.x += 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgeright));
 			}
 			// If the player move diagonally, divide speed by sqrt(2)
 			if (dodge_direction.GetLength() == 0) {
@@ -143,11 +144,8 @@ void Player::Update(double dt) {
 	}
 
 	// Player warp
-<<<<<<< HEAD
-	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) ) && (warp_resource >= 1)) {
-=======
+
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
->>>>>>> 1eceeea416ff736cc40aab64cf2af273e56b3809
 
 		if(is_warping==false){
 			
@@ -234,6 +232,7 @@ void Player::Update(double dt) {
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 			is_moving = true;
+			sprite.PlayAnimation(static_cast<int>(player_action::right));
 			if ((mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
