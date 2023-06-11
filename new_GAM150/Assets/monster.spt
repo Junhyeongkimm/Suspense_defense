@@ -16,5 +16,16 @@ Frame 600 882
 Frame 0 1176
 Frame 300 1176
 Frame 600 1176
-Anim Assets/None.anm
-Anim Assets/monstermove.anm
+Frame 0 1470
+Frame 300 1470
+Frame 600 1470
+Frame 0 1764
+Frame 300 1764
+Frame 600 1764
+Frame 0 2088
+Frame 300 2088
+Frame 600 2088
+Anim Assets/colonymonsterleft.anm
+Anim Assets/colonymonsterright.anm
+Anim Assets/colonymonsterup.anm
+Anim Assets/colonymonsterdown.anm
