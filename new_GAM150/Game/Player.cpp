@@ -93,7 +93,7 @@ void Player::Update(double dt) {
 			attack_mode = MELEE;
 	}
 	// Player warp
-	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) ) {
+	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) ) && (warp_resource >= 1)) {
 
 		if(is_warping==false){
 			
