@@ -117,8 +117,12 @@ public:
 	void UnlockGatling() { gatling_unlocked = true; }
 	void UnlockHoming() { homing_unlocked = true; }
 
-	CS230::Sprite sprite;
-	CS230::Sprite weaponsprite;
+	CS230::Sprite playersprite;
+	CS230::Sprite weaponsprite1;
+	CS230::Sprite weaponsprite2;
+	CS230::Sprite weaponsprite3;
+	CS230::Sprite weaponsprite4;
+	CS230::Sprite weaponsprite5;
 	CS230::Sprite warpsprite;
 
 	double scale_x;
@@ -126,16 +130,15 @@ public:
 	bool is_moving = false;
 
 	enum class player_action {
-		None,
 		waiting,
 		left,
 		dodgeleft,
+		dodgedown,
+		down,
+		dodgeup,
+		up,
 		right,
 		dodgeright,
-		up,
-		dodgeup,
-		down,
-		dodgedown
 	};
 
 	enum class warp_action

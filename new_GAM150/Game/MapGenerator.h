@@ -89,4 +89,5 @@ public:
 	int GetRepairCost();
 	void RepairBase();
 	void UpgradeBase();
+	
 };

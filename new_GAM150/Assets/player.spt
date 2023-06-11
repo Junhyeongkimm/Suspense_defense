@@ -77,11 +77,12 @@ Frame 4500 4000
 Anim Assets/wait.anm
 Anim Assets/left.anm
 Anim Assets/dodgeleft.anm
+Anim Assets/dodgedown.anm
+Anim Assets/down.anm
+Anim Assets/dodgeup.anm
+Anim Assets/up.anm
 Anim Assets/right.anm
 Anim Assets/dodgeright.anm
-Anim Assets/up.anm
-Anim Assets/dodgeup.anm
-Anim Assets/down.anm
-Anim Assets/dodgedown.anm
 
 
+dddd
