@@ -6,6 +6,7 @@ class Mediator;
 class Boss {
 protected:
 	int hp;
+	int max_hp;
 	double speed;
 	Math::vec2 position;
 	double size;
@@ -16,11 +17,17 @@ protected:
 	double pattern2_time;
 	double pattern3_time;
 
+	double heal_count = 0;
+	double heal_time = 0.5;
+
 	Mediator* mediator;
 public:
 	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator);
 	void Update(double dt);
 	virtual void Draw() = 0;
+	void ReduceHP(int damage) { hp -= damage; }
+	double GetDistance(Math::vec2 target) { return (position - target).GetLength(); }
+	double GetSize() { return size; }
 
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;
@@ -28,15 +35,6 @@ public:
 };
 // --------------------------------- BOSS 1 ---------------------------------
 class Boss1 : public Boss {
-private:
-	const int hp = 20;
-	const double speed = 300;
-	const double size = 100;
-
-	double pattern1_time = 2.0;
-	double pattern2_time = 2.0;
-	double pattern3_time = 2.0;
-
 public:
 	Boss1(Math::vec2 position, Mediator* mediator);
 	void Draw();
@@ -46,15 +44,6 @@ public:
 };
 // --------------------------------- BOSS 2 ---------------------------------
 class Boss2 : public Boss {
-private:
-	const int hp = 20;
-	const double speed = 300;
-	const double size = 100;
-
-	double pattern1_time = 2.0;
-	double pattern2_time = 2.0;
-	double pattern3_time = 2.0;
-
 public:
 	Boss2(Math::vec2 position, Mediator* mediator);
 	void Draw();
@@ -65,15 +54,6 @@ public:
 };
 // --------------------------------- BOSS 3 ---------------------------------
 class Boss3 : public Boss {
-private:
-	const int hp = 20;
-	const double speed = 300;
-	const double size = 100;
-
-	double pattern1_time = 2.0;
-	double pattern2_time = 2.0;
-	double pattern3_time = 2.0;
-
 public:
 	Boss3(Math::vec2 position, Mediator* mediator);
 	void Draw();
@@ -84,15 +64,6 @@ public:
 };
 // --------------------------------- BOSS 4 ---------------------------------
 class Boss4 : public Boss {
-private:
-	const int hp = 20;
-	const double speed = 300;
-	const double size = 100;
-
-	double pattern1_time = 2.0;
-	double pattern2_time = 2.0;
-	double pattern3_time = 2.0;
-
 public:
 	Boss4(Math::vec2 position, Mediator* mediator);
 	void Draw();

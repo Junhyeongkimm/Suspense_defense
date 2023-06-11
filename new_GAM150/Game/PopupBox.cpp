@@ -20,24 +20,30 @@ void PopupBox::Draw() {
 		switch (menu) {
 		case 0:
 			set_font_size(25);
-			draw_text("Player\t", position.x, position.y);
+			draw_text("Player\t", position.x, position.y + 150);
 			set_font_size(20);
-			draw_text("Base\t", position.x + 150, position.y);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Base\t", position.x + 150, position.y + 150);
+			draw_text("Exit", position.x + 300, position.y + 150);
+
+			draw_text("Upgrade player's \nattack or utility", position.x + 25, position.y + 100);
 			break;
 		case 1:
 			set_font_size(25);
-			draw_text("Base\t", position.x + 150, position.y);
+			draw_text("Base\t", position.x + 150, position.y + 150);
 			set_font_size(20);
-			draw_text("Player\t", position.x, position.y);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Player\t", position.x, position.y + 150);
+			draw_text("Exit", position.x + 300, position.y + 150);
+
+			draw_text("Upgrade base or \nrepair base", position.x + 25, position.y + 100);
 			break;
 		case 2:
 			set_font_size(25);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Exit", position.x + 300, position.y + 150);
 			set_font_size(20);
-			draw_text("Player\t", position.x, position.y);
-			draw_text("Base\t", position.x + 150, position.y);
+			draw_text("Player\t", position.x, position.y + 150);
+			draw_text("Base\t", position.x + 150, position.y + 150);
+
+			draw_text("Exit", position.x + 25, position.y + 100);
 			break;
 		}
 		break;
@@ -45,24 +51,30 @@ void PopupBox::Draw() {
 		switch (menu) {
 		case 0:
 			set_font_size(25);
-			draw_text("Attack\t", position.x, position.y);
+			draw_text("Attack\t", position.x, position.y + 150);
 			set_font_size(20);
-			draw_text("Utility\t", position.x + 150, position.y);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Utility\t", position.x + 150, position.y + 150);
+			draw_text("Exit", position.x + 300, position.y + 150);
+
+			draw_text("Upgrade attack\nSomething -> Something", position.x + 25, position.y + 100);
 			break;
 		case 1:
 			set_font_size(25);
-			draw_text("Utility\t", position.x + 150, position.y);
+			draw_text("Utility\t", position.x + 150, position.y + 150);
 			set_font_size(20);
-			draw_text("Attack\t", position.x, position.y);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Attack\t", position.x, position.y + 150);
+			draw_text("Exit", position.x + 300, position.y + 150);
+
+			draw_text("Upgrade utility\nSomething -> Something", position.x + 25, position.y + 100);
 			break;
 		case 2:
 			set_font_size(25);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Exit", position.x + 300, position.y + 150);
 			set_font_size(20);
-			draw_text("Attack\t", position.x, position.y);
-			draw_text("Utility\t", position.x + 150, position.y);
+			draw_text("Attack\t", position.x, position.y + 150);
+			draw_text("Utility\t", position.x + 150, position.y + 150);
+
+			draw_text("Exit", position.x + 25, position.y + 100);
 			break;
 		}
 		break;
@@ -70,24 +82,30 @@ void PopupBox::Draw() {
 		switch (menu) {
 		case 0:
 			set_font_size(25);
-			draw_text("Upgrade\t", position.x, position.y);
+			draw_text("Upgrade\t", position.x, position.y + 150);
 			set_font_size(20);
-			draw_text("Repair\t", position.x + 150, position.y);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Repair\t", position.x + 150, position.y + 150);
+			draw_text("Exit", position.x + 300, position.y + 150);
+
+			draw_text("Upgrade base\nSomething -> Something", position.x + 25, position.y + 100);
 			break;
 		case 1:
 			set_font_size(25);
-			draw_text("Repair\t", position.x + 150, position.y);
+			draw_text("Repair\t", position.x + 150, position.y + 150);
 			set_font_size(20);
-			draw_text("Upgrade\t", position.x, position.y);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Upgrade\t", position.x, position.y + 150);
+			draw_text("Exit", position.x + 300, position.y + 150);
+
+			draw_text("Repiar base\nYou need something cost", position.x + 25, position.y + 100);
 			break;
 		case 2:
 			set_font_size(25);
-			draw_text("Exit", position.x + 300, position.y);
+			draw_text("Exit", position.x + 300, position.y + 150);
 			set_font_size(20);
-			draw_text("Upgrade\t", position.x, position.y);
-			draw_text("Repair\t", position.x + 150, position.y);
+			draw_text("Upgrade\t", position.x, position.y + 150);
+			draw_text("Repair\t", position.x + 150, position.y + 150);
+
+			draw_text("Exit", position.x + 25, position.y + 100);
 			break;
 		}
 		break;
@@ -125,11 +143,11 @@ void PopupBox::Update() {
 			switch (menu) {
 			case 0:
 				// upgrade attack
-				mediator->UpgradePlayerAttack();
+				mediator->GetPlayer()->Attack_Upgrade();
 				break;
 			case 1:
 				// upgrade utility
-				mediator->UpgradePlayerUtility();
+				mediator->GetPlayer()->Utility_Upgrade();
 				break;
 			case 2:
 				break;
@@ -143,6 +161,7 @@ void PopupBox::Update() {
 				break;
 			case 1:
 				// repair base
+				mediator->GetMap()->RepairBase();
 				break;
 			case 2:
 				// exit

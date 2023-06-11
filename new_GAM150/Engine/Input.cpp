@@ -85,7 +85,24 @@ CS230::Input::Keys convert_doodle_to_cs230(doodle::KeyboardButtons doodle_key) {
         return CS230::Input::Keys::Tilde;
     case doodle::KeyboardButtons::Tab:
         return CS230::Input::Keys::Tab;
-
+    case doodle::KeyboardButtons::NumPad_1:
+        return CS230::Input::Keys::NumPad_1;
+    case doodle::KeyboardButtons::NumPad_2:
+        return CS230::Input::Keys::NumPad_2;
+    case doodle::KeyboardButtons::NumPad_3:
+        return CS230::Input::Keys::NumPad_3;
+    case doodle::KeyboardButtons::NumPad_4:
+        return CS230::Input::Keys::NumPad_4;
+    case doodle::KeyboardButtons::_0:
+        return CS230::Input::Keys::_0;
+    case doodle::KeyboardButtons::_1:
+        return CS230::Input::Keys::_1;
+    case doodle::KeyboardButtons::_2:
+        return CS230::Input::Keys::_2;
+    case doodle::KeyboardButtons::_3:
+        return CS230::Input::Keys::_3;
+    case doodle::KeyboardButtons::_4:
+        return CS230::Input::Keys::_4;
     }
 
     return CS230::Input::Keys::Unknown;
