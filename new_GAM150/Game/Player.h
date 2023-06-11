@@ -108,6 +108,8 @@ public:
 	// Upgrade the player
 	void Attack_Upgrade();
 	void Utility_Upgrade();
+	void UseMapResource(int resource) { map_resource -= resource; }
+	void UseMonsterResource(int resource) { monster_resource -= resource; }
 	// Unlock Dodge
 	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock ranged attack

@@ -404,3 +404,67 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 	}
 	
 }
+
+// Upgrade things
+int Map::GetRepairCost() {
+	int void_count = 0;
+	int cost = 0;
+	// Check base wall
+	for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
+		for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
+			// Skip base inside
+			if (i > map_size / 2 - 4 || i < map_size / 2 + 4 || j>map_size / 2 - 4 || j < map_size / 2 + 4) {
+				continue;
+			}
+			if (MAP[i][j]->Get_State() == TILES::VOID) {
+				++void_count;
+			}
+			else {
+				cost += MAP[i][j]->GetMaxHp() - MAP[i][j]->GetHP();
+			}
+
+		}
+	}
+	cost += void_count * 5;
+
+	return cost;
+}
+void Map::RepairBase() {
+	// Return if the hp is full
+	if (GetRepairCost() == 0) {
+		std::cout << "All walls have full hp!\n";
+		return;
+	}
+	// Check the player have enough resources
+	if (mediator->GetPlayer()->GetMonsterResource() >= GetRepairCost() / 2) {
+		// Check the base wall
+		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
+			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
+				// Skip base inside
+				if (i > map_size / 2 - 4 || i < map_size / 2 + 4 || j>map_size / 2 - 4 || j < map_size / 2 + 4) {
+					continue;
+				}
+				// If the base wall has changed into void, change back to base wall
+				if (MAP[i][j]->Get_State() == TILES::VOID) {
+					Math::vec2 position = MAP[i][j]->GetPosition();
+					delete MAP[i][j];
+					MAP[i][j] = new Base_Wall(position);
+				}
+				// Repair the base wall
+				else {
+					MAP[i][j]->Repair();
+				}
+				// Use the resource from the player
+				mediator->GetPlayer()->UseMonsterResource(GetRepairCost() / 2);
+				std::cout << "Repaired!\n";
+			}
+		}
+	}
+	// If the player has not enough cost
+	else {
+		std::cout << "Not enough resource! You need " << GetRepairCost() / 2 << " resources!\n";
+	}
+}
+void Map::UpgradeBase() {
+
+}

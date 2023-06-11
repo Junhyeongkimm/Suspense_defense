@@ -12,12 +12,13 @@ protected:
     static inline const double size = 50;
     Math::vec2 position;
     int state = 0;
-    int hp = 0;
+    int hp;
     HexColor color = 0;
+    int max_hp;
 
 public:
     // Constructor
-    Tile(Math::vec2 position);
+    Tile(Math::vec2 position, int max_hp = 0);
     // Update
     virtual void Update(double dt);
     // Draw
@@ -31,9 +32,11 @@ public:
     double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
     int Get_State();
     int GetHP() { return hp; }
+    int GetMaxHp() { return max_hp; }
     CS230::Sprite sprite;
     // Reduce hp of the tile
     virtual void ReduceHP() { --hp; }
+    void Repair() { hp = max_hp; }
     double scale_x;
     double scale_y;
 };
