@@ -260,8 +260,6 @@ void Map::Show_Map() {
 }
 // Show the direction of base
 void Map::Base_Show_Arrow() {
-	if (base_compass_unlocked == false)
-		return;
 	push_settings();
 
 	arrow_direction = { middle_point.x - mediator->GetPlayer()->GetPosition().x, middle_point.y - mediator->GetPlayer()->GetPosition().y };
@@ -279,7 +277,7 @@ void Map::Base_Show_Arrow() {
 }
 // Draw arrow to the closest colony
 void Map::Colony_Show_Arrow() {
-	if (colony_copass_unlocked == false || remaining_colony == 0)
+	if (remaining_colony == 0)
 		return;
 
 	push_settings();
@@ -374,28 +372,28 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			break;
 
 		case TILES::TREASURE:
-			MAP[x][y]->Attacked(attack_point);
-			if (MAP[x][y]->GetHP() <= 0) {
-				delete MAP[x][y];
-				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+			//MAP[x][y]->Attacked(attack_point);
+			//if (MAP[x][y]->GetHP() <= 0) {
+			//	delete MAP[x][y];
+			//	MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 
-				switch (unlock_count) {
-				case 0:
-					mediator->GetMap()->UnlockBaseArraw();
-					break;
-				case 1:
-					//mediator->UnlockRangedAttack();
-					break;
-				case 2:
-					mediator->GetPlayer()->UnlockDodge();
-					break;
-				case 3:
-					mediator->GetMap()->UnlockColonyArraw();
-					break;
-				}
-				++unlock_count;
-			}
-			break;
+			//	switch (unlock_count) {
+			//	case 0:
+			//		mediator->GetMap()->UnlockBaseArraw();
+			//		break;
+			//	case 1:
+			//		//mediator->UnlockRangedAttack();
+			//		break;
+			//	case 2:
+			//		mediator->GetPlayer()->UnlockDodge();
+			//		break;
+			//	case 3:
+			//		mediator->GetMap()->UnlockColonyArraw();
+			//		break;
+			//	}
+			//	++unlock_count;
+			//}
+			//break;
 
 		default:
 
@@ -441,7 +439,7 @@ void Map::RepairBase() {
 		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
 			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
 				// Skip base inside
-				if (i > map_size / 2 - 4 || i < map_size / 2 + 4 || j>map_size / 2 - 4 || j < map_size / 2 + 4) {
+				if (i > map_size / 2 - 4 && i < map_size / 2 + 4 && j > map_size / 2 - 4 && j < map_size / 2 + 4) {
 					continue;
 				}
 				// If the base wall has changed into void, change back to base wall
@@ -454,17 +452,41 @@ void Map::RepairBase() {
 				else {
 					MAP[i][j]->Repair();
 				}
-				// Use the resource from the player
-				mediator->GetPlayer()->UseMonsterResource(GetRepairCost() / 2);
-				std::cout << "Repaired!\n";
 			}
 		}
+		// Use the resource from the player
+		mediator->GetPlayer()->UseMonsterResource(GetRepairCost() / 2);
+		std::cout << "Repaired!\n";
 	}
 	// If the player has not enough cost
 	else {
 		std::cout << "Not enough resource! You need " << GetRepairCost() / 2 << " resources!\n";
 	}
 }
+int Map::GetUpgradeCost() {
+	switch (base_upgrade_count) {
+	case 0:
+		return 10;
+		break;
+	case 1:
+		return 20;
+		break;
+	case 2:
+		return 30;
+		break;
+	default:
+		return 0;
+	}
+	return 0;
+}
 void Map::UpgradeBase() {
 
+	if (mediator->GetPlayer()->GetMapResource() >= GetUpgradeCost()) {
+		mediator->GetPlayer()->UseMonsterResource(GetUpgradeCost());
+		++base_upgrade_count;
+		std::cout << "Base upgraded!\n";
+	}
+	else {
+		std::cout << "Not enough resource! You need " << GetUpgradeCost() << "resources!\n";
+	}
 }

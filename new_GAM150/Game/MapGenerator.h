@@ -60,10 +60,8 @@ public:
 	// Show the map based on the player's position.
 	void Show_Map();
 	// Draw arrow to the base
-	bool base_compass_unlocked = false;
 	void Base_Show_Arrow();
 	// Draw arrow to the closest colony
-	bool colony_copass_unlocked = false;
 	void Colony_Show_Arrow();
 	// Attacked
 	void Attacked(Math::ivec2 position);
@@ -82,11 +80,10 @@ public:
 	int GetOffset() { return offset; }
 	// Unlock things
 	int unlock_count = 0;
-	void UnlockBaseArraw() { base_compass_unlocked = true; }
-	void UnlockColonyArraw() { colony_copass_unlocked = true; }
 	// Upgrade things
 	int base_upgrade_count = 0;
 	int GetRepairCost();
+	int GetUpgradeCost();
 	void RepairBase();
 	void UpgradeBase();
 };

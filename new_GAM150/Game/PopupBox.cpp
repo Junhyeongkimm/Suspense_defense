@@ -56,7 +56,7 @@ void PopupBox::Draw() {
 			draw_text("Utility\t", position.x + 150, position.y + 150);
 			draw_text("Exit", position.x + 300, position.y + 150);
 
-			draw_text("Upgrade attack\nSomething -> Something", position.x + 25, position.y + 100);
+			draw_text("Upgrade attack\nSomething -> Something\n You need " + std::to_string(mediator->GetPlayer()->GetAttackUpgradeCost()) + " map resources", position.x + 25, position.y + 100);
 			break;
 		case 1:
 			set_font_size(25);
@@ -65,7 +65,7 @@ void PopupBox::Draw() {
 			draw_text("Attack\t", position.x, position.y + 150);
 			draw_text("Exit", position.x + 300, position.y + 150);
 
-			draw_text("Upgrade utility\nSomething -> Something", position.x + 25, position.y + 100);
+			draw_text("Upgrade utility\nSomething -> Something\nYou need " + std::to_string(mediator->GetPlayer()->GetUtilityUpgradeCost()) + " map resources", position.x + 25, position.y + 100);
 			break;
 		case 2:
 			set_font_size(25);
@@ -87,7 +87,7 @@ void PopupBox::Draw() {
 			draw_text("Repair\t", position.x + 150, position.y + 150);
 			draw_text("Exit", position.x + 300, position.y + 150);
 
-			draw_text("Upgrade base\nSomething -> Something", position.x + 25, position.y + 100);
+			draw_text("Upgrade base\nPlayer maximum upgrade ? - > ?\nYou need " + std::to_string(mediator->GetMap()->GetUpgradeCost()) + " map resources", position.x + 25, position.y + 100);
 			break;
 		case 1:
 			set_font_size(25);
@@ -96,7 +96,7 @@ void PopupBox::Draw() {
 			draw_text("Upgrade\t", position.x, position.y + 150);
 			draw_text("Exit", position.x + 300, position.y + 150);
 
-			draw_text("Repiar base\nYou need " + std::to_string(mediator->GetMap()->GetRepairCost()) + "monster resources", position.x + 25, position.y + 100);
+			draw_text("Repiar base\nYou need " + std::to_string(mediator->GetMap()->GetRepairCost() / 2) + "monster resources", position.x + 25, position.y + 100);
 			break;
 		case 2:
 			set_font_size(25);
@@ -158,6 +158,7 @@ void PopupBox::Update() {
 			switch (menu) {
 			case 0:
 				// upgrade base
+				mediator->GetMap()->UpgradeBase();
 				break;
 			case 1:
 				// repair base

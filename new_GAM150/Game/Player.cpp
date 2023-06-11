@@ -363,48 +363,108 @@ void Player::GoToBase() {
 }
 // Upgrade the player
 void Player::Attack_Upgrade() {
-	switch (attack_upgrade_count) {
-	case 0:
+	if (map_resource >= GetAttackUpgradeCost()) {
+		switch (attack_upgrade_count) {
+		case 0:
 
-		break;
-	case 1:
+			break;
+		case 1:
 
-		break;
-	case 2:
+			break;
+		case 2:
 
-		break;
-	case 3:
+			break;
+		case 3:
 
-		break;
-	case 4:
+			break;
+		case 4:
 
-		break;
-	default:
+			break;
+		default:
 
-		break;
+			break;
+		}
+		map_resource -= GetAttackUpgradeCost();
+		++attack_upgrade_count;
+		std::cout << "Player upgrade!\n";
 	}
-	std::cout << "Player upgrade!\n";
 }
 void Player::Utility_Upgrade() { 
-	switch (utility_upgrade_count) {
-	case 0:
+	if (map_resource >= GetUtilityUpgradeCost()) {
+		switch (utility_upgrade_count) {
+		case 0:
 
+			break;
+		case 1:
+
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		case 4:
+
+			break;
+		default:
+
+			break;
+		}
+		map_resource -= GetUtilityUpgradeCost();
+		++utility_upgrade_count;
+		std::cout << "Utility upgrade!\n";
+	}
+	
+}
+
+int Player::GetAttackUpgradeCost() {
+	switch (attack_upgrade_count) {
+	case 0 :
+		return 5;
 		break;
 	case 1:
-
+		return 10;
 		break;
 	case 2:
-
+		return 15;
 		break;
 	case 3:
-
+		return 20;
 		break;
 	case 4:
-
+		return 25;
+		break;
+	case 5:
+		return 30;
 		break;
 	default:
-
+		return 0;
+	}
+	return 0;
+}
+int Player::GetUtilityUpgradeCost() {
+	switch (utility_upgrade_count) {
+	case 0:
+		return 5;
 		break;
-	} 
-	std::cout << "Utility upgrade!\n";
+	case 1:
+		return 10;
+		break;
+	case 2:
+		return 15;
+		break;
+	case 3:
+		return 20;
+		break;
+	case 4:
+		return 25;
+		break;
+	case 5:
+		return 30;
+		break;
+	default:
+		return 0;
+	}
+	return 0;
 }
