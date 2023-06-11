@@ -70,6 +70,16 @@ private:
 public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
+	
+	void SwordSetWantScale(Math::vec2 new_scale);
+	
+	void GunSetWantScale(Math::vec2 new_scale);
+	
+	void ShoutGunSetWantScale(Math::vec2 new_scale);
+
+	void GatlingSetWantScale(Math::vec2 new_scale);
+	
+	void ARGunSetWantScale(Math::vec2 new_scale);
 	// Constructor
 	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
 	// Update
@@ -118,11 +128,11 @@ public:
 	void UnlockHoming() { homing_unlocked = true; }
 
 	CS230::Sprite playersprite;
-	CS230::Sprite weaponsprite1;
-	CS230::Sprite weaponsprite2;
-	CS230::Sprite weaponsprite3;
-	CS230::Sprite weaponsprite4;
-	CS230::Sprite weaponsprite5;
+	CS230::Sprite sword_weaponsprite;
+	CS230::Sprite gun_weaponsprite;
+	CS230::Sprite shoutgun_weaponsprite;
+	CS230::Sprite gatlinggun_weaponsprite;
+	CS230::Sprite argun_weaponsprite;
 	CS230::Sprite warpsprite;
 
 	double scale_x;

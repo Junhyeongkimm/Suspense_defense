@@ -10,11 +10,49 @@ using namespace doodle;
 
 void Player::SetWantScale(Math::vec2 new_scale)
 {
-
 		Math::ivec2 want = playersprite.GetFrameSize();
 		scale_x = 1 / static_cast<double>(want.x)* new_scale.x;
 		scale_y = 1 / static_cast<double>(want.y)* new_scale.y;
 }
+
+void Player::SwordSetWantScale(Math::vec2 new_scale)
+{
+	Math::ivec2 want = sword_weaponsprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+}
+void Player::GunSetWantScale(Math::vec2 new_scale)
+{
+	Math::ivec2 want = gun_weaponsprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+
+}
+
+void Player::ShoutGunSetWantScale(Math::vec2 new_scale)
+{
+	Math::ivec2 want = shoutgun_weaponsprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+
+}
+
+void GatlingSetWantScale(Math::vec2 new_scale)
+{
+	Math::ivec2 want = gatlinggun_weaponsprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+
+}
+
+void Player::ARGunSetWantScale(Math::vec2 new_scale)
+{
+	Math::ivec2 want = argun_weaponsprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+
+}
+
 // Constructor
 Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
   
@@ -294,20 +332,20 @@ void Player::Draw() {
 	
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking==true && attack_mode == MELEE) {
-		weaponsprite1.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
-		weaponsprite2.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	else if (is_attacking == true && attack_mode == SHOTGUN) {
-		weaponsprite3.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 
 	}
 	else if (is_attacking == true && attack_mode == GATLING) {
-		weaponsprite4.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	else if (is_attacking == true && attack_mode == HOMING) {
-		weaponsprite5.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 
 	if (is_warping) {
@@ -335,6 +373,7 @@ double Player::GetDistanceFromAttack(Math::vec2 target) {
 	return (GetAttackPosition() - target).GetLength();
 	//return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
 }
+
 // Attack function
 void Player::Attack() {
 	SetAttackPosition(GetAttackPosition() - position);
@@ -344,30 +383,30 @@ void Player::Attack() {
 
 	switch (attack_mode) {
 	case MELEE:
-		weaponsprite1.Load("Assets/sword.spt");
-		weaponsprite1.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		sword_weaponsprite.Load("Assets/sword.spt");
+		sword_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->Check_Map_Attacked();
 		break;
 	case RANGE:
-		weaponsprite2.Load("Assets/gun.spt");
-		weaponsprite2.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		gun_weaponsprite.Load("Assets/gun.spt");
+		gun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case SHOTGUN:
-		weaponsprite3.Load("Assets/shoutgun.spt");
-		weaponsprite3.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		shoutgun_weaponsprite.Load("Assets/shoutgun.spt");
+		shoutgun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		break;
 	case GATLING:
-		weaponsprite4.Load("Assets/gatlinggun.spt");
-		weaponsprite4.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		gatlinggun_weaponsprite.Load("Assets/gatlinggun.spt");
+		gatlinggun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case HOMING:
-		weaponsprite5.Load("Assets/argun.spt");
-		weaponsprite5.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		argun_weaponsprite.Load("Assets/argun.spt");
+		argun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddHoming(position, GetAttackPosition() - position);
 		break;
 	}
