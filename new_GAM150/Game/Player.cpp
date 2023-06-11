@@ -57,9 +57,11 @@ void Player::Update(double dt) {
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 				dodge_direction.y += 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgeup));
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 				dodge_direction.y -= 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgedown));
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 				dodge_direction.x -= 1;
