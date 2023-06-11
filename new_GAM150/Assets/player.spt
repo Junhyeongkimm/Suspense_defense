@@ -56,6 +56,24 @@ Frame 2000 3000
 Frame 2500 3000
 Frame 3000 3000
 Frame 3500 3000
+Frame 0 500
+Frame 500 3500
+Frame 1000 3500
+Frame 1500 3500
+Frame 2000 3500
+Frame 2500 3500
+Frame 3000 3500
+Frame 3500 3500
+Frame 0 1000
+Frame 500 4000
+Frame 1000 4000
+Frame 1500 4000
+Frame 2000 4000
+Frame 2500 4000
+Frame 3000 4000
+Frame 3500 4000
+Frame 4000 4000
+Frame 4500 4000
 Anim Assets/None.anm
 Anim Assets/wait.anm
 Anim Assets/left.anm
@@ -64,4 +82,6 @@ Anim Assets/up.anm
 Anim Assets/dodgeup.anm
 Anim Assets/down.anm
 Anim Assets/dodgedown.anm
+Anim Assets/right.anm
+Anim Assets/dodgeright.anm
 
