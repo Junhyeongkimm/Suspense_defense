@@ -12,6 +12,7 @@ Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double ti
 void Boss::Update(double dt) {
 	// Boss dead
 	if (hp <= 0) {
+		mediator->GetMap()->IncreaseBossCount();
 		mediator->DeleteBoss(this);
 		return;
 	}

@@ -40,9 +40,9 @@ private:
 	const double invincibility_time = 0.3;
 	double invincibility_count = 0;
 	// Resources
-	int map_resource = 30;
-	int monster_resource = 30;
-	int warp_resource = 30;
+	int map_resource = 130;
+	int monster_resource = 130;
+	int warp_resource = 130;
 	// Warp
 	bool is_warping = false;
 	const double warp_time = 2.0;
@@ -59,6 +59,7 @@ private:
 	double recover_count = 0.0;
 	const double recover_cool = 1.0;
 	// Upgrade count
+	int upgrade_max = 0;
 	int attack_upgrade_count = 0;
 	int utility_upgrade_count = 0;
 	// Box
@@ -87,7 +88,8 @@ public:
 	int GetWarpResource() { return warp_resource; }
 	int GetHP() { return hp; }
 	int GetMaxHP() { return max_hp; }
-	//////////////////////////////////////bool Able_To_Attack() { return attack_count > attack_delay; }
+	double GetSpeed() { return speed; }
+	double GetAttackDelay() { return attack_delay; }
 	double GetSize() { return size; }
 	int GetDamage() { return damage; }
 	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
@@ -95,6 +97,9 @@ public:
 	void IncreaseMapResource() { ++map_resource; }
 	void IncreaseMonsterResource() { ++monster_resource; }
 	void IncreaseWarpResource() { ++warp_resource; }
+	int GetAttackUpgradeCount() { return attack_upgrade_count; }
+	int GetUtilityUpgradeCount() { return utility_upgrade_count; }
+	int GetMaximumUpgrade() { return upgrade_max; }
 	// Attack
 	void Attack();
 	// Reduce hp
@@ -112,6 +117,7 @@ public:
 	void UseMonsterResource(int resource) { monster_resource -= resource; }
 	int GetAttackUpgradeCost();
 	int GetUtilityUpgradeCost();
+	void IncreaseUpgradeMax() { upgrade_max += 2; }
 	// Unlock Dodge
 	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock ranged attack

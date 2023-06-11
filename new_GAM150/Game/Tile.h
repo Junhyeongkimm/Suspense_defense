@@ -37,6 +37,7 @@ public:
     // Reduce hp of the tile
     virtual void ReduceHP() { --hp; }
     void Repair() { hp = max_hp; }
+    void Upgrade() { max_hp += 5; hp = max_hp; }
     double scale_x;
     double scale_y;
 };

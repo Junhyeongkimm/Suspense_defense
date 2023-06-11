@@ -143,7 +143,11 @@ void Player::Update(double dt) {
 	}
 
 	// Player warp
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && 
+		(mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) &&
+		(mediator->GetMap()->GetTileState(position) != TILES::BASE_WALL) &&
+		(mediator->GetMap()->GetTileState(position) != TILES::TOWER)
+		&& (warp_resource >= 1)) {
 
 		if(is_warping==false){
 			
@@ -179,7 +183,7 @@ void Player::Update(double dt) {
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::RESOURCE) &&
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
-			position += dodge_direction * 2 * speed * dt;
+			position += dodge_direction * 1.5 * speed * dt;
 			
 		}
 		if (dodging_count >= dodging_time) {
@@ -366,25 +370,29 @@ void Player::Attack_Upgrade() {
 	if (map_resource >= GetAttackUpgradeCost()) {
 		switch (attack_upgrade_count) {
 		case 0:
-
+			attack_delay -= 0.1;
 			break;
 		case 1:
-
+			attack_delay -= 0.1;
+			++damage;
 			break;
 		case 2:
-
+			attack_delay -= 0.1;
 			break;
 		case 3:
-
+			attack_delay -= 0.1;
+			++damage;
 			break;
 		case 4:
-
+			attack_delay -= 0.1;
 			break;
-		default:
-
+		case 5:
+			attack_delay -= 0.1;
+			++damage;
 			break;
 		}
-		map_resource -= GetAttackUpgradeCost();
+		UseMapResource(GetAttackUpgradeCost());
+		//map_resource -= GetAttackUpgradeCost();
 		++attack_upgrade_count;
 		std::cout << "Player upgrade!\n";
 	}
@@ -393,25 +401,39 @@ void Player::Utility_Upgrade() {
 	if (map_resource >= GetUtilityUpgradeCost()) {
 		switch (utility_upgrade_count) {
 		case 0:
-
+			max_hp += 2;
+			hp = max_hp;
+			speed += 25;
 			break;
 		case 1:
-
+			max_hp += 3;
+			hp = max_hp;
+			speed += 25;
 			break;
 		case 2:
-
+			max_hp += 2;
+			hp = max_hp;
+			hp = max_hp;
+			speed += 25;
 			break;
 		case 3:
-
+			max_hp += 3;
+			hp = max_hp;
+			speed += 25;
 			break;
 		case 4:
-
+			max_hp += 2;
+			hp = max_hp;
+			speed += 25;
 			break;
-		default:
-
+		case 5:
+			max_hp += 3;
+			hp = max_hp;
+			speed += 25;
 			break;
 		}
-		map_resource -= GetUtilityUpgradeCost();
+		UseMapResource(GetUtilityUpgradeCost());
+		//map_resource -= GetUtilityUpgradeCost();
 		++utility_upgrade_count;
 		std::cout << "Utility upgrade!\n";
 	}

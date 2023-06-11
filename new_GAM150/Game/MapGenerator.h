@@ -81,7 +81,12 @@ public:
 	// Unlock things
 	int unlock_count = 0;
 	// Upgrade things
+	int boss_clear_count = 0;
+	void IncreaseBossCount();
 	int base_upgrade_count = 0;
+	int base_upgrade_max = 0;
+	int GetUpgradeCount(){ return base_upgrade_count; }
+	int GetUpgradeMax() { return base_upgrade_max; }
 	int GetRepairCost();
 	int GetUpgradeCost();
 	void RepairBase();

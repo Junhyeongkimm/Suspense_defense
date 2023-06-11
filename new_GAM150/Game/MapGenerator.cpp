@@ -434,7 +434,10 @@ void Map::RepairBase() {
 		return;
 	}
 	// Check the player have enough resources
-	if (mediator->GetPlayer()->GetMonsterResource() >= GetRepairCost() / 2) {
+	if (mediator->GetPlayer()->GetMonsterResource() >= GetRepairCost()) {
+		// Use the resource from the player
+		mediator->GetPlayer()->UseMonsterResource(GetRepairCost());
+		std::cout << "Repaired!\n";
 		// Check the base wall
 		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
 			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
@@ -454,13 +457,10 @@ void Map::RepairBase() {
 				}
 			}
 		}
-		// Use the resource from the player
-		mediator->GetPlayer()->UseMonsterResource(GetRepairCost() / 2);
-		std::cout << "Repaired!\n";
 	}
 	// If the player has not enough cost
 	else {
-		std::cout << "Not enough resource! You need " << GetRepairCost() / 2 << " resources!\n";
+		std::cout << "Not enough resource! You need " << GetRepairCost() << " resources!\n";
 	}
 }
 int Map::GetUpgradeCost() {
@@ -480,13 +480,50 @@ int Map::GetUpgradeCost() {
 	return 0;
 }
 void Map::UpgradeBase() {
-
 	if (mediator->GetPlayer()->GetMapResource() >= GetUpgradeCost()) {
+		// Something
+		switch (base_upgrade_count) {
+		case 0:
+
+			break;
+		case 1:
+
+			break;
+		case 2:
+
+			break;
+		}
+		// Upgrade wall max hp
+		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
+			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
+				// Skip base inside
+				if (i > map_size / 2 - 4 && i < map_size / 2 + 4 && j > map_size / 2 - 4 && j < map_size / 2 + 4) {
+					continue;
+				}
+				// If the base wall has changed into void, change back to base wall
+				if (MAP[i][j]->Get_State() == TILES::VOID) {
+					Math::vec2 position = MAP[i][j]->GetPosition();
+					delete MAP[i][j];
+					MAP[i][j] = new Base_Wall(position);
+				}
+				// Upgrade the walls's hp
+				MAP[i][j]->Upgrade();
+			}
+		}
+		// Increase upgrade maximum of player
 		mediator->GetPlayer()->UseMonsterResource(GetUpgradeCost());
+		mediator->GetPlayer()->IncreaseUpgradeMax();
+		// Update
 		++base_upgrade_count;
+		--boss_clear_count;
 		std::cout << "Base upgraded!\n";
 	}
 	else {
 		std::cout << "Not enough resource! You need " << GetUpgradeCost() << "resources!\n";
 	}
+
+}
+void Map::IncreaseBossCount() { 
+	++boss_clear_count; 
+	++base_upgrade_max;
 }
