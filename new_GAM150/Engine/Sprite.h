@@ -28,6 +28,10 @@ namespace CS230 {
 
         void PlayAnimation(int animation);
         bool AnimationEnded();
+        bool Getisplaying()
+        {
+            return animations[current_animation]->Getisplaying();
+        }
     private:
         Math::ivec2 GetFrameTexel(int index) const;
 

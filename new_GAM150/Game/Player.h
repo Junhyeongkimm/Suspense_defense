@@ -50,7 +50,7 @@ private:
 	// Dodge
 	bool dodge_unlocked = true;
 	bool is_dodging = false;
-	const double dodging_time = 0.2;
+	const double dodging_time = 0.4;
 	double dodging_count = 0;
 	const double dodge_cool_time = 1.0;
 	double dodge_cool_count = 0;
@@ -119,9 +119,11 @@ public:
 
 	CS230::Sprite sprite;
 	CS230::Sprite weaponsprite;
+	CS230::Sprite warpsprite;
 
 	double scale_x;
 	double scale_y;
+	bool is_moving = false;
 
 	enum class player_action {
 		None,
@@ -132,6 +134,16 @@ public:
 		dodgeup,
 		down,
 		dodgedown
+	};
+
+	enum class warp_action
+	{
+		warping
+	};
+
+	enum class Weapon_action
+	{
+		attack
 	};
 
 	bool flipped = false;

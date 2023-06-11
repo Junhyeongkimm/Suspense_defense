@@ -25,7 +25,7 @@ Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator*
 }
 // Update
 void Player::Update(double dt) {
-	// Show box and return
+	is_moving = false;
 	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E) && !box->is_activated()) {
 			box->Activate();
@@ -96,12 +96,15 @@ void Player::Update(double dt) {
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 				dodge_direction.y += 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgeup));
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 				dodge_direction.y -= 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgedown));
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 				dodge_direction.x -= 1;
+				sprite.PlayAnimation(static_cast<int>(player_action::dodgeleft));
 			}
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 				dodge_direction.x += 1;
@@ -141,11 +144,21 @@ void Player::Update(double dt) {
 
 	// Player warp
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
+
+		if(is_warping==false){
+			
+			warpsprite.Load("Assets/teleport.spt");
+			warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
+		}
 		is_warping = true;
+		
 	}
 	if (is_warping) {
 		warp_count += dt;
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
+		warpsprite.Update(dt);
+		
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::A) ||
+			Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S) || Engine::GetInput().KeyJustPressed(CS230::Input::Keys::D)) {
 			warp_count = 0;
 			is_warping = false;
 		}
@@ -167,7 +180,7 @@ void Player::Update(double dt) {
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
 			position += dodge_direction * 2 * speed * dt;
-			sprite.PlayAnimation(static_cast<int>(player_action::dodgeleft));
+			
 		}
 		if (dodging_count >= dodging_time) {
 			dodging_count = 0;
@@ -178,28 +191,35 @@ void Player::Update(double dt) {
 		// Player moving with W, A, S, D
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
+			is_moving = true;
+				sprite.PlayAnimation(static_cast<int>(player_action::up));
+			
 			if ((mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
-				//sprite.PlayAnimation(static_cast<int>(player_action::up));
+				
 
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
+			is_moving = true;
+			sprite.PlayAnimation(static_cast<int>(player_action::down));
 			if ((mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::RESOURCE) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
-				//sprite.PlayAnimation(static_cast<int>(player_action::down));
+				
 
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
+			is_moving = true;
+			sprite.PlayAnimation(static_cast<int>(player_action::left));
 			if ((mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::RESOURCE) &&
@@ -209,6 +229,7 @@ void Player::Update(double dt) {
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
+			is_moving = true;
 			if ((mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
 				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
@@ -245,6 +266,11 @@ void Player::Update(double dt) {
 	if (hp <= 0) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
+	if (is_moving == false && is_dodging == false)
+	{
+		sprite.PlayAnimation(static_cast<int>(player_action::waiting));
+	}
+	sprite.Update(dt);
 }
 // Draw player
 void Player::Draw() {
@@ -258,16 +284,20 @@ void Player::Draw() {
 	if (is_attacking == true && attack_mode == MELEE) {
 		push_settings();
 		weaponsprite.Load("Assets/sword.spt");
-		weaponsprite.PlayAnimation(static_cast<int>(player_action::None));
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		pop_settings();
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
 		push_settings();
 		weaponsprite.Load("Assets/gun.spt");
-		weaponsprite.PlayAnimation(static_cast<int>(player_action::None));
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 		pop_settings();
+	}
+
+	if (is_warping) {
+		warpsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 }
 // Reduce hp
