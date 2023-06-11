@@ -57,6 +57,8 @@ public:
 	void Make_Warp(int number);
 	// Make unlock things
 	void Make_Treasure();
+	// Make boss zone
+	void Make_Boss_Zone();
 	// Show the map based on the player's position.
 	void Show_Map();
 	// Draw arrow to the base

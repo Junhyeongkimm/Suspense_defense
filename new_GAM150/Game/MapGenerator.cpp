@@ -63,6 +63,7 @@ void Map::MapMaking() {
 	Make_Colony(10);
 	Make_Resource(50);
 	Make_Warp(20);
+	Make_Boss_Zone();
 }
 // Initialize
 void Map::Initialize() {
@@ -149,6 +150,7 @@ void Map::Make_Colony(int number) {
 				if (MAP[i][j]->Get_State() == TILES::COLONY_CORE || 
 					MAP[i][j]->Get_State() == TILES::BASE_INSIDE ||
 					MAP[i][j]->Get_State() == TILES::TREASURE ||
+					MAP[i][j]->Get_State() == TILES::BOSS_ZONE ||
 					((mediator->GetPlayer()->GetTilePosition().x == i) && (mediator->GetPlayer()->GetTilePosition().y == j)))
 					not_make = true;
 			}
@@ -222,6 +224,74 @@ void Map::Make_Treasure() {
 	MAP[middle.x - 30][middle.y] = new Treasure(Math::vec2{ (middle.x - 30) * tile_length, middle.y * tile_length } );
 	MAP[middle.x][middle.y + 30] = new Treasure(Math::vec2{ middle.x * tile_length, (middle.y + 30) * tile_length } );
 	MAP[middle.x][middle.y - 30] = new Treasure(Math::vec2{ middle.x * tile_length, (middle.y - 30) * tile_length } );
+}
+// Make boss zone
+void Map::Make_Boss_Zone() {
+	Math::ivec2 first = { 10, 10 };
+	Math::ivec2 second = { map_size / 2 - 10, 10 };
+	Math::ivec2 third = { 10, map_size - 10 };
+	Math::ivec2 fourth = { map_size / 2 - 10, 10 };
+
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[first.x + i][first.y + j]->GetPosition();
+				delete MAP[first.x + i][first.y + j];
+				MAP[first.x + i][first.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[first.x + i][first.y + j]->GetPosition();
+				delete MAP[first.x + i][first.y + j];
+				MAP[first.x + i][first.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss1(Math::vec2{ first.x * tile_length + tile_length / 2, first.y * tile_length + tile_length / 2 });
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[second.x + i][second.y + j]->GetPosition();
+				delete MAP[second.x + i][second.y + j];
+				MAP[second.x + i][second.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[second.x + i][second.y + j]->GetPosition();
+				delete MAP[second.x + i][second.y + j];
+				MAP[second.x + i][second.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss2(Math::vec2{ second.x * tile_length + tile_length / 2, second.y * tile_length + tile_length / 2 });
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[third.x + i][third.y + j]->GetPosition();
+				delete MAP[third.x + i][third.y + j];
+				MAP[third.x + i][third.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[third.x + i][third.y + j]->GetPosition();
+				delete MAP[third.x + i][third.y + j];
+				MAP[third.x + i][third.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss3(Math::vec2{ third.x * tile_length + tile_length / 2, third.y * tile_length + tile_length / 2 });
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[fourth.x + i][fourth.y + j]->GetPosition();
+				delete MAP[fourth.x + i][fourth.y + j];
+				MAP[fourth.x + i][fourth.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[fourth.x + i][fourth.y + j]->GetPosition();
+				delete MAP[fourth.x + i][fourth.y + j];
+				MAP[fourth.x + i][fourth.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss4(Math::vec2{ fourth.x * tile_length + tile_length / 2, fourth.y * tile_length + tile_length / 2 });
 }
 // Show map
 void Map::Show_Map() {
@@ -484,13 +554,13 @@ void Map::UpgradeBase() {
 		// Something
 		switch (base_upgrade_count) {
 		case 0:
-
+			mediator->GetPlayer()->UnlockShotgun();
 			break;
 		case 1:
-
+			mediator->GetPlayer()->UnlockGatling();
 			break;
 		case 2:
-
+			mediator->GetPlayer()->UnlockHoming();
 			break;
 		}
 		// Upgrade wall max hp

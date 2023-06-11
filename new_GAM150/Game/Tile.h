@@ -178,3 +178,13 @@ public:
     };
     bool treasurebroken = false;
 };
+
+class Boss_Zone : public Tile {
+public:
+    Boss_Zone(Math::vec2 position);
+    void Update(double dt);
+    void Draw(bool is_day);
+    enum class boss_zone_animations {
+        Basic
+    };
+};
