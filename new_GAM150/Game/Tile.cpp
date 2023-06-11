@@ -6,9 +6,11 @@ class Tile;
 std::vector<Tile*> tiles;
 
 // Constructor
-Tile::Tile(Math::vec2 position) : position(position) {
+Tile::Tile(Math::vec2 position, int max_hp) : position(position), max_hp(max_hp) {
 	scale_x = 0;
 	scale_y = 0;
+
+	hp = max_hp;
 }
 // Update
 void Tile::Update(double dt) {
@@ -40,10 +42,9 @@ bool Tile::Attacked(Math::vec2 attack_point, int i) {
 // Tiles below are very similar. The major difference is hp and state.
 
 // Wall
-Wall::Wall(Math::vec2 position) : Tile(position) {
+Wall::Wall(Math::vec2 position) : Tile(position, 2) {
 	tiles.push_back(this);
 	state = TILES::WALL;
-	hp = 2;
 
 	sprite.Load("Assets/rock.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
@@ -109,9 +110,8 @@ void Colony_Core::Draw(bool is_day) {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
 // Colony_Side
-Colony_Side::Colony_Side(Math::vec2 position) : Tile(position) {
+Colony_Side::Colony_Side(Math::vec2 position) : Tile(position, 2) {
 	state = TILES::COLONY_SIDE;
-	hp = 2;
 	sprite.Load("Assets/colonyside.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
@@ -125,9 +125,9 @@ void Colony_Side::Draw(bool is_day) {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }
 // Base_Wall
-Base_Wall::Base_Wall(Math::vec2 position) : Tile(position) {
+Base_Wall::Base_Wall(Math::vec2 position) : Tile(position, 10) {
 	state = TILES::BASE_WALL;
-	hp = 10;
+
 	sprite.Load("Assets/wall.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
@@ -171,9 +171,9 @@ void Base_Inside::Draw(bool is_day) {
 
 }
 // Resource
-Resource::Resource(Math::vec2 position) : Tile(position) {
+Resource::Resource(Math::vec2 position) : Tile(position, 3) {
 	state = TILES::RESOURCE;
-	hp = 3;
+
 	sprite.Load("Assets/resource.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
@@ -198,9 +198,9 @@ void Resource::Attacked() {
 	--hp;
 }
 // Warp
-Warp::Warp(Math::vec2 position) : Tile(position) {
+Warp::Warp(Math::vec2 position) : Tile(position, 2) {
 	state = TILES::WARP;
-	hp = 2;
+
 	sprite.Load("Assets/portalresource.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
@@ -237,9 +237,9 @@ void Tower::Draw(bool is_day) {
 }
 
 // Treasure
-Treasure::Treasure(Math::vec2 position) : Tile(position) {
+Treasure::Treasure(Math::vec2 position) : Tile(position, 3) {
 	state = TILES::TREASURE;
-	hp = 3;
+
 	sprite.Load("Assets/chest.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);

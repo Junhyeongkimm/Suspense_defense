@@ -84,4 +84,9 @@ public:
 	int unlock_count = 0;
 	void UnlockBaseArraw() { base_compass_unlocked = true; }
 	void UnlockColonyArraw() { colony_copass_unlocked = true; }
+	// Upgrade things
+	int base_upgrade_count = 0;
+	int GetRepairCost();
+	void RepairBase();
+	void UpgradeBase();
 };

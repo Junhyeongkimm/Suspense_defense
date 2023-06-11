@@ -18,7 +18,7 @@ void Game::SetWantScale(Math::vec2 new_scale)
 Game::Game() : 
 	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
 
-	player(nullptr), monsters(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
+	player(nullptr), monsters(), bosses(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { 
 	sprite.Load("Assets/bullet.spt");
 
@@ -39,6 +39,8 @@ void Game::Load() {
 	mediator->SetPlayer(player);
 	// Give monsters to the mediator
 	mediator->SetMonsters(&monsters);
+	// Give bosses to the mediator
+	mediator->SetBosses(&bosses);
 	// Give bullets to the mediator
 	mediator->SetBullets(&bullets);
 	// Give monster bullets to the mediator
@@ -49,16 +51,22 @@ void Game::Load() {
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
-		mediator->UnlockBaseArraw();
+		
+		/*mediator->UnlockBaseArraw();
 		mediator->UnlockColonyArraw();
 		mediator->UnlockDodge();
-		mediator->UnlockRangedAttack();
+		mediator->UnlockShotgun();
+		mediator->UnlockGatling();
+		mediator->UnlockHoming();*/
 	}
 	// Update player, map, monster update
 	player->Update(dt);
 	map->Update(dt);
 	for (Monster* monster : monsters) {
 		monster->Update(dt);
+	}
+	for (Boss* boss : bosses) {
+		boss->Update(dt);
 	}
 	// Bullets update
 	for (int i = 0; i < bullets.size(); i++) {
@@ -71,6 +79,16 @@ void Game::Update([[maybe_unused]] double dt) {
 			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
 				mediator->DeleteBullet(bullets[i]);
 				mediator->DeleteMonster(monsters[j]);
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < bullets.size(); i++) {
+		// Check collision with bosses
+		for (int j = 0; j < bosses.size(); j++) {
+			if (bosses[j]->GetDistance(bullets[i]->GetPosition()) < (bosses[j]->GetSize() + bullets[i]->GetSize()) / 2) {
+				bosses[j]->ReduceHP(bullets[i]->GetDamage());
+				mediator->DeleteBullet(bullets[i]);
 				break;
 			}
 		}
@@ -95,7 +113,7 @@ void Game::Update([[maybe_unused]] double dt) {
 			target = monster;
 	}
 	// Attack the target monster if it is not nullptr and in range
-	//tower_attack_count += dt;
+	tower_attack_count += dt;
 	if (target != nullptr) {
 		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
 			Math::vec2 direction = target->GetPosition() - middle_point;
@@ -123,7 +141,7 @@ void Game::Draw() {
 	// Draw map, player, monster, bullet
 	push_settings();
 	// Translate
-	apply_translate(-mediator->GetPlayerPosition().x + (double)Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayerPosition().y + (double)Engine::GetWindow().GetSize().y / 2);
+	apply_translate(-mediator->GetPlayer()->GetPosition().x + (double)Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayer()->GetPosition().y + (double)Engine::GetWindow().GetSize().y / 2);
 	push_settings();
 	no_outline();
 	// No outline only for the map. Maybe need to be changed after we apply the images.
@@ -141,6 +159,9 @@ void Game::Draw() {
 			monster->GetPosition().y > player->GetPosition().y - map->Get_Tile_Length() * (map->GetOffset() + 2)
 			)
 			monster->Draw();
+	}
+	for (Boss* boss : bosses) {
+		boss->Draw();
 	}
 	for (Bullet* bullet : bullets) {
 		bullet->Draw();

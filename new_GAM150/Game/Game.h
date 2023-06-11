@@ -16,6 +16,7 @@
 #include "MBullet.h"
 #include "Bullet.h"
 #include "Mediator.h"
+#include "Boss.h"
 
 class Game : public CS230::GameState {
 public:
@@ -41,12 +42,13 @@ private:
     std::vector<Monster*>monsters;
     std::vector<Bullet*>bullets;
     std::vector<MBullet*>monster_bullets;
+    std::vector<Boss*>bosses;
     Map* map;
     Mediator* mediator;
     //CS230::GameObjectManager gameobjectmanager;
     Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2 };
     double tower_attack_count = 0;
-    double tower_attack_cool = 2.0;
+    double tower_attack_cool = 1.0;
     double scale_x;
     double scale_y;
     Monster* target;

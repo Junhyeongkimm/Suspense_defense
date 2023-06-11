@@ -4,7 +4,8 @@
 #include "../Engine/Matrix.h"
 #include "PopupBox.h"
 #include "../Engine/Sprite.h"
-
+#include "doodle/input.hpp"
+using namespace doodle;
 
 class Mediator;
 
@@ -26,12 +27,15 @@ private:
 	int max_hp = 10;
 	// Attack
 	int damage = 1;
-	double attack_delay = 0.5;
+	double attack_delay = 1.0;
 	double attack_count = 0;
 	bool is_attacking = false;
-	enum ATTACK_MODE { MELEE = 0, RANGE = 1 };
+	enum ATTACK_MODE { MELEE, RANGE, SHOTGUN, GATLING, HOMING };
 	int attack_mode = MELEE;
-	bool ranged_attack_unlocked = false;
+	bool shotgun_unlocked = false;
+	bool gatling_unlocked = false;
+	bool homing_unlocked = false;
+
 	// Invincibility
 	const double invincibility_time = 0.3;
 	double invincibility_count = 0;
@@ -59,6 +63,10 @@ private:
 	int utility_upgrade_count = 0;
 	// Box
 	PopupBox* box;
+	// Click
+
+	bool not_clicked = false;
+
 public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
@@ -79,7 +87,7 @@ public:
 	int GetWarpResource() { return warp_resource; }
 	int GetHP() { return hp; }
 	int GetMaxHP() { return max_hp; }
-	bool Able_To_Attack() { return attack_count > attack_delay; }
+	//////////////////////////////////////bool Able_To_Attack() { return attack_count > attack_delay; }
 	double GetSize() { return size; }
 	int GetDamage() { return damage; }
 	double GetDistance(Math::vec2 target) { return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y)); }
@@ -100,10 +108,14 @@ public:
 	// Upgrade the player
 	void Attack_Upgrade();
 	void Utility_Upgrade();
+	void UseMapResource(int resource) { map_resource -= resource; }
+	void UseMonsterResource(int resource) { monster_resource -= resource; }
 	// Unlock Dodge
 	void UnlockDodge() { dodge_unlocked = true; }
-	// Unlock rnged attack
-	void UnlockRangedAttack() { ranged_attack_unlocked = true; }
+	// Unlock ranged attack
+	void UnlockShotgun() { shotgun_unlocked = true; }
+	void UnlockGatling() { gatling_unlocked = true; }
+	void UnlockHoming() { homing_unlocked = true; }
 
 	CS230::Sprite sprite;
 	CS230::Sprite weaponsprite;

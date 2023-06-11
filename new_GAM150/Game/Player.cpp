@@ -2,6 +2,7 @@
 #include <map>
 #include "doodle/input.hpp"
 #include "doodle/angle.hpp"
+#include "doodle/random.hpp"
 #include "../Engine/Engine.h"
 #include "Mediator.h"
 #include "State.h"
@@ -24,35 +25,73 @@ Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator*
 }
 // Update
 void Player::Update(double dt) {
-
 	is_moving = false;
-	if (mediator->GetTileStateInt(tile_position) == TILES::TOWER) {
+	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E) && !box->is_activated()) {
 			box->Activate();
 			return;
 		}
 	}
-
 	if (box->is_activated()) {
 		box->Update();
 		return;
 	}
 
-	// Increase attack_count and invincibility_count, dodge_count by dt
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_1)) {
+		mediator->AddBoss1(position);
+	}
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_2)) {
+		mediator->AddBoss2(position);
+	}
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_3)) {
+		mediator->AddBoss3(position);
+	}
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_4)) {
+		mediator->AddBoss4(position);
+	}
 
-	attack_count += dt;
+	// Increase attack_count and invincibility_count, dodge_count by dt 
 	invincibility_count += dt;
-	//dodging_count += dt;
 	dodge_cool_count += dt;
-	// Check click
-	static bool not_clicked = false;
+	attack_count += dt;
+	// Differenciate attack delay based on the attack mode
+	switch (attack_mode) {
+	case MELEE:
+		if (attack_count > attack_delay) {
+			is_attacking = false;
+		}
+		break;
+	case RANGE:
+		if (attack_count > attack_delay) {
+			is_attacking = false;
+		}
+		break;
+	case SHOTGUN:
+		if (attack_count > attack_delay * 2) {
+			is_attacking = false;
+		}
+		break;
+	case GATLING:
+		if (attack_count > attack_delay * 0.4) {
+			is_attacking = false;
+		}
+		break;
+	case HOMING:
+		if (attack_count > attack_delay * 1.5) {
+			is_attacking = false;
+		}
+		break;
+	}
+	// Attack
+	if (!is_attacking && MouseIsPressed && MouseButton == MouseButtons::Left) {
+		Attack();
+	}
+	// Check Clicked
 	if (!MouseIsPressed) {
 		not_clicked = true;
 	}
-	if (MouseIsPressed && not_clicked) { // When the player click the mouse
-		if (Able_To_Attack() && MouseButton == MouseButtons::Left) { // If the player is able to attack and clicked the left button of mouse, attack
-			Attack();
-		}
+	// Dodge
+	if (not_clicked && MouseIsPressed) { // When the player click the mouse
 		if (dodge_unlocked && MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
@@ -82,25 +121,35 @@ void Player::Update(double dt) {
 		}
 		not_clicked = false;
 	}
-	if (attack_count > attack_delay) {
-		is_attacking = false;
-	}
-	// Change the attack mode by 'Tab'
-	if (ranged_attack_unlocked && Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
-		if (attack_mode == MELEE)
-			attack_mode = RANGE;
-		else
+
+	
+	// Change the attack mode by 0, 1, 2, 3, 4 key
+	if (!is_attacking) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_0)) {
 			attack_mode = MELEE;
+		}
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_1)) {
+			attack_mode = RANGE;
+		}
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_2)) {
+			attack_mode = SHOTGUN;
+		}
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_3)) {
+			attack_mode = GATLING;
+		}
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_4)) {
+			attack_mode = HOMING;
+		}
 	}
+
 	// Player warp
-	if (Engine::GetInput().KeyJustReleased(CS230::Input::Keys::B) && (mediator->GetTileState(position) != TILES::BASE_INSIDE) ) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
 
 		if(is_warping==false){
 			
 			warpsprite.Load("Assets/teleport.spt");
 			warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
 		}
-			
 		is_warping = true;
 		
 	}
@@ -125,11 +174,11 @@ void Player::Update(double dt) {
 		dodging_count += dt;
 		invincibility_count = invincibility_time - dodging_time;
 		// Check collision while dodging
-		if ((mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
-			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE) &&
-			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::RESOURCE) &&
-			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
-			(mediator->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
+		if ((mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WALL) &&
+			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::COLONY_SIDE) &&
+			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::RESOURCE) &&
+			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
+			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
 			position += dodge_direction * 2 * speed * dt;
 			
 		}
@@ -145,11 +194,11 @@ void Player::Update(double dt) {
 			is_moving = true;
 				sprite.PlayAnimation(static_cast<int>(player_action::up));
 			
-			if ((mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
-				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
-				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
-				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
-				(mediator->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
+			if ((mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
+				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
+				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::RESOURCE)&&
+				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
+				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
 				
 
@@ -158,11 +207,11 @@ void Player::Update(double dt) {
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 			is_moving = true;
 			sprite.PlayAnimation(static_cast<int>(player_action::down));
-			if ((mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) && 
-				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
-				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::RESOURCE) &&
-				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
-				(mediator->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
+			if ((mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) &&
+				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
+				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::RESOURCE) &&
+				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
+				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
 				
 
@@ -171,21 +220,21 @@ void Player::Update(double dt) {
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 			is_moving = true;
 			sprite.PlayAnimation(static_cast<int>(player_action::left));
-			if ((mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
-				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
-				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::RESOURCE) &&
-				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::WARP) &&
-				(mediator->GetTileState({ position.x - size / 2, position.y }) != TILES::TREASURE)) {
+			if ((mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
+				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
+				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::RESOURCE) &&
+				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::WARP) &&
+				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::TREASURE)) {
 				direction.x -= 1;
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 			is_moving = true;
-			if ((mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) && 
-				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
-				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
-				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::WARP) &&
-				(mediator->GetTileState({ position.x + size / 2, position.y }) != TILES::TREASURE)) {
+			if ((mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) &&
+				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
+				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::RESOURCE) &&
+				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::WARP) &&
+				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::TREASURE)) {
 				direction.x += 1;
 			}
 		}
@@ -195,23 +244,22 @@ void Player::Update(double dt) {
 		}
 		position += direction * speed * dt;
 
-		if (mediator->GetTileState(position) == TILES::WALL ||
-			mediator->GetTileState(position) == TILES::RESOURCE ||
-			mediator->GetTileState(position) == TILES::COLONY_SIDE ||
-			mediator->GetTileState(position) == TILES::WARP ||
-			mediator->GetTileState(position) == TILES::TREASURE) {
+		if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
+			mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||
+			mediator->GetMap()->GetTileState(position) == TILES::COLONY_SIDE ||
+			mediator->GetMap()->GetTileState(position) == TILES::WARP ||
+			mediator->GetMap()->GetTileState(position) == TILES::TREASURE) {
 			position -= direction * speed * dt;
 		}
 	}
 	// Tile_position update based on the player's position
-	tile_position.x = (int)((position.x) / mediator->GetTileLength());
-	tile_position.y = (int)((position.y) / mediator->GetTileLength());
+	tile_position.x = (int)((position.x) / mediator->GetMap()->Get_Tile_Length());
+	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
 	// Check player attacked
 	mediator->CheckPlayerAttacked();
-
 	// HP recovery
 	recover_count += dt;
-	if (mediator->GetTileStateInt(tile_position) == TILES::BASE_INSIDE) {
+	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE) {
 		Heal();
 	}
 	// Game over
@@ -226,8 +274,6 @@ void Player::Update(double dt) {
 }
 // Draw player
 void Player::Draw() {
-
-
 	if (box->is_activated())
 		box->Draw();
 
@@ -272,21 +318,34 @@ void Player::Heal() {
 }
 // Get distacne from the player to the target
 double Player::GetDistanceFromAttack(Math::vec2 target) {
-	return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
+	return (GetAttackPosition() - target).GetLength();
+	//return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
 }
 // Attack function
 void Player::Attack() {
 	SetAttackPosition(GetAttackPosition() - position);
-	if (attack_mode == MELEE) {
-		is_attacking = true;
-		mediator->Check_Monster_Attacked();
+
+	is_attacking = true;
+	attack_count = 0;
+
+	switch (attack_mode) {
+	case MELEE:
 		mediator->Check_Map_Attacked();
-		attack_count = 0;
-	}
-	else if (attack_mode == RANGE) {
-		is_attacking = true;
-		attack_count = 0;
-		mediator->AddBullet(position, GetAttackPosition()-position);
+		break;
+	case RANGE:
+		mediator->AddBullet(position, GetAttackPosition() - position);
+		break;
+	case SHOTGUN:
+		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
+		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
+		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
+		break;
+	case GATLING:
+		mediator->AddBullet(position, GetAttackPosition() - position);
+		break;
+	case HOMING:
+		mediator->AddHoming(position, GetAttackPosition() - position);
+		break;
 	}
 }
 // Get the attack position
@@ -300,11 +359,10 @@ Math::vec2 Player::GetAttackPosition() {
 }
 // Warp to the base
 void Player::GoToBase() {
-	position = { mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2, mediator->GetMapLength() / 2 + mediator->GetTileLength() / 2 };
+	position = { mediator->GetMap()->Get_Map_Length() / 2 + mediator->GetMap()->Get_Tile_Length() / 2, mediator->GetMap()->Get_Map_Length() / 2 + mediator->GetMap()->Get_Tile_Length() / 2 };
 }
 // Upgrade the player
 void Player::Attack_Upgrade() {
-
 	switch (attack_upgrade_count) {
 	case 0:
 
@@ -325,11 +383,9 @@ void Player::Attack_Upgrade() {
 
 		break;
 	}
-
 	std::cout << "Player upgrade!\n";
 }
-void Player::Utility_Upgrade() {
-
+void Player::Utility_Upgrade() { 
 	switch (utility_upgrade_count) {
 	case 0:
 
@@ -349,7 +405,6 @@ void Player::Utility_Upgrade() {
 	default:
 
 		break;
-	}
-
+	} 
 	std::cout << "Utility upgrade!\n";
 }
