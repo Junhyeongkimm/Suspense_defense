@@ -274,6 +274,7 @@ void Player::Update(double dt) {
 		sprite.PlayAnimation(static_cast<int>(player_action::waiting));
 	}
 	sprite.Update(dt);
+
 }
 // Draw player
 void Player::Draw() {
@@ -284,19 +285,21 @@ void Player::Draw() {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
 	// If the player is attacking, draw the line (in the MELEE mode)
-	if (is_attacking == true && attack_mode == MELEE) {
-		push_settings();
-		weaponsprite.Load("Assets/sword.spt");
-		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
+	if (is_attacking==true && attack_mode == MELEE) {
 		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-		pop_settings();
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
-		push_settings();
-		weaponsprite.Load("Assets/gun.spt");
-		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-		pop_settings();
+	}
+	else if (is_attacking == true && attack_mode == SHOTGUN) {
+		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
+	}
+	else if (is_attacking == true && attack_mode == GATLING) {
+		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	}
+	else if (is_attacking == true && attack_mode == HOMING) {
+		weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 
 	if (is_warping) {
@@ -333,20 +336,30 @@ void Player::Attack() {
 
 	switch (attack_mode) {
 	case MELEE:
+		weaponsprite.Load("Assets/sword.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->Check_Map_Attacked();
 		break;
 	case RANGE:
+		weaponsprite.Load("Assets/gun.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case SHOTGUN:
+		weaponsprite.Load("Assets/shoutgun.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		break;
 	case GATLING:
+		weaponsprite.Load("Assets/gatlinggun.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case HOMING:
+		weaponsprite.Load("Assets/argun.spt");
+		weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddHoming(position, GetAttackPosition() - position);
 		break;
 	}

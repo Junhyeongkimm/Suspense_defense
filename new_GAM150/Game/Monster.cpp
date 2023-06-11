@@ -9,7 +9,7 @@
 
 void Monster::SetWantScale(Math::vec2 new_scale)
 {
-	Math::ivec2 want = flymonstersprite.GetFrameSize();
+	Math::ivec2 want = sprite.GetFrameSize();
 	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
 	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
 }
@@ -20,14 +20,13 @@ Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), 
 
 	
 	if (mediator->GetMap()->IsDay()) {
-		colonymonstersprite.Load("Assets/colonymonster.spt");
-		colonymonstersprite.PlayAnimation(static_cast<int>(colonymonster_action::down));
+
 		created_at_day = true;
 		speed = 250;
 	}
 	else {
-		flymonstersprite.Load("Assets/flymonster.spt");
-		flymonstersprite.PlayAnimation(static_cast<int>(flymonster_action::flymove1));
+		sprite.Load("Assets/flymonster.spt");
+		sprite.PlayAnimation(static_cast<int>(flymonster_action::None));
 		SetWantScale({ 60,60 });
 		created_at_day = false;
 		speed = 175;
@@ -57,7 +56,7 @@ void Monster::Update(double dt) {
 	}
 	// During the night time, it will move to the base
 	else {
-		flymonstersprite.PlayAnimation(static_cast<int>(flymonster_action::flymove1));
+		sprite.PlayAnimation(static_cast<int>(flymonster_action::flymove));
 		Math::vec2 middle_point{ mediator->GetMap()->Get_Map_Length() / 2 + mediator->GetMap()->Get_Tile_Length()/2, mediator->GetMap()->Get_Map_Length() / 2 + mediator->GetMap()->Get_Tile_Length()/2 };
 
 		direction.x = (middle_point.x - position.x) / GetDistance(middle_point);
@@ -108,8 +107,8 @@ void Monster::Update(double dt) {
 }
 // Draw
 void Monster::Draw() {
-	colonymonstersprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	flymonstersprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 
 }
 // Getter distance from the monster to the target
