@@ -16,8 +16,6 @@ void Game::SetWantScale(Math::vec2 new_scale)
 }
 // Constructor of Game
 Game::Game() : 
-	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
-
 	player(nullptr), monsters(), bosses(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { 
 	sprite.Load("Assets/bullet.spt");
@@ -27,15 +25,13 @@ Game::Game() :
 }
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
-	camera.SetPosition({ 0, 0 }); // Camera is not used for now LOL
-	//camera.SetLimit({ {0,0}, { background.GetSize() - Engine::GetWindow().GetSize() } });
 	// Create mediator
 	mediator = new Mediator();
 	// Create map and give it to the mediator
 	map = new Map(mediator);
 	mediator->SetMap(map);
 	// Create player and give it to the mediator
-	player = new Player(middle_point, camera, mediator, { map->Get_Map_Size() / 2, map->Get_Map_Size() / 2 });
+	player = new Player(middle_point, mediator, { map->Get_Map_Size() / 2, map->Get_Map_Size() / 2 });
 	mediator->SetPlayer(player);
 	// Give monsters to the mediator
 	mediator->SetMonsters(&monsters);
@@ -110,8 +106,6 @@ void Game::Update([[maybe_unused]] double dt) {
 	for (int i = 0; i < monster_bullets.size(); i++) {
 		monster_bullets[i]->Update(dt);
 	}
-	// Update camera. (Meaningless)
-	camera.Update(player->GetPosition());
 	// If the player press "Escape" key, change the scene to the mainmenu
 	if (Key == KeyboardButtons::Escape) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
@@ -127,20 +121,11 @@ void Game::Unload() {
 void Game::Draw() {
 	Engine::GetWindow().Clear(0x000000FF);
 
-
-	Math::TransformationMatrix camera_matrix = camera.GetMatrix(); // Not used.
-
 	// Draw map, player, monster, bullet
 	push_settings();
 	// Translate
 	apply_translate(-mediator->GetPlayer()->GetPosition().x + (double)Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayer()->GetPosition().y + (double)Engine::GetWindow().GetSize().y / 2);
-	push_settings();
-	no_outline();
-	// No outline only for the map. Maybe need to be changed after we apply the images.
 	map->Show_Map();
-	pop_settings();
-	map->Base_Show_Arrow();
-	map->Colony_Show_Arrow();
 	// Draw player
 	player->Draw();
 	// Draw monsters if they are near the screen.
@@ -155,23 +140,15 @@ void Game::Draw() {
 	for (int i = 0; i < bosses.size(); i++) {
 		bosses[i]->Draw();
 	}
-	/*for (Boss* boss : bosses) {
-		boss->Draw();
-	}*/
 	for (int i = 0; i < bullets.size(); i++) {
 		bullets[i]->Draw();
 	}
-	/*for (Bullet* bullet : bullets) {
-		bullet->Draw();
-	}*/
 	for (int i = 0; i < monster_bullets.size(); i++) {
 		monster_bullets[i]->Draw();
 	}
-	/*for (MBullet* bullet : monster_bullets) {
-		bullet->Draw();
-	}*/
+	map->Base_Show_Arrow();
+	map->Colony_Show_Arrow();
 	pop_settings();
-
 
 	// Draw texts
 	push_settings();

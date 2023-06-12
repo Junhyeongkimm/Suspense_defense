@@ -37,10 +37,6 @@ void Map::Update(double dt) {
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
-			// date = 1, boss_clear_count = 0
-			/*Make_Colony(date * 5);
-			Make_Resource(date * 20);
-			Make_Warp(date * 5);*/
 			Make_Colony((date + 4) * (boss_clear_count + 1));
 			Make_Resource((date + 4) * (boss_clear_count + 1) * 2);
 			Make_Warp((date + 4) * (boss_clear_count + 1));
@@ -85,7 +81,6 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
-	//Make_Treasure();
 	Make_Boss_Zone();
 	Make_Colony(10);
 	Make_Resource(100);
@@ -498,7 +493,6 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			//	++unlock_count;
 			//}
 			//break;
-
 		default:
 
 			break;
