@@ -331,12 +331,10 @@ void Player::Attack() {
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case SHOTGUN:
-		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
-		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
-		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
+		mediator->AddShotgun(position, GetAttackPosition() - position);
 		break;
 	case GATLING:
-		mediator->AddBullet(position, GetAttackPosition() - position);
+		mediator->AddGatling(position, GetAttackPosition() - position);
 		break;
 	case HOMING:
 		mediator->AddHoming(position, GetAttackPosition() - position);

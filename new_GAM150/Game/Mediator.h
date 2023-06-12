@@ -43,6 +43,8 @@ public:
 
 	// Add and delete bullets and monster bullets
 	void AddBullet(Math::vec2 position, Math::vec2 direction);
+	void AddShotgun(Math::vec2 position, Math::vec2 direction);
+	void AddGatling(Math::vec2 position, Math::vec2 direction);
 	void AddHoming(Math::vec2 position, Math::vec2 direction);
 	void DeleteBullet(Bullet* bullet);
 	void AddMBullet(Math::vec2 position, Math::vec2 direction, int type);

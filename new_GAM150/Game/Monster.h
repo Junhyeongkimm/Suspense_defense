@@ -35,10 +35,9 @@ public:
 	Math::vec2& GetPosition()  { return position; }
 	double GetDistance(Math::vec2 target);
 	double GetSize() { return size; }
-	// Check attacked
-	void Attacked(Math::vec2 attack_position);
 	// Reduec hp
-	void Reduce_hp();
+	void Reduce_hp(int damage);
+	int GetHp() { return hp; }
 	// Destructor
 	~Monster();
 

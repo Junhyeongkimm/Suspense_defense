@@ -66,8 +66,10 @@ void Game::Update([[maybe_unused]] double dt) {
 		// Check collision with monster
 		for (int j = 0; j < monsters.size(); j++) {
 			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
+				monsters[j]->Reduce_hp(bullets[i]->GetDamage());
+				if (monsters[j]->GetHp() <= 0)
+					mediator->DeleteMonster(monsters[j]);
 				mediator->DeleteBullet(bullets[i]);
-				mediator->DeleteMonster(monsters[j]);
 				break;
 			}
 		}
