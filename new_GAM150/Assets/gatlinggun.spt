@@ -1,0 +1,6 @@
+Assets/gatlinggun.png
+FrameSize 225 275
+HotSpot 170 165
+Frame 0 0
+Frame 225 0
+Anim Assets/attack.anm
