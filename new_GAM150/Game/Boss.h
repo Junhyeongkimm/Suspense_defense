@@ -13,9 +13,11 @@ protected:
 
 	double pattern_count = 0;
 	int pattern_index = 1;
+	int index_save = 1;
 	double pattern1_cool;
 	double pattern2_cool;
 	double pattern3_cool;
+	double pattern_donothing = 1.0;
 	int pattern1_loop;
 	int pattern2_loop;
 	int pattern3_loop;

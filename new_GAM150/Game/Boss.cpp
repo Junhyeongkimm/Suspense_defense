@@ -38,36 +38,44 @@ void Boss::Update(double dt) {
 	pattern_count += dt;
 	switch (pattern_index) {
 	case 1:
-		if (pattern_count >= pattern1_cool / pattern1_loop) {
+		if (pattern_count >= pattern1_cool / (double)pattern1_loop) {
 			pattern_count = 0;
 			Pattern1();
 			++loop_count;
 			if (loop_count == pattern1_loop) {
 				loop_count = 0;
-				++pattern_index;
+				index_save = ++pattern_index;
+				pattern_index = 4;
 			}
 		}
 		break;
 	case 2:
-		if (pattern_count >= pattern2_cool / pattern2_loop) {
+		if (pattern_count >= pattern2_cool / (double)pattern2_loop) {
 			pattern_count = 0;
 			Pattern2();
 			++loop_count;
 			if (loop_count == pattern2_loop) {
 				loop_count = 0;
-				++pattern_index;
+				index_save = ++pattern_index;
+				pattern_index = 4;
 			}
 		}
 		break;
 	case 3:
-		if (pattern_count >= pattern3_cool / pattern3_loop) {
+		if (pattern_count >= pattern3_cool / (double)pattern3_loop) {
 			pattern_count = 0;
 			Pattern3();
 			++loop_count;
 			if (loop_count == pattern3_loop) {
 				loop_count = 0;
-				pattern_index = 1;
+				index_save = 1;
+				pattern_index = 4;
 			}
+		}
+		break;
+	case 4:
+		if (pattern_count >= pattern_donothing) {
+			pattern_index = index_save;
 		}
 		break;
 	}
@@ -112,7 +120,7 @@ void Boss1::Pattern3() {
 
 // --------------------------------- BOSS 2 ---------------------------------
 Boss2::Boss2(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 2, 3, mediator) {
+	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
 
 }
 void Boss2::Draw() {
@@ -146,7 +154,7 @@ void Boss2::Pattern3() {
 }
 // --------------------------------- BOSS 3 ---------------------------------
 Boss3::Boss3(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 2, 3, mediator) {
+	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
 
 }
 void Boss3::Draw() {
@@ -180,7 +188,7 @@ void Boss3::Pattern3() {
 }
 // --------------------------------- BOSS 4 ---------------------------------
 Boss4::Boss4(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 2, 3, mediator) {
+	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
 
 }
 void Boss4::Draw() {
