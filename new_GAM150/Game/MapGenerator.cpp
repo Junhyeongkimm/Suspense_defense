@@ -7,7 +7,7 @@
 using namespace doodle;
 
 // Constructor of this class
-Map::Map(Mediator* mediator) : mediator(mediator) {
+Map::Map(Mediator* mediator) : mediator(mediator), target(nullptr) {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			// Change all things to the Void
@@ -283,7 +283,7 @@ void Map::Make_Boss_Zone() {
 			}
 		}
 	}
-	mediator->AddBoss2(Math::vec2{ second.x * tile_length + tile_length / 2, second.y * tile_length + tile_length / 2 });
+	mediator->AddBoss1(Math::vec2{ second.x * tile_length + tile_length / 2, second.y * tile_length + tile_length / 2 });
 	for (int i = -6; i <= 6; i++) {
 		for (int j = -6; j <= 6; j++) {
 			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
@@ -298,7 +298,7 @@ void Map::Make_Boss_Zone() {
 			}
 		}
 	}
-	mediator->AddBoss3(Math::vec2{ third.x * tile_length + tile_length / 2, third.y * tile_length + tile_length / 2 });
+	mediator->AddBoss1(Math::vec2{ third.x * tile_length + tile_length / 2, third.y * tile_length + tile_length / 2 });
 	for (int i = -6; i <= 6; i++) {
 		for (int j = -6; j <= 6; j++) {
 			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
@@ -313,7 +313,7 @@ void Map::Make_Boss_Zone() {
 			}
 		}
 	}
-	mediator->AddBoss4(Math::vec2{ fourth.x * tile_length + tile_length / 2, fourth.y * tile_length + tile_length / 2 });
+	mediator->AddBoss1(Math::vec2{ fourth.x * tile_length + tile_length / 2, fourth.y * tile_length + tile_length / 2 });
 }
 // Show map
 void Map::Show_Map() {
@@ -591,10 +591,10 @@ void Map::UpgradeBase() {
 			mediator->GetPlayer()->UnlockShotgun();
 			break;
 		case 1:
-			mediator->GetPlayer()->UnlockGatling();
+			mediator->GetPlayer()->UnlockHoming();
 			break;
 		case 2:
-			mediator->GetPlayer()->UnlockHoming();
+			mediator->GetPlayer()->UnlockGatling();
 			break;
 		}
 		// Upgrade wall max hp
@@ -631,8 +631,39 @@ void Map::UpgradeBase() {
 void Map::IncreaseBossCount() { 
 	++boss_clear_count; 
 	++base_upgrade_max;
-
+	// Game clear
 	if (boss_clear_count == 4) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
+	// Boss update
+	switch (boss_clear_count) {
+	case 1:
+		for (int i = 0; i < mediator->GetBosses()->size(); i++) {
+			if ((*mediator->GetBosses())[i]->GetHp() <= 0)
+				continue;
+			Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
+			delete (*mediator->GetBosses())[i];
+			mediator->AddBoss2(position);
+		}
+		break;
+	case 2:
+		for (int i = 0; i < mediator->GetBosses()->size(); i++) {
+			if ((*mediator->GetBosses())[i]->GetHp() <= 0)
+				continue;
+			Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
+			delete (*mediator->GetBosses())[i];
+			mediator->AddBoss3(position);
+		}
+		break;
+	case 3:
+		for (int i = 0; i < mediator->GetBosses()->size(); i++) {
+			if ((*mediator->GetBosses())[i]->GetHp() <= 0)
+				continue;
+			Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
+			delete (*mediator->GetBosses())[i];
+			mediator->AddBoss4(position);
+		}
+		break;
+	}
+
 }
