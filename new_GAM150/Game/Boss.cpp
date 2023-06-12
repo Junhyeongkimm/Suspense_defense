@@ -5,19 +5,19 @@
 using namespace doodle;
 
 // --------------------------------- BOSS  ---------------------------------
-Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator) :
-	max_hp(max_hp), speed(speed), position(position), size(size), pattern1_time(time1), pattern2_time(time2), pattern3_time(time3), mediator(mediator) {
+Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, int loop1, int loop2, int loop3, Mediator* mediator) :
+	max_hp(max_hp), speed(speed), position(position), size(size), 
+	pattern1_cool(time1), pattern2_cool(time2), pattern3_cool(time3), 
+	pattern1_loop(loop1), pattern2_loop(loop2), pattern3_loop(loop3), mediator(mediator) {
 	hp = max_hp;
+
+	tile_position = { (int)position.x / (int)mediator->GetMap()->Get_Tile_Length(), (int)position.y / (int)mediator->GetMap()->Get_Tile_Length() };
 }
 void Boss::Update(double dt) {
-	// Boss dead
-	if (hp <= 0) {
-		mediator->GetMap()->IncreaseBossCount();
-		mediator->DeleteBoss(this);
-		return;
-	}
+	Math::ivec2 player_tile = mediator->GetPlayer()->GetTilePosition();
 	// If player is far from boss
-	if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 20) {
+	if (!(player_tile.x >= tile_position.x - 5 && player_tile.x <= tile_position.x + 5 && 
+		  player_tile.y >= tile_position.y - 5 && player_tile.y <= tile_position.y + 5)) {
 		heal_count += dt;
 		// If the hp is not max, heal
 		if (hp < max_hp && heal_count >= heal_time) {
@@ -27,28 +27,49 @@ void Boss::Update(double dt) {
 		// If the hp is full, do not call the update function
 		return;
 	}
+
 	// Pattern update
 	pattern_count += dt;
 	switch (pattern_index) {
 	case 1:
-		if (pattern_count >= pattern1_time) {
+		if (pattern_count >= pattern1_cool / (double)pattern1_loop) {
 			pattern_count = 0;
-			++pattern_index;
 			Pattern1();
+			++loop_count;
+			if (loop_count == pattern1_loop) {
+				loop_count = 0;
+				index_save = ++pattern_index;
+				pattern_index = 4;
+			}
 		}
 		break;
 	case 2:
-		if (pattern_count >= pattern2_time) {
+		if (pattern_count >= pattern2_cool / (double)pattern2_loop) {
 			pattern_count = 0;
-			++pattern_index;
 			Pattern2();
+			++loop_count;
+			if (loop_count == pattern2_loop) {
+				loop_count = 0;
+				index_save = ++pattern_index;
+				pattern_index = 4;
+			}
 		}
 		break;
 	case 3:
-		if (pattern_count >= pattern3_time) {
+		if (pattern_count >= pattern3_cool / (double)pattern3_loop) {
 			pattern_count = 0;
-			pattern_index = 1;
 			Pattern3();
+			++loop_count;
+			if (loop_count == pattern3_loop) {
+				loop_count = 0;
+				index_save = 1;
+				pattern_index = 4;
+			}
+		}
+		break;
+	case 4:
+		if (pattern_count >= pattern_donothing) {
+			pattern_index = index_save;
 		}
 		break;
 	}
@@ -59,7 +80,7 @@ void Boss::Draw() {
 
 // --------------------------------- BOSS 1 ---------------------------------
 Boss1::Boss1(Math::vec2 position, Mediator* mediator) :
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_time = 0.5, pattern2_time = 0.5, pattern3_time = 0.5, mediator) {
+	Boss(max_hp = 15, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 3, 2, 1, mediator) {
 }
 void Boss1::Draw() {
 	push_settings();
@@ -88,13 +109,12 @@ void Boss1::Pattern2() {
 	mediator->AddMBullet(position, Math::vec2{  1, -1 }, BulletState::NORMAL);
 }
 void Boss1::Pattern3() {
-
-	//mediator->AddMonster(position);
+	mediator->AddMonster(position, true);
 }
 
 // --------------------------------- BOSS 2 ---------------------------------
 Boss2::Boss2(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_time = 0.5, pattern2_time = 0.5, pattern3_time = 0.5, mediator) {
+	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
 
 }
 void Boss2::Draw() {
@@ -124,11 +144,11 @@ void Boss2::Pattern2() {
 	mediator->AddMBullet(position, Math::vec2{ 1, -1 }, BulletState::FAST);
 }
 void Boss2::Pattern3() {
-
+	mediator->AddMonster(position, true);
 }
 // --------------------------------- BOSS 3 ---------------------------------
 Boss3::Boss3(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_time = 0.5, pattern2_time = 0.5, pattern3_time = 0.5, mediator) {
+	Boss(max_hp = 30, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 7, 4, 3, mediator) {
 
 }
 void Boss3::Draw() {
@@ -158,11 +178,11 @@ void Boss3::Pattern2() {
 	mediator->AddMBullet(position, Math::vec2{ 1, -1 }, BulletState::BIG);
 }
 void Boss3::Pattern3() {
-
+	mediator->AddMonster(position, true);
 }
 // --------------------------------- BOSS 4 ---------------------------------
 Boss4::Boss4(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_time = 0.5, pattern2_time = 0.5, pattern3_time = 0.5, mediator) {
+	Boss(max_hp = 50, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 10, 5, 5, mediator) {
 
 }
 void Boss4::Draw() {
@@ -192,5 +212,5 @@ void Boss4::Pattern2() {
 	mediator->AddMBullet(position, Math::vec2{ 1, -1 }, BulletState::RICOCHET);
 }
 void Boss4::Pattern3() {
-
+	mediator->AddMonster(position, true);
 }

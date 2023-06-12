@@ -16,8 +16,6 @@ void Game::SetWantScale(Math::vec2 new_scale)
 }
 // Constructor of Game
 Game::Game() : 
-	camera({ { 0.15 * Engine::GetWindow().GetSize().x, 0 }, { 0.35 * Engine::GetWindow().GetSize().x, 0 } }),
-
 	player(nullptr), monsters(), bosses(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { 
 	sprite.Load("Assets/bullet.spt");
@@ -27,15 +25,13 @@ Game::Game() :
 }
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
-	camera.SetPosition({ 0, 0 }); // Camera is not used for now LOL
-	//camera.SetLimit({ {0,0}, { background.GetSize() - Engine::GetWindow().GetSize() } });
 	// Create mediator
 	mediator = new Mediator();
 	// Create map and give it to the mediator
 	map = new Map(mediator);
 	mediator->SetMap(map);
 	// Create player and give it to the mediator
-	player = new Player(middle_point, camera, mediator, { map->Get_Map_Size() / 2, map->Get_Map_Size() / 2 });
+	player = new Player(middle_point, mediator, { map->Get_Map_Size() / 2, map->Get_Map_Size() / 2 });
 	mediator->SetPlayer(player);
 	// Give monsters to the mediator
 	mediator->SetMonsters(&monsters);
@@ -50,26 +46,26 @@ void Game::Load() {
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
-	// Update player, map, monster update
+	// Update player, map, monster, bullets update
 	player->Update(dt);
 	map->Update(dt);
-	for (Monster* monster : monsters) {
-		monster->Update(dt);
+	for (int i = 0; i < monsters.size(); i++) {
+		monsters[i]->Update(dt);
 	}
-	for (Boss* boss : bosses) {
-		boss->Update(dt);
+	for (int i = 0; i < bosses.size(); i++) {
+		bosses[i]->Update(dt);
 	}
-	// Bullets update
 	for (int i = 0; i < bullets.size(); i++) {
-		// Update bullet's position
 		bullets[i]->Update(dt);
 	}
 	for (int i = 0; i < bullets.size(); i++) {
 		// Check collision with monster
 		for (int j = 0; j < monsters.size(); j++) {
 			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
+				monsters[j]->Reduce_hp(bullets[i]->GetDamage());
+				if (monsters[j]->GetHp() <= 0)
+					mediator->DeleteMonster(monsters[j]);
 				mediator->DeleteBullet(bullets[i]);
-				mediator->DeleteMonster(monsters[j]);
 				break;
 			}
 		}
@@ -80,18 +76,36 @@ void Game::Update([[maybe_unused]] double dt) {
 			if (bosses[j]->GetDistance(bullets[i]->GetPosition()) < (bosses[j]->GetSize() + bullets[i]->GetSize()) / 2) {
 				bosses[j]->ReduceHP(bullets[i]->GetDamage());
 				mediator->DeleteBullet(bullets[i]);
+				if (bosses[j]->GetHp() <= 0) {
+					mediator->GetMap()->IncreaseBossCount();
+					mediator->DeleteBoss(bosses[j]);
+
+					std::vector<Math::vec2>positions;
+					for (int k = 0; k < bosses.size(); k++) {
+						positions.push_back(bosses[k]->GetPosition());
+						mediator->DeleteBoss(bosses[k]);
+					}
+					for (int k = 0; k < positions.size(); k++) {
+						switch (mediator->GetMap()->GetBossClearCount()) {
+						case 1:
+							mediator->AddBoss2(positions[k]);
+							break;
+						case 2:
+							mediator->AddBoss3(positions[k]);
+							break;
+						case 3:
+							mediator->AddBoss4(positions[k]);
+							break;
+						}
+					}
+				}
 				break;
 			}
 		}
 	}
-	// Monster bullets update
 	for (int i = 0; i < monster_bullets.size(); i++) {
-		// Update monster bullet's position
 		monster_bullets[i]->Update(dt);
 	}
-
-	// Update camera. (Meaningless)
-	camera.Update(player->GetPosition());
 	// If the player press "Escape" key, change the scene to the mainmenu
 	if (Key == KeyboardButtons::Escape) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
@@ -107,20 +121,11 @@ void Game::Unload() {
 void Game::Draw() {
 	Engine::GetWindow().Clear(0x000000FF);
 
-
-	Math::TransformationMatrix camera_matrix = camera.GetMatrix(); // Not used.
-
 	// Draw map, player, monster, bullet
 	push_settings();
 	// Translate
 	apply_translate(-mediator->GetPlayer()->GetPosition().x + (double)Engine::GetWindow().GetSize().x / 2, -mediator->GetPlayer()->GetPosition().y + (double)Engine::GetWindow().GetSize().y / 2);
-	push_settings();
-	no_outline();
-	// No outline only for the map. Maybe need to be changed after we apply the images.
 	map->Show_Map();
-	pop_settings();
-	map->Base_Show_Arrow();
-	map->Colony_Show_Arrow();
 	// Draw player
 	player->Draw();
 	// Draw monsters if they are near the screen.
@@ -132,17 +137,18 @@ void Game::Draw() {
 			)
 			monster->Draw();
 	}
-	for (Boss* boss : bosses) {
-		boss->Draw();
+	for (int i = 0; i < bosses.size(); i++) {
+		bosses[i]->Draw();
 	}
-	for (Bullet* bullet : bullets) {
-		bullet->Draw();
+	for (int i = 0; i < bullets.size(); i++) {
+		bullets[i]->Draw();
 	}
-	for (MBullet* bullet : monster_bullets) {
-		bullet->Draw();
+	for (int i = 0; i < monster_bullets.size(); i++) {
+		monster_bullets[i]->Draw();
 	}
+	map->Base_Show_Arrow();
+	map->Colony_Show_Arrow();
 	pop_settings();
-
 
 	// Draw texts
 	push_settings();
@@ -157,7 +163,7 @@ void Game::Draw() {
 
 	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
 
-	draw_text("Day " + std::to_string(map->GetDate()), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
+	draw_text("Day " + std::to_string(map->GetDate() + 1), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
 	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
 
 	pop_settings();

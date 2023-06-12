@@ -33,7 +33,7 @@ public:
 	void SetMap(Map* map);
 
 	// Add and delete monsters and bosses
-	void AddMonster(Math::vec2 position);
+	void AddMonster(Math::vec2 position, bool created_by_boss = false);
 	void DeleteMonster(Monster* monster);
 	void AddBoss1(Math::vec2 position);
 	void AddBoss2(Math::vec2 position);
@@ -43,6 +43,8 @@ public:
 
 	// Add and delete bullets and monster bullets
 	void AddBullet(Math::vec2 position, Math::vec2 direction);
+	void AddShotgun(Math::vec2 position, Math::vec2 direction);
+	void AddGatling(Math::vec2 position, Math::vec2 direction);
 	void AddHoming(Math::vec2 position, Math::vec2 direction);
 	void DeleteBullet(Bullet* bullet);
 	void AddMBullet(Math::vec2 position, Math::vec2 direction, int type);

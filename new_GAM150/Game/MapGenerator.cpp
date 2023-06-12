@@ -7,7 +7,7 @@
 using namespace doodle;
 
 // Constructor of this class
-Map::Map(Mediator* mediator) : mediator(mediator) {
+Map::Map(Mediator* mediator) : mediator(mediator), target(nullptr) {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			// Change all things to the Void
@@ -37,9 +37,9 @@ void Map::Update(double dt) {
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
-			Make_Colony(date * 5);
-			Make_Resource(date * 10);
-			Make_Warp(date * 10);
+			Make_Colony((date + 4) * (boss_clear_count + 1));
+			Make_Resource((date + 4) * (boss_clear_count + 1) * 2);
+			Make_Warp((date + 4) * (boss_clear_count + 1));
 		}
 		time = 0;
 	}
@@ -81,11 +81,10 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
-	Make_Treasure();
-	Make_Colony(10);
-	Make_Resource(50);
-	Make_Warp(20);
 	Make_Boss_Zone();
+	Make_Colony(10);
+	Make_Resource(100);
+	Make_Warp(50);
 }
 // Initialize
 void Map::Initialize() {
@@ -283,7 +282,7 @@ void Map::Make_Boss_Zone() {
 			}
 		}
 	}
-	mediator->AddBoss2(Math::vec2{ second.x * tile_length + tile_length / 2, second.y * tile_length + tile_length / 2 });
+	mediator->AddBoss1(Math::vec2{ second.x * tile_length + tile_length / 2, second.y * tile_length + tile_length / 2 });
 	for (int i = -6; i <= 6; i++) {
 		for (int j = -6; j <= 6; j++) {
 			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
@@ -298,7 +297,7 @@ void Map::Make_Boss_Zone() {
 			}
 		}
 	}
-	mediator->AddBoss3(Math::vec2{ third.x * tile_length + tile_length / 2, third.y * tile_length + tile_length / 2 });
+	mediator->AddBoss1(Math::vec2{ third.x * tile_length + tile_length / 2, third.y * tile_length + tile_length / 2 });
 	for (int i = -6; i <= 6; i++) {
 		for (int j = -6; j <= 6; j++) {
 			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
@@ -313,7 +312,7 @@ void Map::Make_Boss_Zone() {
 			}
 		}
 	}
-	mediator->AddBoss4(Math::vec2{ fourth.x * tile_length + tile_length / 2, fourth.y * tile_length + tile_length / 2 });
+	mediator->AddBoss1(Math::vec2{ fourth.x * tile_length + tile_length / 2, fourth.y * tile_length + tile_length / 2 });
 }
 // Show map
 void Map::Show_Map() {
@@ -366,9 +365,6 @@ void Map::Base_Show_Arrow() {
 	if (arrow_direction.x < 0) {
 		angle += PI;
 	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
-	}
 	apply_rotate(angle);
 	set_outline_width(15);
 	draw_line(0, 0, 30, 0);
@@ -406,9 +402,6 @@ void Map::Colony_Show_Arrow() {
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
-	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
 	}
 	apply_rotate(angle);
 	draw_line(0, 0, 30, 0);
@@ -500,7 +493,6 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			//	++unlock_count;
 			//}
 			//break;
-
 		default:
 
 			break;
@@ -591,10 +583,10 @@ void Map::UpgradeBase() {
 			mediator->GetPlayer()->UnlockShotgun();
 			break;
 		case 1:
-			mediator->GetPlayer()->UnlockGatling();
+			mediator->GetPlayer()->UnlockHoming();
 			break;
 		case 2:
-			mediator->GetPlayer()->UnlockHoming();
+			mediator->GetPlayer()->UnlockGatling();
 			break;
 		}
 		// Upgrade wall max hp
@@ -621,7 +613,6 @@ void Map::UpgradeBase() {
 		tower_attack_cool -= 0.1;
 		// Update
 		++base_upgrade_count;
-		--boss_clear_count;
 	}
 	else {
 
@@ -632,6 +623,12 @@ void Map::IncreaseBossCount() {
 	++boss_clear_count; 
 	++base_upgrade_max;
 
+	for (int i = 0; i < boss_clear_count * 10; i++) {
+		mediator->GetPlayer()->IncreaseMapResource();
+		mediator->GetPlayer()->IncreaseMonsterResource();
+	}
+
+	// Game clear
 	if (boss_clear_count == 4) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}

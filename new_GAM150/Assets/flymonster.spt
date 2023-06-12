@@ -1,6 +1,11 @@
 Assets/flymonster.png
 FrameSize 300 237
 HotSpot 90 50
-NumFrames 3
-Anim Assets/None.anm
-Anim Assets/flymove.anm
+Frame 0 0
+Frame 300 0
+Frame 600 0
+Frame 0 237
+Frame 300 237
+Frame 600 237
+Anim Assets/flymonstermoveleft.anm
+Anim Assets/flymonstermoveright.anm

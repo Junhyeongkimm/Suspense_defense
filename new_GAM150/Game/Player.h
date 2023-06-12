@@ -21,12 +21,11 @@ private:
 	Math::ivec2 tile_position;
 	double speed = 350;
 	const double size = 40;
-	const CS230::Camera& camera; // It is not used
 	// HP
 	int hp = 10;
 	int max_hp = 10;
 	// Attack
-	int damage = 1;
+	int damage = 2;
 	double attack_delay = 1.0;
 	double attack_count = 0;
 	bool is_attacking = false;
@@ -71,8 +70,19 @@ private:
 public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
+	
+	void SwordSetWantScale(Math::vec2 new_scale);
+
+	void GunSetWantScale(Math::vec2 new_scale);
+
+	void ShoutGunSetWantScale(Math::vec2 new_scale);
+
+	void GatlingGunSetWantScale(Math::vec2 new_scale);
+
+	void ARGunSetWantScale(Math::vec2 new_scale);
+
 	// Constructor
-	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
+	Player(Math::vec2 start_position, Mediator* mediator, Math::ivec2 tile_position);
 	// Update
 	void Update(double dt);
 	// Draw
@@ -125,23 +135,43 @@ public:
 	void UnlockGatling() { gatling_unlocked = true; }
 	void UnlockHoming() { homing_unlocked = true; }
 
-	CS230::Sprite sprite;
-	CS230::Sprite weaponsprite;
+	CS230::Sprite playersprite;
+	CS230::Sprite sword_weaponsprite;
+	CS230::Sprite gun_weaponsprite;
+	CS230::Sprite shoutgun_weaponsprite;
+	CS230::Sprite gatlinggun_weaponsprite;
+	CS230::Sprite argun_weaponsprite;
 	CS230::Sprite warpsprite;
 
 	double scale_x;
 	double scale_y;
+	double swordscale_x;
+	double swordscale_y;
+
+	double gunscale_x;
+	double gunscale_y;
+
+	double shoutgunscale_x;
+	double shoutgunscale_y;
+
+	double gatlinggunscale_x;
+	double gatlinggunscale_y;
+
+	double argunscale_x;
+	double argunscale_y;
+
 	bool is_moving = false;
 
 	enum class player_action {
-		None,
 		waiting,
 		left,
 		dodgeleft,
-		up,
-		dodgeup,
+		dodgedown,
 		down,
-		dodgedown
+		dodgeup,
+		up,
+		right,
+		dodgeright,
 	};
 
 	enum class warp_action
@@ -153,6 +183,4 @@ public:
 	{
 		attack
 	};
-
-	bool flipped = false;
 };
