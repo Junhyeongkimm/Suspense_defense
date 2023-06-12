@@ -370,9 +370,6 @@ void Map::Base_Show_Arrow() {
 	if (arrow_direction.x < 0) {
 		angle += PI;
 	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
-	}
 	apply_rotate(angle);
 	set_outline_width(15);
 	draw_line(0, 0, 30, 0);
@@ -410,9 +407,6 @@ void Map::Colony_Show_Arrow() {
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
-	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
 	}
 	apply_rotate(angle);
 	draw_line(0, 0, 30, 0);
