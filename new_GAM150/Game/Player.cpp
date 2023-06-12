@@ -380,18 +380,18 @@ void Player::Draw() {
 			break;
 		case HOMING:
 			if (radians > 1.5 && radians < 4.2) {
-				gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, -gatlinggunscale_y })));
-			}
-			else {
-				gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
-			}
-			break;
-		case GATLING:
-			if (radians > 1.5 && radians < 4.2) {
 				argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, -argunscale_y })));
 			}
 			else {
 				argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, argunscale_y })));
+			}
+			break;
+		case GATLING:
+			if (radians > 1.5 && radians < 4.2) {
+				gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, -gatlinggunscale_y })));
+			}
+			else {
+				gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
 			}
 			break;
 		}
