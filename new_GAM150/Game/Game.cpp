@@ -50,18 +50,16 @@ void Game::Load() {
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
-	// Update player, map, monster update
+	// Update player, map, monster, bullets update
 	player->Update(dt);
 	map->Update(dt);
-	for (Monster* monster : monsters) {
-		monster->Update(dt);
+	for (int i = 0; i < monsters.size(); i++) {
+		monsters[i]->Update(dt);
 	}
-	for (Boss* boss : bosses) {
-		boss->Update(dt);
+	for (int i = 0; i < bosses.size(); i++) {
+		bosses[i]->Update(dt);
 	}
-	// Bullets update
 	for (int i = 0; i < bullets.size(); i++) {
-		// Update bullet's position
 		bullets[i]->Update(dt);
 	}
 	for (int i = 0; i < bullets.size(); i++) {
@@ -84,12 +82,9 @@ void Game::Update([[maybe_unused]] double dt) {
 			}
 		}
 	}
-	// Monster bullets update
 	for (int i = 0; i < monster_bullets.size(); i++) {
-		// Update monster bullet's position
 		monster_bullets[i]->Update(dt);
 	}
-
 	// Update camera. (Meaningless)
 	camera.Update(player->GetPosition());
 	// If the player press "Escape" key, change the scene to the mainmenu
@@ -132,15 +127,24 @@ void Game::Draw() {
 			)
 			monster->Draw();
 	}
-	for (Boss* boss : bosses) {
+	for (int i = 0; i < bosses.size(); i++) {
+		bosses[i]->Draw();
+	}
+	/*for (Boss* boss : bosses) {
 		boss->Draw();
+	}*/
+	for (int i = 0; i < bullets.size(); i++) {
+		bullets[i]->Draw();
 	}
-	for (Bullet* bullet : bullets) {
+	/*for (Bullet* bullet : bullets) {
 		bullet->Draw();
+	}*/
+	for (int i = 0; i < monster_bullets.size(); i++) {
+		monster_bullets[i]->Draw();
 	}
-	for (MBullet* bullet : monster_bullets) {
+	/*for (MBullet* bullet : monster_bullets) {
 		bullet->Draw();
-	}
+	}*/
 	pop_settings();
 
 

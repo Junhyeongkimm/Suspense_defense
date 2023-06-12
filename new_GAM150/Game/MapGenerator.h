@@ -42,35 +42,25 @@ private:
 public:
 	// Constructor
 	Map(Mediator* mediator);
-	// Make the map. It will be called when you start the game
+	// Map making functions
 	void MapMaking();
-	// Initialize the map
 	void Initialize();
-	// Optimize the map (Check the surrounding tiles and change tiles into another tiles
 	void Optimizing();
-	// Make base camp at the middle point.
-	void Make_Base();
-	// Update the map
-	void Update(double dt);
-	// Check the surrounding cells. If MAP[x][y] is VOID and there are enough tiles of wall, change the tile to the WALL
 	bool Check_Surrounding_Cells(const int x, const int y);
-	// Make "number" numbers of colony
+	// Update
+	void Update(double dt);
+	// Make special spaces
+	void Make_Base();
 	void Make_Colony(int number);
-	// Make "number" numbers of resource
 	void Make_Resource(int number);
-	// Make "number" numbers of warp
 	void Make_Warp(int number);
-	// Make unlock things
 	void Make_Treasure();
-	// Make boss zone
 	void Make_Boss_Zone();
-	// Show the map based on the player's position.
+	// Show things
 	void Show_Map();
-	// Draw arrow to the base
 	void Base_Show_Arrow();
-	// Draw arrow to the closest colony
 	void Colony_Show_Arrow();
-	// Attacked
+	// Check attacked
 	void Attacked(Math::ivec2 position);
 	// Getter functions
 	int Get_Map_Size() { return map_size; }
@@ -89,6 +79,7 @@ public:
 	int unlock_count = 0;
 	// Upgrade things
 	int boss_clear_count = 0;
+	int GetBossClearCount() { return boss_clear_count; }
 	void IncreaseBossCount();
 	int base_upgrade_count = 0;
 	int base_upgrade_max = 0;
