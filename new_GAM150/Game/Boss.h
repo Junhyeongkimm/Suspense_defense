@@ -25,7 +25,7 @@ protected:
 	int loop_count = 0;
 
 	double heal_count = 0;
-	double heal_time = 0.5;
+	double heal_time = 0.1;
 
 	Mediator* mediator;
 public:
