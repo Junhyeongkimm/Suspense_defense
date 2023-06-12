@@ -648,7 +648,8 @@ void Map::UpgradeBase() {
 				mediator->AddBoss4(position);
 			}
 			break;
-
+		default:
+			break;
 		}
 	}
 	else {
