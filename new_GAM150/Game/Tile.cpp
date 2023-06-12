@@ -1,5 +1,6 @@
 #include "Tile.h"
 #include "TileStates.h"
+#include "../Engine/Engine.h"
 
 // Forward declare to declare vector tiles
 class Tile;
@@ -191,6 +192,7 @@ void Resource::Draw(bool is_day) {
 	if (hp == 1 && resourcebroken == false) {
 		resourcebroken = true;
 		sprite.PlayAnimation(static_cast<int>(resource_animations::broken));
+		
 	}
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }

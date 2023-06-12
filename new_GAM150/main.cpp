@@ -28,6 +28,17 @@ void make_window_not_resizable()
 int main() {
     try {
         Engine& engine = Engine::Instance();
+
+        engine.GetMusicManager().Load("Assets/Music/MainMenu.wav");
+        engine.GetMusicManager().Load("Assets/Music/Daytime.wav");
+        engine.GetMusicManager().Load("Assets/Music/NightTime.wav");
+        engine.GetSoundsManager().Load("Assets/Sounds/GetResource.wav");
+        engine.GetSoundsManager().Load("Assets/Sounds/GetPotal.wav");
+        engine.GetSoundsManager().Load("Assets/Sounds/Powerup.wav");
+        engine.GetSoundsManager().Load("Assets/Sounds/Hurt.wav");
+        engine.GetSoundsManager().Load("Assets/Sounds/ColonyDie.wav");
+        engine.GetSoundsManager().Load("Assets/Sounds/MobDie.wav");
+
         engine.Start("Suspense Defense");
         Splash splash;
         engine.GetGameStateManager().AddGameState(splash);
@@ -45,6 +56,8 @@ int main() {
             engine.Update();
         }
 
+        engine.GetMusicManager().Unload();
+        engine.GetSoundsManager().Unload();
         engine.Stop();
 
         return 0;

@@ -27,6 +27,7 @@ namespace CS230 {
         Math::ivec2 GetFrameSize();
 
         void PlayAnimation(int animation);
+        void PlayNotLoopAnimation(int animation);
         bool AnimationEnded();
         bool Getisplaying()
         {

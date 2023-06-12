@@ -128,6 +128,21 @@ void CS230::Sprite::PlayAnimation(int animation)
 
 }
 
+void CS230::Sprite::PlayNotLoopAnimation(int animation)
+{
+
+    if (animation < 0 || animation >= animations.size()) {
+        Engine::GetLogger().LogError(" animation doesn't exist (Sprite::PlayAnimation)");
+        return;
+    }
+    else {
+            current_animation = animation;
+            animations[current_animation]->Reset();
+        
+    }
+
+}
+
 bool CS230::Sprite::AnimationEnded()
 {
     if (animations[current_animation]->Ended()) {

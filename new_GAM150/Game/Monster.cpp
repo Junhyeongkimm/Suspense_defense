@@ -11,7 +11,7 @@ void Monster::ColonySetWantScale(Math::vec2 new_scale)
 	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
 	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
 }
-void Monster::FlySetWantScale(Math::vec2 new_scale)=
+void Monster::FlySetWantScale(Math::vec2 new_scale)
 {
 	Math::ivec2 want = flymonstersprite.GetFrameSize();
 	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;

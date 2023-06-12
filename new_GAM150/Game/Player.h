@@ -160,6 +160,9 @@ public:
 
 	double argunscale_x;
 	double argunscale_y;
+	double radians = 0.0;
+
+
 
 	bool is_moving = false;
 
