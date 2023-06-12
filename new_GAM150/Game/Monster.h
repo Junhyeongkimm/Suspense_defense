@@ -13,7 +13,7 @@ private:
 	Math::vec2 position;
 	Math::ivec2 tile_position;
 	Math::vec2 direction;
-	int hp = 1;
+	int hp = 2;
 	double size = 40;
 	double speed;
 	// The monster will not move when it is paralyzed (when it spawned)

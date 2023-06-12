@@ -38,12 +38,12 @@ void Map::Update(double dt) {
 			is_day = true;
 			++date;
 			// date = 1, boss_clear_count = 0
-			Make_Colony(date * 5);
+			/*Make_Colony(date * 5);
 			Make_Resource(date * 20);
-			Make_Warp(date * 5);
-			/*Make_Colony(date * (boss_clear_count + 1));
-			Make_Resource(date * (boss_clear_count + 1));
-			Make_Warp(date * (boss_clear_count + 1));*/
+			Make_Warp(date * 5);*/
+			Make_Colony((date + 4) * (boss_clear_count + 1));
+			Make_Resource((date + 4) * (boss_clear_count + 1) * 2);
+			Make_Warp((date + 4) * (boss_clear_count + 1));
 		}
 		time = 0;
 	}
@@ -634,6 +634,12 @@ void Map::UpgradeBase() {
 void Map::IncreaseBossCount() { 
 	++boss_clear_count; 
 	++base_upgrade_max;
+
+	for (int i = 0; i < boss_clear_count * 10; i++) {
+		mediator->GetPlayer()->IncreaseMapResource();
+		mediator->GetPlayer()->IncreaseMonsterResource();
+	}
+
 	// Game clear
 	if (boss_clear_count == 4) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
