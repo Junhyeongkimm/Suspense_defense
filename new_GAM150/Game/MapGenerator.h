@@ -2,11 +2,12 @@
 
 #include "Player.h"
 #include "Monster.h"
-class Mediator;
 #include "TileStates.h"
 #include "Tile.h"
 #include "../Engine/Camera.h"
 #include <vector>
+class Mediator;
+class Monster;
 
 class Map {
 private: 
@@ -34,6 +35,10 @@ private:
 	// Middle point
 	Math::vec2 middle_point{ map_length / 2 + tile_length / 2, map_length / 2 + tile_length / 2 };
 	Math::vec2 arrow_direction{ 0, 0 };
+	// Monster, tower
+	Monster* target;
+	double tower_attack_count = 0;
+	double tower_attack_cool = 1.0;
 public:
 	// Constructor
 	Map(Mediator* mediator);

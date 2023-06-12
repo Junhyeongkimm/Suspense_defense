@@ -40,9 +40,9 @@ private:
 	const double invincibility_time = 0.3;
 	double invincibility_count = 0;
 	// Resources
-	int map_resource = 130;
-	int monster_resource = 130;
-	int warp_resource = 130;
+	int map_resource = 0;
+	int monster_resource = 0;
+	int warp_resource = 1;
 	// Warp
 	bool is_warping = false;
 	const double warp_time = 2.0;

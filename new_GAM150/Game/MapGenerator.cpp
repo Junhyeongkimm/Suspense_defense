@@ -3,6 +3,7 @@
 #include "doodle/angle.hpp"
 #include "Mediator.h"
 #include "../Engine/Engine.h"
+#include "State.h"
 using namespace doodle;
 
 // Constructor of this class
@@ -49,6 +50,27 @@ void Map::Update(double dt) {
 				MAP[i][j]->Update(dt);
 		}
 	}
+
+	// Find the closest monster and set the target
+	target = nullptr;
+	for (Monster* monster : *mediator->GetMonster()) {
+		if (target == nullptr || monster->GetDistance(middle_point) < target->GetDistance(middle_point))
+			target = monster;
+	}
+	// Attack the target monster if it is not nullptr and in range
+	tower_attack_count += dt;
+	if (target != nullptr) {
+		if ((target->GetDistance(middle_point) < mediator->GetMap()->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
+			Math::vec2 direction = target->GetPosition() - middle_point;
+			direction /= direction.GetLength();
+			mediator->AddBullet(middle_point, direction);
+
+			tower_attack_count = 0;
+		}
+	}
+	// If there is no monster, set the target to the nullptr
+	if (mediator->GetMonster()->size() == 0)
+		target = nullptr;
 }
 // Map making system
 void Map::MapMaking() {
@@ -514,14 +536,12 @@ int Map::GetRepairCost() {
 void Map::RepairBase() {
 	// Return if the hp is full
 	if (GetRepairCost() == 0) {
-		std::cout << "All walls have full hp!\n";
 		return;
 	}
 	// Check the player have enough resources
 	if (mediator->GetPlayer()->GetMonsterResource() >= GetRepairCost()) {
 		// Use the resource from the player
 		mediator->GetPlayer()->UseMonsterResource(GetRepairCost());
-		std::cout << "Repaired!\n";
 		// Check the base wall
 		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
 			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
@@ -544,7 +564,7 @@ void Map::RepairBase() {
 	}
 	// If the player has not enough cost
 	else {
-		std::cout << "Not enough resource! You need " << GetRepairCost() << " resources!\n";
+
 	}
 }
 int Map::GetUpgradeCost() {
@@ -597,17 +617,22 @@ void Map::UpgradeBase() {
 		// Increase upgrade maximum of player
 		mediator->GetPlayer()->UseMonsterResource(GetUpgradeCost());
 		mediator->GetPlayer()->IncreaseUpgradeMax();
+		// Upgrade tower
+		tower_attack_cool -= 0.1;
 		// Update
 		++base_upgrade_count;
 		--boss_clear_count;
-		std::cout << "Base upgraded!\n";
 	}
 	else {
-		std::cout << "Not enough resource! You need " << GetUpgradeCost() << "resources!\n";
+
 	}
 
 }
 void Map::IncreaseBossCount() { 
 	++boss_clear_count; 
 	++base_upgrade_max;
+
+	if (boss_clear_count == 4) {
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+	}
 }

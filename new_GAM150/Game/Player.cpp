@@ -37,19 +37,6 @@ void Player::Update(double dt) {
 		return;
 	}
 
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_1)) {
-		mediator->AddBoss1(position);
-	}
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_2)) {
-		mediator->AddBoss2(position);
-	}
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_3)) {
-		mediator->AddBoss3(position);
-	}
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_4)) {
-		mediator->AddBoss4(position);
-	}
-
 	// Increase attack_count and invincibility_count, dodge_count by dt 
 	invincibility_count += dt;
 	dodge_cool_count += dt;
@@ -394,7 +381,6 @@ void Player::Attack_Upgrade() {
 		UseMapResource(GetAttackUpgradeCost());
 		//map_resource -= GetAttackUpgradeCost();
 		++attack_upgrade_count;
-		std::cout << "Player upgrade!\n";
 	}
 }
 void Player::Utility_Upgrade() { 
@@ -435,7 +421,6 @@ void Player::Utility_Upgrade() {
 		UseMapResource(GetUtilityUpgradeCost());
 		//map_resource -= GetUtilityUpgradeCost();
 		++utility_upgrade_count;
-		std::cout << "Utility upgrade!\n";
 	}
 	
 }

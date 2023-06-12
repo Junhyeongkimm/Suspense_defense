@@ -4,8 +4,6 @@
 #include <algorithm>
 #include "State.h"
 #include "AStar.h"
-#include <iostream>
-
 
 void Monster::SetWantScale(Math::vec2 new_scale)
 {

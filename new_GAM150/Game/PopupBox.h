@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "../Engine/Vec2.h"
 
 class Mediator;

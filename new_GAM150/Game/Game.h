@@ -47,8 +47,6 @@ private:
     Mediator* mediator;
     //CS230::GameObjectManager gameobjectmanager;
     Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2 };
-    double tower_attack_count = 0;
-    double tower_attack_cool = 1.0;
     double scale_x;
     double scale_y;
     Monster* target;

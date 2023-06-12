@@ -4,7 +4,6 @@
 #include "../Engine/Input.h"
 #include "../Engine/Engine.h"
 #include "Mediator.h"
-#include <iostream>
 #include <string>
 using namespace doodle;
 
@@ -166,7 +165,6 @@ void PopupBox::Update() {
 	}
 	
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E)) {
-		std::cout << "State: " << state << ", " << "Menu: " << menu << std::endl;
 		switch (state) {
 		case 0:
 			switch (menu) {

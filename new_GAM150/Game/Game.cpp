@@ -50,15 +50,6 @@ void Game::Load() {
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
-		
-		/*mediator->UnlockBaseArraw();
-		mediator->UnlockColonyArraw();
-		mediator->UnlockDodge();
-		mediator->UnlockShotgun();
-		mediator->UnlockGatling();
-		mediator->UnlockHoming();*/
-	}
 	// Update player, map, monster update
 	player->Update(dt);
 	map->Update(dt);
@@ -106,26 +97,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 	// ------------------------------- TOWER -------------------------------
-	// Find the closest monster and set the target
-	target = nullptr;
-	for (Monster* monster : monsters) {
-		if (target == nullptr || monster->GetDistance(middle_point) < target->GetDistance(middle_point))
-			target = monster;
-	}
-	// Attack the target monster if it is not nullptr and in range
-	tower_attack_count += dt;
-	if (target != nullptr) {
-		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
-			Math::vec2 direction = target->GetPosition() - middle_point;
-			direction /= direction.GetLength();
-			mediator->AddBullet(middle_point, direction);
-
-			tower_attack_count = 0;
-		}
-	}
-	// If there is no monster, set the target to the nullptr
-	if (monsters.size() == 0)
-		target = nullptr;
+	
 }
 // Unload game
 void Game::Unload() {
