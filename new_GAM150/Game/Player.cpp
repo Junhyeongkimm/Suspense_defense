@@ -125,7 +125,7 @@ void Player::Update(double dt) {
 	}
 	// Dodge
 	if (not_clicked && MouseIsPressed) { // When the player click the mouse
-		if (dodge_unlocked && MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
+		if (MouseButton == MouseButtons::Right && dodge_cool_count >= dodge_cool_time) { // If the player is able to dodge and clicked the right button of mosue, dodge
 			dodge_direction = { 0, 0 };
 			if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 				dodge_direction.y += 1;
@@ -259,7 +259,6 @@ void Player::Update(double dt) {
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::up));
 			
 			if ((mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
@@ -267,13 +266,10 @@ void Player::Update(double dt) {
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
-				
-
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::down));
 
 			if ((mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
@@ -281,13 +277,10 @@ void Player::Update(double dt) {
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
-				
-
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::left));
 
 			if ((mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
@@ -299,7 +292,6 @@ void Player::Update(double dt) {
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::right));
 
 			if ((mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
@@ -310,10 +302,22 @@ void Player::Update(double dt) {
 			}
 		}
 		// If the player move diagonally, divide speed by sqrt(2)
-		if (direction.GetLength() == sqrt(2)) {
+		if (direction.GetLength() == sqrt(2))
 			direction /= sqrt(2);
-		}
+		else if (direction.x == 0 && direction.y == 0)
+			is_moving = false;
+
 		position += direction * speed * dt;
+
+		if(direction.x == 0 && direction.y == 1)
+			playersprite.PlayAnimation(static_cast<int>(player_action::up));
+		else if(direction.x == 0 && direction.y == -1)
+			playersprite.PlayAnimation(static_cast<int>(player_action::down));
+		else if(direction.x == -1 && direction.y == 0)
+			playersprite.PlayAnimation(static_cast<int>(player_action::left));
+		else if(direction.x == 1 && direction.y == 0)
+			playersprite.PlayAnimation(static_cast<int>(player_action::right));
+
 
 		if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
 			mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||
@@ -352,60 +356,49 @@ void Player::Draw() {
 	//player draw
 	playersprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	
-	// If the player is attacking, draw the line (in the MELEE mode)
-	if (is_attacking==true && attack_mode == MELEE) {
-		
-		sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } * Math::ScaleMatrix({ swordscale_x, swordscale_y })));
-	}
-	else if (is_attacking == true && attack_mode == RANGE) {
-
-		if (radians > 1.5 && radians < 4.2)
-		{
-			gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gunscale_x, -gunscale_y })));
+	// Draw attack
+	if (is_attacking) {
+		switch (attack_mode) {
+		case MELEE:
+			sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ swordscale_x, swordscale_y })));
+			break;
+		case RANGE:
+			if (radians > 1.5 && radians < 4.2) {
+				gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gunscale_x, -gunscale_y })));
+			}
+			else {
+				gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gunscale_x, gunscale_y })));
+			}
+			break;
+		case SHOTGUN:
+			if (radians > 1.5 && radians < 4.2) {
+				shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ shoutgunscale_x, -shoutgunscale_y })));
+			}
+			else {
+				shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ shoutgunscale_x, shoutgunscale_y })));
+			}
+			break;
+		case HOMING:
+			if (radians > 1.5 && radians < 4.2) {
+				gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, -gatlinggunscale_y })));
+			}
+			else {
+				gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
+			}
+			break;
+		case GATLING:
+			if (radians > 1.5 && radians < 4.2) {
+				argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, -argunscale_y })));
+			}
+			else {
+				argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, argunscale_y })));
+			}
+			break;
 		}
-		else {
-			gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gunscale_x, gunscale_y })));
-		}
-		
-		
-
-	}
-	else if (is_attacking == true && attack_mode == SHOTGUN) {
-		if (radians > 1.5 && radians < 4.2)
-		{
-			shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ shoutgunscale_x, -shoutgunscale_y })));
-		}
-		else
-		{
-			shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ shoutgunscale_x, shoutgunscale_y })));
-		}
-	}
-	else if (is_attacking == true && attack_mode == GATLING) {
-		if (radians > 1.5 && radians < 4.2)
-		{
-			gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, -gatlinggunscale_y })));
-		}
-		else
-		{
-			gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
-		}
-	
-		
-	}
-	else if (is_attacking == true && attack_mode == HOMING) {
-		if (radians > 1.5 && radians < 4.2)
-		{
-			argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, -argunscale_y })));
-		}
-		else
-		{
-			argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, argunscale_y })));
-		}
-		
 	}
 
 	if (is_warping) {
-		warpsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }* Math::ScaleMatrix({ scale_x, scale_y })));
+		warpsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 }
 // Reduce hp
@@ -445,7 +438,6 @@ void Player::Attack() {
 	else if (weaponDir.x >= 0 && weaponDir.y < 0) {
 		radians += 2 * PI;
 	}
-	Engine::GetLogger().LogDebug(std::to_string(radians));
 	switch (attack_mode) {
 	case MELEE:
 		SwordSetWantScale({ 50, 50 });
@@ -458,20 +450,19 @@ void Player::Attack() {
 		gun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		break;
 	case SHOTGUN:
-
 		ShoutGunSetWantScale({ 80,80 });
-		shoutgun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddShotgun(position, GetAttackPosition() - position);
+		shoutgun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		break;
 	case GATLING:
-		gatlinggun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		GatlingGunSetWantScale({ 80, 80 });
 		mediator->AddGatling(position, GetAttackPosition() - position);
+		gatlinggun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		break;
 	case HOMING:
-		argun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		ARGunSetWantScale({ 70,40 });
 		mediator->AddHoming(position, GetAttackPosition() - position);
+		argun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		break;
 	}
 }

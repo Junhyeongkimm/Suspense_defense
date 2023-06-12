@@ -137,7 +137,7 @@ void PopupBox::Draw() {
 				draw_text("All walls have full hp", position.x + 25, position.y + 100);
 			}
 			else {
-				draw_text("Repiar base\nYou need " + std::to_string(mediator->GetMap()->GetRepairCost()) + "monster resources", position.x + 25, position.y + 100);
+				draw_text("Repiar base\nYou need " + std::to_string(mediator->GetMap()->GetRepairCost()/2) + "monster resources", position.x + 25, position.y + 100);
 			}
 			break;
 		case 2:

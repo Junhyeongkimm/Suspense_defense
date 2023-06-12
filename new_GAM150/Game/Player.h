@@ -31,9 +31,9 @@ private:
 	bool is_attacking = false;
 	enum ATTACK_MODE { MELEE, RANGE, SHOTGUN, GATLING, HOMING };
 	int attack_mode = MELEE;
-	bool shotgun_unlocked = false;
-	bool gatling_unlocked = false;
-	bool homing_unlocked = false;
+	bool shotgun_unlocked = true;
+	bool gatling_unlocked = true;
+	bool homing_unlocked = true;
 
 	// Invincibility
 	const double invincibility_time = 0.3;
@@ -47,11 +47,10 @@ private:
 	const double warp_time = 2.0;
 	double warp_count = 0;
 	// Dodge
-	bool dodge_unlocked = true;
 	bool is_dodging = false;
 	const double dodging_time = 0.4;
 	double dodging_count = 0;
-	const double dodge_cool_time = 1.0;
+	const double dodge_cool_time = 0.5;
 	double dodge_cool_count = 0;
 	Math::vec2 dodge_direction{ 0, 0 };
 	// HP recovery
@@ -128,8 +127,6 @@ public:
 	int GetAttackUpgradeCost();
 	int GetUtilityUpgradeCost();
 	void IncreaseUpgradeMax() { upgrade_max += 2; }
-	// Unlock Dodge
-	void UnlockDodge() { dodge_unlocked = true; }
 	// Unlock ranged attack
 	void UnlockShotgun() { shotgun_unlocked = true; }
 	void UnlockGatling() { gatling_unlocked = true; }
