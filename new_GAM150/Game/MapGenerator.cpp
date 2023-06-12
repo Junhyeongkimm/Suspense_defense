@@ -334,14 +334,22 @@ void Map::Base_Show_Arrow() {
 
 	arrow_direction = { middle_point.x - mediator->GetPlayer()->GetPosition().x, middle_point.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
-	arrow_direction *= 30;
-	
+
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
-	draw_ellipse(0, 0, 60);
-	set_outline_width(15);
 
-	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
+	draw_ellipse(0, 0, 60);
+
+	double angle = atan(arrow_direction.y / arrow_direction.x);
+	if (arrow_direction.x < 0) {
+		angle += PI;
+	}
+	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
+		angle += 2 * PI;
+	}
+	apply_rotate(angle);
+	set_outline_width(15);
+	draw_line(0, 0, 30, 0);
 	
 	pop_settings();
 }
@@ -354,7 +362,6 @@ void Map::Colony_Show_Arrow() {
 
 	Math::vec2 current;
 	double distance = std::numeric_limits<double>::max();
-
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			if (MAP[i][j]->Get_State() == TILES::COLONY_CORE) {
@@ -368,14 +375,21 @@ void Map::Colony_Show_Arrow() {
 
 	arrow_direction = { current.x - mediator->GetPlayer()->GetPosition().x, current.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
-	arrow_direction *= 30;
 
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 	draw_ellipse(0, 0, 60);
-	set_outline_width(15);
 
-	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
+	set_outline_width(15);
+	double angle = atan(arrow_direction.y / arrow_direction.x);
+	if (arrow_direction.x < 0) {
+		angle += PI;
+	}
+	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
+		angle += 2 * PI;
+	}
+	apply_rotate(angle);
+	draw_line(0, 0, 30, 0);
 
 	pop_settings();
 }
