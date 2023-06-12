@@ -33,6 +33,7 @@ void Map::Update(double dt) {
 		{ 
 			dayMusic->stop();
 			nightMusic->play();
+			nightMusic->setLoop(true);
 		}
 
 
