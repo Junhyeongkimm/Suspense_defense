@@ -35,6 +35,14 @@ private:
 	Math::vec2 middle_point{ map_length / 2 + tile_length / 2, map_length / 2 + tile_length / 2 };
 	Math::vec2 arrow_direction{ 0, 0 };
 public:
+	// Texture 
+	CS230::Texture* bassarrow;
+	CS230::Texture* bassarrowbackground;
+	CS230::Texture* colonyarrow;
+	CS230::Texture* colonyarrowbackground;
+	CS230::Texture* day;
+	CS230::Texture* night;
+
 	// Constructor
 	Map(Mediator* mediator);
 	// Make the map. It will be called when you start the game

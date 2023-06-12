@@ -10,47 +10,45 @@ using namespace doodle;
 
 void Player::SetWantScale(Math::vec2 new_scale)
 {
-		Math::ivec2 want = playersprite.GetFrameSize();
-		scale_x = 1 / static_cast<double>(want.x)* new_scale.x;
-		scale_y = 1 / static_cast<double>(want.y)* new_scale.y;
+	Math::ivec2 want = playersprite.GetFrameSize();
+	scale_x = 1 / static_cast<double>(want.x)* new_scale.x;
+	scale_y = 1 / static_cast<double>(want.y)* new_scale.y;
 }
 
 void Player::SwordSetWantScale(Math::vec2 new_scale)
 {
-	Math::ivec2 want = sword_weaponsprite.GetFrameSize();
-	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
-	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
+	Math::ivec2 want1 = sword_weaponsprite.GetFrameSize();
+	swordscale_x = 1 / static_cast<double>(want1.x) * new_scale.x;
+	swordscale_y = 1 / static_cast<double>(want1.y) * new_scale.y;
 }
+
 void Player::GunSetWantScale(Math::vec2 new_scale)
 {
-	Math::ivec2 want = gun_weaponsprite.GetFrameSize();
-	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
-	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
 
+	Math::ivec2 want2 = gun_weaponsprite.GetFrameSize();
+	gunscale_x = 1 / static_cast<double>(want2.x) * new_scale.x;
+	gunscale_y = 1 / static_cast<double>(want2.y) * new_scale.y;
 }
 
 void Player::ShoutGunSetWantScale(Math::vec2 new_scale)
 {
-	Math::ivec2 want = shoutgun_weaponsprite.GetFrameSize();
-	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
-	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
-
+	Math::ivec2 want3 = shoutgun_weaponsprite.GetFrameSize();
+	shoutgunscale_x = 1 / static_cast<double>(want3.x) * new_scale.x;
+	shoutgunscale_y = 1 / static_cast<double>(want3.y) * new_scale.y;
 }
 
-void GatlingSetWantScale(Math::vec2 new_scale)
+void Player::GatlingGunSetWantScale(Math::vec2 new_scale)
 {
-	Math::ivec2 want = gatlinggun_weaponsprite.GetFrameSize();
-	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
-	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
-
+	Math::ivec2 want4 = gatlinggun_weaponsprite.GetFrameSize();
+	gatlinggunscale_x = 1 / static_cast<double>(want4.x) * new_scale.x;
+	gatlinggunscale_y = 1 / static_cast<double>(want4.y) * new_scale.y;
 }
 
 void Player::ARGunSetWantScale(Math::vec2 new_scale)
 {
-	Math::ivec2 want = argun_weaponsprite.GetFrameSize();
-	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
-	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
-
+	Math::ivec2 want5 = argun_weaponsprite.GetFrameSize();
+	argunscale_x = 1 / static_cast<double>(want5.x) * new_scale.x;
+	argunscale_y = 1 / static_cast<double>(want5.y) * new_scale.y;
 }
 
 // Constructor
@@ -332,20 +330,25 @@ void Player::Draw() {
 	
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking==true && attack_mode == MELEE) {
-		sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		
+		sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ swordscale_x, swordscale_y })));
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
-		gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		
+		gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ gunscale_x, gunscale_y })));
 	}
 	else if (is_attacking == true && attack_mode == SHOTGUN) {
-		shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		
+		shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ shoutgunscale_x, shoutgunscale_y })));
 
 	}
 	else if (is_attacking == true && attack_mode == GATLING) {
-		gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	
+		gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
 	}
 	else if (is_attacking == true && attack_mode == HOMING) {
-		argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		
+		argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ argunscale_x, argunscale_y })));
 	}
 
 	if (is_warping) {
@@ -374,6 +377,8 @@ double Player::GetDistanceFromAttack(Math::vec2 target) {
 	//return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
 }
 
+
+
 // Attack function
 void Player::Attack() {
 	SetAttackPosition(GetAttackPosition() - position);
@@ -384,16 +389,19 @@ void Player::Attack() {
 	switch (attack_mode) {
 	case MELEE:
 		sword_weaponsprite.Load("Assets/sword.spt");
+		SwordSetWantScale({ 50, 50 });
 		sword_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->Check_Map_Attacked();
 		break;
 	case RANGE:
 		gun_weaponsprite.Load("Assets/gun.spt");
+		GunSetWantScale({ 40,40 });
 		gun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case SHOTGUN:
 		shoutgun_weaponsprite.Load("Assets/shoutgun.spt");
+		ShoutGunSetWantScale({ 80,80 });
 		shoutgun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
 		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
@@ -401,11 +409,13 @@ void Player::Attack() {
 		break;
 	case GATLING:
 		gatlinggun_weaponsprite.Load("Assets/gatlinggun.spt");
+		GatlingGunSetWantScale({ 80, 80 });
 		gatlinggun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
 		break;
 	case HOMING:
 		argun_weaponsprite.Load("Assets/argun.spt");
+		ARGunSetWantScale({ 70,40 });
 		argun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddHoming(position, GetAttackPosition() - position);
 		break;
