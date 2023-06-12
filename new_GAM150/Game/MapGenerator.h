@@ -6,6 +6,8 @@
 #include "Tile.h"
 #include "../Engine/Camera.h"
 #include <vector>
+#include "SFML/Audio.hpp"
+
 class Mediator;
 class Monster;
 
@@ -47,6 +49,10 @@ public:
 	CS230::Texture* colonyarrowbackground;
 	CS230::Texture* day;
 	CS230::Texture* night;
+
+	sf::Music* dayMusic;
+	sf::Music* nightMusic;
+
 
 	// Constructor
 	Map(Mediator* mediator);

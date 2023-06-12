@@ -14,6 +14,8 @@
 #include "Bullet.h"
 #include "Mediator.h"
 #include "Boss.h"
+#include "SFML/Audio.hpp"
+
 
 class Game : public CS230::GameState {
 public:
@@ -40,6 +42,10 @@ private:
     std::vector<Boss*>bosses;
     Map* map;
     Mediator* mediator;
+
+    sf::Music* music;
+
+    //CS230::GameObjectManager gameobjectmanager;
     Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2 };
     double scale_x;
     double scale_y;

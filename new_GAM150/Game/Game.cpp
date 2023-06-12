@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "State.h"
 #include "../Engine/Engine.h"
+#include "../Game/MapGenerator.h"
 #include <vector>
 #include "doodle/input.hpp"
 #include "doodle/angle.hpp"
@@ -25,6 +26,10 @@ Game::Game() :
 }
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
+
+	
+	camera.SetPosition({ 0, 0 }); // Camera is not used for now LOL
+	//camera.SetLimit({ {0,0}, { background.GetSize() - Engine::GetWindow().GetSize() } });
 	// Create mediator
 	mediator = new Mediator();
 	// Create map and give it to the mediator
@@ -43,6 +48,7 @@ void Game::Load() {
 	mediator->SetMBullets(&monster_bullets);
 	// Create map by function MapMaking()
 	map->MapMaking();
+	
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
