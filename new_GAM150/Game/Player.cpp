@@ -125,10 +125,10 @@ void Player::Update(double dt) {
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_2) && shotgun_unlocked) {
 			attack_mode = SHOTGUN;
 		}
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_3) && gatling_unlocked) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_3) && homing_unlocked) {
 			attack_mode = HOMING;
 		}
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_4) && homing_unlocked) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_4) && gatling_unlocked) {
 			attack_mode = GATLING;
 		}
 	}
