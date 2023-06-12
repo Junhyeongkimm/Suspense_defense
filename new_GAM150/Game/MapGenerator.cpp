@@ -37,9 +37,13 @@ void Map::Update(double dt) {
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
+			// date = 1, boss_clear_count = 0
 			Make_Colony(date * 5);
-			Make_Resource(date * 10);
-			Make_Warp(date * 10);
+			Make_Resource(date * 20);
+			Make_Warp(date * 5);
+			/*Make_Colony(date * (boss_clear_count + 1));
+			Make_Resource(date * (boss_clear_count + 1));
+			Make_Warp(date * (boss_clear_count + 1));*/
 		}
 		time = 0;
 	}
@@ -83,8 +87,8 @@ void Map::MapMaking() {
 	Make_Base();
 	Make_Treasure();
 	Make_Colony(10);
-	Make_Resource(50);
-	Make_Warp(20);
+	Make_Resource(100);
+	Make_Warp(50);
 	Make_Boss_Zone();
 }
 // Initialize
@@ -621,7 +625,31 @@ void Map::UpgradeBase() {
 		tower_attack_cool -= 0.1;
 		// Update
 		++base_upgrade_count;
-		--boss_clear_count;
+		// Upgrade bosses
+		switch (boss_clear_count) {
+		case 1:
+			for (int i = 0; i < mediator->GetBosses()->size(); i++) {
+				Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
+				delete (*mediator->GetBosses())[i];
+				mediator->AddBoss2(position);
+			}
+			break;
+		case 2:
+			for (int i = 0; i < mediator->GetBosses()->size(); i++) {
+				Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
+				delete (*mediator->GetBosses())[i];
+				mediator->AddBoss3(position);
+			}
+			break;
+		case 3:
+			for (int i = 0; i < mediator->GetBosses()->size(); i++) {
+				Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
+				delete (*mediator->GetBosses())[i];
+				mediator->AddBoss4(position);
+			}
+			break;
+
+		}
 	}
 	else {
 
@@ -635,35 +663,4 @@ void Map::IncreaseBossCount() {
 	if (boss_clear_count == 4) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
-	// Boss update
-	switch (boss_clear_count) {
-	case 1:
-		for (int i = 0; i < mediator->GetBosses()->size(); i++) {
-			if ((*mediator->GetBosses())[i]->GetHp() <= 0)
-				continue;
-			Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
-			delete (*mediator->GetBosses())[i];
-			mediator->AddBoss2(position);
-		}
-		break;
-	case 2:
-		for (int i = 0; i < mediator->GetBosses()->size(); i++) {
-			if ((*mediator->GetBosses())[i]->GetHp() <= 0)
-				continue;
-			Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
-			delete (*mediator->GetBosses())[i];
-			mediator->AddBoss3(position);
-		}
-		break;
-	case 3:
-		for (int i = 0; i < mediator->GetBosses()->size(); i++) {
-			if ((*mediator->GetBosses())[i]->GetHp() <= 0)
-				continue;
-			Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
-			delete (*mediator->GetBosses())[i];
-			mediator->AddBoss4(position);
-		}
-		break;
-	}
-
 }
