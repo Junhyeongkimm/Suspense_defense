@@ -9,6 +9,7 @@ protected:
 	int max_hp;
 	double speed;
 	Math::vec2 position;
+	Math::ivec2 tile_position;
 	double size;
 
 	double pattern_count = 0;

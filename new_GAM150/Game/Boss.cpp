@@ -10,6 +10,8 @@ Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double ti
 	pattern1_cool(time1), pattern2_cool(time2), pattern3_cool(time3), 
 	pattern1_loop(loop1), pattern2_loop(loop2), pattern3_loop(loop3), mediator(mediator) {
 	hp = max_hp;
+
+	tile_position = { (int)position.x / (int)mediator->GetMap()->Get_Tile_Length(), (int)position.y / (int)mediator->GetMap()->Get_Tile_Length() };
 }
 void Boss::Update(double dt) {
 	// Boss dead
@@ -18,7 +20,6 @@ void Boss::Update(double dt) {
 		mediator->DeleteBoss(this);
 		return;
 	}
-	Math::ivec2 tile_position = { (int)position.x / (int)mediator->GetMap()->Get_Tile_Length(), (int)position.y / (int)mediator->GetMap()->Get_Tile_Length() };
 	Math::ivec2 player_tile = mediator->GetPlayer()->GetTilePosition();
 	// If player is far from boss
    //if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 5)
