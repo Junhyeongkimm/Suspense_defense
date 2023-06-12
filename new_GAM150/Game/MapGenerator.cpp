@@ -86,10 +86,10 @@ void Map::MapMaking() {
 	// Make things
 	Make_Base();
 	Make_Treasure();
+	Make_Boss_Zone();
 	Make_Colony(10);
 	Make_Resource(100);
 	Make_Warp(50);
-	Make_Boss_Zone();
 }
 // Initialize
 void Map::Initialize() {

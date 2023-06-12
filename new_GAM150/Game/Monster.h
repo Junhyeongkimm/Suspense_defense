@@ -21,14 +21,14 @@ private:
 	const double paralyze_time = 0.5;
 	double paralyze_count = 0;
 	bool created_at_day;
-	
+	bool created_by_boss;
 
 public:
 	//scale
 	void ColonySetWantScale(Math::vec2 new_scale);
 	void FlySetWantScale(Math::vec2 new_scale);
 	// Constructor
-	Monster(Math::vec2 position, Mediator* mediator);
+	Monster(Math::vec2 position, Mediator* mediator, bool created_by_boss = false);
 	// Update by dt and will move the the target
 	void Update(double dt);
 	// Draw

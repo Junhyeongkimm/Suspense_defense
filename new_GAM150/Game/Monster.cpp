@@ -18,12 +18,12 @@ void Monster::FlySetWantScale(Math::vec2 new_scale)
 	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
 }
 // Constructor
-Monster::Monster(Math::vec2 position, Mediator* mediator) : position(position), mediator(mediator) {
+Monster::Monster(Math::vec2 position, Mediator* mediator, bool created_by_boss) 
+	: position(position), mediator(mediator), created_by_boss(created_by_boss) {
 	tile_position.x = (int)((position.x) / mediator->GetMap()->Get_Tile_Length());
 	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
-
 	
-	if (mediator->GetMap()->IsDay()) {
+	if (mediator->GetMap()->IsDay() || created_by_boss) {
 		colonymonstersprite.Load("Assets/colonymonster.spt");
 		colonymonstersprite.PlayAnimation(static_cast<int>(colonymonster_action::left));
 		ColonySetWantScale({ 60,60 });
