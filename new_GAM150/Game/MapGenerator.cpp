@@ -53,6 +53,7 @@ void Map::Update(double dt) {
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
+
 			day->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - day->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - day->GetSize().y) - 100 })));
 			// date = 1, boss_clear_count = 0
 			/*Make_Colony(date * 5);
@@ -110,11 +111,10 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
-	Make_Treasure();
+	Make_Boss_Zone();
 	Make_Colony(10);
 	Make_Resource(100);
 	Make_Warp(50);
-	Make_Boss_Zone();
 }
 // Initialize
 void Map::Initialize() {
@@ -396,9 +396,6 @@ void Map::Base_Show_Arrow() {
 	if (arrow_direction.x < 0) {
 		angle += PI;
 	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
-	}
 	apply_rotate(angle);
 	set_outline_width(15);
 	draw_line(0, 0, 30, 0);
@@ -437,9 +434,6 @@ void Map::Colony_Show_Arrow() {
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
-	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
 	}
 	apply_rotate(angle);
 	draw_line(0, 0, 30, 0);
@@ -534,7 +528,6 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			//	++unlock_count;
 			//}
 			//break;
-
 		default:
 
 			break;

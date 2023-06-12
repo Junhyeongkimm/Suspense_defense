@@ -2,12 +2,9 @@
 
 // Need to be updated.
 #include "../Engine/GameState.h"
-//#include "../Engine/Texture.h"
 #include "../Engine/Sprite.h"
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
-//#include "../Game/Background.h"
-//#include "../Engine/GameObjectManager.h"
 #include <vector>
 
 #include "Player.h"
@@ -37,8 +34,6 @@ public:
     // Get name
     std::string GetName() override { return "Game"; }
 private:
-    //Background background;
-    CS230::Camera camera;
     CS230::Sprite sprite;
     Player* player;
     std::vector<Monster*>monsters;
@@ -47,6 +42,7 @@ private:
     std::vector<Boss*>bosses;
     Map* map;
     Mediator* mediator;
+
     sf::Music* music;
 
     //CS230::GameObjectManager gameobjectmanager;

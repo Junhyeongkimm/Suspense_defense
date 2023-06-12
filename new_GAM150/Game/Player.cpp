@@ -53,7 +53,7 @@ void Player::ARGunSetWantScale(Math::vec2 new_scale)
 }
 
 // Constructor
-Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
+Player::Player(Math::vec2 start_position, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), mediator(mediator), tile_position(tile_position) {
   
 	box = new PopupBox(mediator);
 	playersprite.Load("Assets/player.spt");
@@ -427,10 +427,7 @@ void Player::Heal() {
 // Get distacne from the player to the target
 double Player::GetDistanceFromAttack(Math::vec2 target) {
 	return (GetAttackPosition() - target).GetLength();
-	//return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
 }
-
-
 
 // Attack function
 void Player::Attack() {
@@ -518,7 +515,6 @@ void Player::Attack_Upgrade() {
 			break;
 		}
 		UseMapResource(GetAttackUpgradeCost());
-		//map_resource -= GetAttackUpgradeCost();
 		++attack_upgrade_count;
 	}
 }
@@ -558,7 +554,6 @@ void Player::Utility_Upgrade() {
 			break;
 		}
 		UseMapResource(GetUtilityUpgradeCost());
-		//map_resource -= GetUtilityUpgradeCost();
 		++utility_upgrade_count;
 	}
 	

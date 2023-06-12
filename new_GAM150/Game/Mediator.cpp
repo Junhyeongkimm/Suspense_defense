@@ -48,8 +48,8 @@ void Mediator::SetMap(Map* map) {
 	this->map = map;
 }
 // Add and delete monster
-void Mediator::AddMonster(Math::vec2 position) {
-	monsters->push_back(new Monster(position, this));
+void Mediator::AddMonster(Math::vec2 position, bool created_by_boss) {
+	monsters->push_back(new Monster(position, this, created_by_boss));
 }
 void Mediator::DeleteMonster(Monster* monster) {
 	monsters->erase(remove(monsters->begin(), monsters->end(), monster), monsters->end());
