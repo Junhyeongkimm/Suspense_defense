@@ -4,10 +4,11 @@
 #include "Mediator.h"
 #include "../Engine/Engine.h"
 #include "State.h"
+
 using namespace doodle;
 
 // Constructor of this class
-Map::Map(Mediator* mediator) : mediator(mediator), target(nullptr) {
+Map::Map(Mediator* mediator) : mediator(mediator),bassarrowbackground(bassarrowbackground), colonyarrowbackground(colonyarrowbackground), day(day), night(night), target(nullptr) {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			// Change all things to the Void
@@ -15,6 +16,12 @@ Map::Map(Mediator* mediator) : mediator(mediator), target(nullptr) {
 			MAP[i][j] = new Void( Math::vec2{ i*tile_length, j*tile_length } );
 		}
 	}
+	bassarrowbackground = Engine::GetTextureManager().Load("Assets/bassarrowbackground.png");
+	colonyarrowbackground = Engine::GetTextureManager().Load("Assets/colonyarrowbackground.png");
+	day = Engine::GetTextureManager().Load("Assets/day.png");
+	night = Engine::GetTextureManager().Load("Assets/night.png");
+	dayMusic = Engine::GetMusicManager().Load("Assets/Music/Daytime.wav");
+	nightMusic = Engine::GetMusicManager().Load("Assets/Music/NightTime.wav");
 }
 // Update function
 void Map::Update(double dt) {
@@ -22,8 +29,16 @@ void Map::Update(double dt) {
 	time += dt; 
 	if (time >= duration) {
 		// Day -> Night timing
+		if (nightMusic->getStatus() == sf::SoundSource::Stopped)
+		{ 
+			dayMusic->stop();
+			nightMusic->play();
+		}
+
+
 		if (is_day == true) {
 			is_day = false;
+			night->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - night->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - night->GetSize().y) - 100 })));
 			// Make monsters
 			for (int i = 0; i < map_size; i++) {
 				for (int j = 0; j < map_size; j++) {
@@ -34,9 +49,12 @@ void Map::Update(double dt) {
 		}
 		// Night -> Day timing
 		else {
+			
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
+
+			day->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - day->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - day->GetSize().y) - 100 })));
 			// date = 1, boss_clear_count = 0
 			/*Make_Colony(date * 5);
 			Make_Resource(date * 20);
@@ -46,6 +64,14 @@ void Map::Update(double dt) {
 			Make_Warp((date + 4) * (boss_clear_count + 1));
 		}
 		time = 0;
+	}
+	else {
+		if (dayMusic->getStatus() == sf::SoundSource::Stopped && is_day == true)
+		{
+
+			nightMusic->stop();
+			dayMusic->play();
+		}
 	}
 
 	for (int i = 0; i < map_size; i++) {
@@ -85,7 +111,6 @@ void Map::MapMaking() {
 		Optimizing();
 	// Make things
 	Make_Base();
-	Make_Treasure();
 	Make_Boss_Zone();
 	Make_Colony(10);
 	Make_Resource(100);
@@ -364,14 +389,12 @@ void Map::Base_Show_Arrow() {
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 
+	bassarrowbackground->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - bassarrowbackground->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - bassarrowbackground->GetSize().y) - 100 })));
 	draw_ellipse(0, 0, 60);
 
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
-	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
 	}
 	apply_rotate(angle);
 	set_outline_width(15);
@@ -404,15 +427,13 @@ void Map::Colony_Show_Arrow() {
 
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
+	colonyarrowbackground->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - colonyarrowbackground->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - colonyarrowbackground->GetSize().y) - 100 })));
 	draw_ellipse(0, 0, 60);
 
 	set_outline_width(15);
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
-	}
-	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
-		angle += 2 * PI;
 	}
 	apply_rotate(angle);
 	draw_line(0, 0, 30, 0);
@@ -440,6 +461,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 						if (MAP[x + i][y + j]->Get_State() == TILES::COLONY_CORE) {
 							MAP[x + i][y + j]->ReduceHP();
 							if (MAP[x + i][y + j]->GetHP() <= 0) {
+								Engine::GetSoundsManager().Load("Assets/Sounds/ColonyDie.wav");
 								for (int k = -1; k <= 1; k++) {
 									for (int l = -1; l <= 1; l++) {
 										delete MAP[x + i + k][y + j + l];
@@ -466,6 +488,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 		case TILES::RESOURCE:
 			MAP[x][y]->Attacked(attack_point);
 			if (MAP[x][y]->GetHP() <= 0) {
+				Engine::GetSoundsManager().Load("Assets/Sounds/GetResource.wav");
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 				mediator->GetPlayer()->IncreaseMapResource();
@@ -475,6 +498,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 		case TILES::WARP:
 			MAP[x][y]->Attacked(attack_point);
 			if (MAP[x][y]->GetHP() <= 0) {
+				Engine::GetSoundsManager().Load("Assets/Sounds/GetPotal.wav");
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 				mediator->GetPlayer()->IncreaseWarpResource();
@@ -504,7 +528,6 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			//	++unlock_count;
 			//}
 			//break;
-
 		default:
 
 			break;

@@ -3,6 +3,7 @@
 #include "../Engine/Sprite.h"
 #include <vector>
 #include <unordered_map>
+#include "SFML/Audio.hpp"
 
 class Mediator;
 
@@ -47,6 +48,7 @@ public:
 	bool is_monstermoving = false;
 	bool colonymonstertype;
 	bool flymonstertype;
+
 	enum class colonymonster_action{
 		left,
 		right,

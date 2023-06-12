@@ -1,6 +1,7 @@
 #pragma once
 #include "../Engine/GameState.h"
 #include "../Engine/Texture.h"
+#include "SFML/Audio.hpp"
 // Need to be updated
 class MainMenu : public CS230::GameState {
 public:
@@ -18,4 +19,5 @@ private:
     CS230::Texture* playbutton;
     CS230::Texture* howtoplaybutton;
     CS230::Texture* creditbutton;
+    sf::Music* music;
 };

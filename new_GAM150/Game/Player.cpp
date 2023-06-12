@@ -6,6 +6,7 @@
 #include "../Engine/Engine.h"
 #include "Mediator.h"
 #include "State.h"
+#include <cmath>
 using namespace doodle;
 
 void Player::SetWantScale(Math::vec2 new_scale)
@@ -52,12 +53,20 @@ void Player::ARGunSetWantScale(Math::vec2 new_scale)
 }
 
 // Constructor
-Player::Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), camera(camera), mediator(mediator), tile_position(tile_position) {
+Player::Player(Math::vec2 start_position, Mediator* mediator, Math::ivec2 tile_position) : position(start_position), mediator(mediator), tile_position(tile_position) {
   
 	box = new PopupBox(mediator);
 	playersprite.Load("Assets/player.spt");
 	SetWantScale({ 125,125 });
 	playersprite.PlayAnimation(static_cast<int>(player_action::waiting));
+	sword_weaponsprite.Load("Assets/sword.spt");
+	gun_weaponsprite.Load("Assets/gun.spt");
+	shoutgun_weaponsprite.Load("Assets/shoutgun.spt");
+	gatlinggun_weaponsprite.Load("Assets/gatlinggun.spt");
+	argun_weaponsprite.Load("Assets/argun.spt");
+	sword_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
+	gun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
+
 
 }
 // Update
@@ -206,6 +215,27 @@ void Player::Update(double dt) {
 			is_warping = false;
 		}
 	}
+
+	if (is_attacking == true && attack_mode == MELEE) {
+		sword_weaponsprite.Update(dt);
+	}
+	else if (is_attacking == true && attack_mode == RANGE) {
+
+		gun_weaponsprite.Update(dt);
+	}
+	else if (is_attacking == true && attack_mode == SHOTGUN) {
+
+		shoutgun_weaponsprite.Update(dt);
+
+	}
+	else if (is_attacking == true && attack_mode == GATLING) {
+
+		gatlinggun_weaponsprite.Update(dt);
+	}
+	else if (is_attacking == true && attack_mode == HOMING) {
+
+		argun_weaponsprite.Update(dt);
+	}
 	// Player dodge
 	if (is_dodging) {
 		dodging_count += dt;
@@ -325,28 +355,57 @@ void Player::Draw() {
 	// If the player is attacking, draw the line (in the MELEE mode)
 	if (is_attacking==true && attack_mode == MELEE) {
 		
-		sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ swordscale_x, swordscale_y })));
+		sword_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } * Math::ScaleMatrix({ swordscale_x, swordscale_y })));
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
+
+		if (radians > 1.5 && radians < 4.2)
+		{
+			gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gunscale_x, -gunscale_y })));
+		}
+		else {
+			gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gunscale_x, gunscale_y })));
+		}
 		
-		gun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ gunscale_x, gunscale_y })));
-	}
-	else if (is_attacking == true && attack_mode == SHOTGUN) {
 		
-		shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ shoutgunscale_x, shoutgunscale_y })));
 
 	}
+	else if (is_attacking == true && attack_mode == SHOTGUN) {
+		if (radians > 1.5 && radians < 4.2)
+		{
+			shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ shoutgunscale_x, -shoutgunscale_y })));
+		}
+		else
+		{
+			shoutgun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ shoutgunscale_x, shoutgunscale_y })));
+		}
+	}
 	else if (is_attacking == true && attack_mode == GATLING) {
+		if (radians > 1.5 && radians < 4.2)
+		{
+			gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, -gatlinggunscale_y })));
+		}
+		else
+		{
+			gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians } *Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
+		}
 	
-		gatlinggun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ gatlinggunscale_x, gatlinggunscale_y })));
+		
 	}
 	else if (is_attacking == true && attack_mode == HOMING) {
+		if (radians > 1.5 && radians < 4.2)
+		{
+			argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, -argunscale_y })));
+		}
+		else
+		{
+			argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }*Math::ScaleMatrix({ argunscale_x, argunscale_y })));
+		}
 		
-		argun_weaponsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ argunscale_x, argunscale_y })));
 	}
 
 	if (is_warping) {
-		warpsprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+		warpsprite.Draw((Math::TranslationMatrix(position) * Math::RotationMatrix{ radians }* Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 }
 // Reduce hp
@@ -368,10 +427,7 @@ void Player::Heal() {
 // Get distacne from the player to the target
 double Player::GetDistanceFromAttack(Math::vec2 target) {
 	return (GetAttackPosition() - target).GetLength();
-	//return sqrt((GetAttackPosition().x - target.x) * (GetAttackPosition().x - target.x) + (GetAttackPosition().y - target.y) * (GetAttackPosition().y - target.y));
 }
-
-
 
 // Attack function
 void Player::Attack() {
@@ -380,35 +436,41 @@ void Player::Attack() {
 	is_attacking = true;
 	attack_count = 0;
 
+	Math::vec2 weaponDir{ static_cast<double>(doodle::get_mouse_x() - (Engine::GetWindow().GetSize().x / 2)), static_cast<double>(doodle::get_mouse_y() - (Engine::GetWindow().GetSize().y / 2)) };
+	weaponDir /= weaponDir.GetLength();
+	radians = atan(weaponDir.y / weaponDir.x);
+	if (weaponDir.x < 0) {
+		radians += PI;
+	}
+	else if (weaponDir.x >= 0 && weaponDir.y < 0) {
+		radians += 2 * PI;
+	}
+	Engine::GetLogger().LogDebug(std::to_string(radians));
 	switch (attack_mode) {
 	case MELEE:
-		sword_weaponsprite.Load("Assets/sword.spt");
 		SwordSetWantScale({ 50, 50 });
-		sword_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->Check_Map_Attacked();
+		sword_weaponsprite.PlayNotLoopAnimation(static_cast<int>(Weapon_action::attack));
 		break;
 	case RANGE:
-		gun_weaponsprite.Load("Assets/gun.spt");
 		GunSetWantScale({ 40,40 });
-		gun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddBullet(position, GetAttackPosition() - position);
+		gun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		break;
 	case SHOTGUN:
-		shoutgun_weaponsprite.Load("Assets/shoutgun.spt");
+
 		ShoutGunSetWantScale({ 80,80 });
 		shoutgun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
 		mediator->AddShotgun(position, GetAttackPosition() - position);
 		break;
 	case GATLING:
-		gatlinggun_weaponsprite.Load("Assets/gatlinggun.spt");
-		GatlingGunSetWantScale({ 80, 80 });
 		gatlinggun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		GatlingGunSetWantScale({ 80, 80 });
 		mediator->AddGatling(position, GetAttackPosition() - position);
 		break;
 	case HOMING:
-		argun_weaponsprite.Load("Assets/argun.spt");
-		ARGunSetWantScale({ 70,40 });
 		argun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
+		ARGunSetWantScale({ 70,40 });
 		mediator->AddHoming(position, GetAttackPosition() - position);
 		break;
 	}
@@ -453,7 +515,6 @@ void Player::Attack_Upgrade() {
 			break;
 		}
 		UseMapResource(GetAttackUpgradeCost());
-		//map_resource -= GetAttackUpgradeCost();
 		++attack_upgrade_count;
 	}
 }
@@ -493,7 +554,6 @@ void Player::Utility_Upgrade() {
 			break;
 		}
 		UseMapResource(GetUtilityUpgradeCost());
-		//map_resource -= GetUtilityUpgradeCost();
 		++utility_upgrade_count;
 	}
 	

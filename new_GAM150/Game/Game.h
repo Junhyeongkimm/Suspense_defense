@@ -2,12 +2,9 @@
 
 // Need to be updated.
 #include "../Engine/GameState.h"
-//#include "../Engine/Texture.h"
 #include "../Engine/Sprite.h"
 #include "../Engine/Vec2.h"
 #include "../Engine/Camera.h"
-//#include "../Game/Background.h"
-//#include "../Engine/GameObjectManager.h"
 #include <vector>
 
 #include "Player.h"
@@ -17,6 +14,8 @@
 #include "Bullet.h"
 #include "Mediator.h"
 #include "Boss.h"
+#include "SFML/Audio.hpp"
+
 
 class Game : public CS230::GameState {
 public:
@@ -35,8 +34,6 @@ public:
     // Get name
     std::string GetName() override { return "Game"; }
 private:
-    //Background background;
-    CS230::Camera camera;
     CS230::Sprite sprite;
     Player* player;
     std::vector<Monster*>monsters;
@@ -45,6 +42,9 @@ private:
     std::vector<Boss*>bosses;
     Map* map;
     Mediator* mediator;
+
+    sf::Music* music;
+
     //CS230::GameObjectManager gameobjectmanager;
     Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2 };
     double scale_x;

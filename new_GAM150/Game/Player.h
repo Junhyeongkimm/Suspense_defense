@@ -21,7 +21,6 @@ private:
 	Math::ivec2 tile_position;
 	double speed = 350;
 	const double size = 40;
-	const CS230::Camera& camera; // It is not used
 	// HP
 	int hp = 10;
 	int max_hp = 10;
@@ -83,7 +82,7 @@ public:
 	void ARGunSetWantScale(Math::vec2 new_scale);
 
 	// Constructor
-	Player(Math::vec2 start_position, const CS230::Camera& camera, Mediator* mediator, Math::ivec2 tile_position);
+	Player(Math::vec2 start_position, Mediator* mediator, Math::ivec2 tile_position);
 	// Update
 	void Update(double dt);
 	// Draw
@@ -160,6 +159,9 @@ public:
 
 	double argunscale_x;
 	double argunscale_y;
+	double radians = 0.0;
+
+
 
 	bool is_moving = false;
 

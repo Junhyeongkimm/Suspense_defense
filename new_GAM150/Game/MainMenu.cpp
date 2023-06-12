@@ -7,14 +7,17 @@
 using namespace doodle;
 // Need to be updated
 
-MainMenu::MainMenu():texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton)
+MainMenu::MainMenu():texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), music(nullptr)
 { }
 
 void MainMenu::Load() {
+    music = Engine::GetMusicManager().Load("Assets/Music/MainMenu.wav");
     texture = Engine::GetTextureManager().Load("Assets/maintitle.png");
     playbutton = Engine::GetTextureManager().Load("Assets/playbutton.png");
     howtoplaybutton = Engine::GetTextureManager().Load("Assets/howtoplaybutton.png");
     creditbutton = Engine::GetTextureManager().Load("Assets/creditbutton.png");
+    music->play();
+    music->setLoop(true);
 }
 
 void MainMenu::Draw() {
@@ -27,6 +30,7 @@ void MainMenu::Draw() {
 }
 
 void MainMenu::Update([[maybe_unused]] double dt) {
+    
 
     if (Key == KeyboardButtons::Enter) {
         if (counter == 0)
@@ -44,5 +48,5 @@ void MainMenu::Update([[maybe_unused]] double dt) {
 }
 
 void MainMenu::Unload() {
-
+    music->stop();
 }

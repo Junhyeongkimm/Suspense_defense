@@ -15,7 +15,10 @@ Updated:    March 20, 2023
 #include "Input.h"
 #include "GameStateManager.h"
 #include "TextureManager.h"
+#include "SoundManager.h"
+#include "MusicManager.h"
 #include <chrono>
+
 
 class Engine {
 public:
@@ -38,6 +41,14 @@ public:
     static CS230::TextureManager& GetTextureManager() {
         return Instance().textureManager;
     }
+    static CS230::SoundManager& GetSoundsManager()
+    {
+        return Instance().soundmanager;
+    }
+    static CS230::MusicManager& GetMusicManager()
+    {
+        return Instance().musicmanager;
+    }
 
     void Start(std::string window_title);
     void Stop();
@@ -54,9 +65,12 @@ private:
     static constexpr int FPSDuration = 5;
     static constexpr int FPSTargetFrames = static_cast<int>(FPSDuration * TargetFPS);
 
+
+
     Engine();
     ~Engine();
-
+    CS230::MusicManager musicmanager;
+    CS230::SoundManager soundmanager;
     CS230::Logger logger;
     CS230::Input input;
     CS230::Window window;
