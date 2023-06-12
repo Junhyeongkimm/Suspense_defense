@@ -163,7 +163,7 @@ void Game::Draw() {
 
 	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
 
-	draw_text("Day " + std::to_string(map->GetDate()), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
+	draw_text("Day " + std::to_string(map->GetDate() + 1), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
 	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
 
 	pop_settings();
