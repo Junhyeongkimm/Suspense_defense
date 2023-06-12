@@ -259,7 +259,6 @@ void Player::Update(double dt) {
 		Math::vec2 direction{ 0, 0 };
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::W)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::up));
 			
 			if ((mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WALL) && 
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::COLONY_SIDE) &&
@@ -267,13 +266,10 @@ void Player::Update(double dt) {
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::WARP) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y + size / 2 }) != TILES::TREASURE)) {
 				direction.y += 1;
-				
-
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::S)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::down));
 
 			if ((mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::COLONY_SIDE) &&
@@ -281,13 +277,10 @@ void Player::Update(double dt) {
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::WARP) &&
 				(mediator->GetMap()->GetTileState({ position.x, position.y - size / 2 }) != TILES::TREASURE)) {
 				direction.y -= 1;
-				
-
 			}
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::A)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::left));
 
 			if ((mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x - size / 2, position.y }) != TILES::COLONY_SIDE) &&
@@ -299,7 +292,6 @@ void Player::Update(double dt) {
 		}
 		if (Engine::GetInput().KeyDown(CS230::Input::Keys::D)) {
 			is_moving = true;
-			playersprite.PlayAnimation(static_cast<int>(player_action::right));
 
 			if ((mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::WALL) &&
 				(mediator->GetMap()->GetTileState({ position.x + size / 2, position.y }) != TILES::COLONY_SIDE) &&
@@ -310,10 +302,22 @@ void Player::Update(double dt) {
 			}
 		}
 		// If the player move diagonally, divide speed by sqrt(2)
-		if (direction.GetLength() == sqrt(2)) {
+		if (direction.GetLength() == sqrt(2))
 			direction /= sqrt(2);
-		}
+		else if (direction.x == 0 && direction.y == 0)
+			is_moving = false;
+
 		position += direction * speed * dt;
+
+		if(direction.x == 0 && direction.y == 1)
+			playersprite.PlayAnimation(static_cast<int>(player_action::up));
+		else if(direction.x == 0 && direction.y == -1)
+			playersprite.PlayAnimation(static_cast<int>(player_action::down));
+		else if(direction.x == -1 && direction.y == 0)
+			playersprite.PlayAnimation(static_cast<int>(player_action::left));
+		else if(direction.x == 1 && direction.y == 0)
+			playersprite.PlayAnimation(static_cast<int>(player_action::right));
+
 
 		if (mediator->GetMap()->GetTileState(position) == TILES::WALL ||
 			mediator->GetMap()->GetTileState(position) == TILES::RESOURCE ||

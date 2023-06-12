@@ -50,7 +50,7 @@ private:
 	bool is_dodging = false;
 	const double dodging_time = 0.4;
 	double dodging_count = 0;
-	const double dodge_cool_time = 1.0;
+	const double dodge_cool_time = 0.5;
 	double dodge_cool_count = 0;
 	Math::vec2 dodge_direction{ 0, 0 };
 	// HP recovery

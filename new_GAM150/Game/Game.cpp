@@ -26,6 +26,9 @@ Game::Game() :
 }
 // Load. Create mediator and set map, monster, player, bullet.
 void Game::Load() {
+
+
+	//camera.SetLimit({ {0,0}, { background.GetSize() - Engine::GetWindow().GetSize() } });
 	// Create mediator
 	mediator = new Mediator();
 	// Create map and give it to the mediator
