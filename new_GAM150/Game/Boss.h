@@ -1,6 +1,9 @@
 #pragma once
 
 #include "../Engine/Vec2.h"
+#include "../Engine/Sprite.h"
+
+
 class Mediator;
 // --------------------------------- BOSS  ---------------------------------
 class Boss {
@@ -23,6 +26,8 @@ protected:
 	int pattern2_loop;
 	int pattern3_loop;
 	int loop_count = 0;
+	double scale_x;
+	double scale_y;
 
 	double heal_count = 0;
 	double heal_time = 0.1;
@@ -38,12 +43,16 @@ public:
 	Math::vec2 GetPosition() { return position; }
 	int GetHp() { return hp; }
 
+	CS230::Sprite sprite;
+
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;
 	virtual void Pattern3() = 0;
+
 	bool is_boss_die = false;
 	bool is_boss_attack = false;
 };
+
 // --------------------------------- BOSS 1 ---------------------------------
 class Boss1 : public Boss {
 public:
@@ -52,7 +61,15 @@ public:
 	void Pattern1();
 	void Pattern2();
 	void Pattern3();
+
+	enum class Boss1_animations {
+		basic,
+		attack,
+		broken
+	};
+	
 };
+
 // --------------------------------- BOSS 2 ---------------------------------
 class Boss2 : public Boss {
 public:
@@ -61,6 +78,12 @@ public:
 	void Pattern1();
 	void Pattern2();
 	void Pattern3();
+
+	enum class Boss2_animations {
+		basic,
+		attack,
+		broken
+	};
 
 };
 // --------------------------------- BOSS 3 ---------------------------------
@@ -72,6 +95,12 @@ public:
 	void Pattern2();
 	void Pattern3();
 
+	enum class Boss3_animations {
+		basic,
+		attack,
+		broken
+	};
+
 };
 // --------------------------------- BOSS 4 ---------------------------------
 class Boss4 : public Boss {
@@ -81,5 +110,11 @@ public:
 	void Pattern1();
 	void Pattern2();
 	void Pattern3();
+
+	enum class Boss4_animations {
+		basic,
+		attack,
+		broken
+	};
 
 };

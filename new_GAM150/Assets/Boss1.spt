@@ -1,0 +1,16 @@
+Assets/blueboss.png
+FrameSize 1050 1050
+HotSpot 0 0
+Frame 0 0
+Frame 1050 0
+Frame 2100 0
+Frame 0 1050
+Frame 1050 1050
+Frame 2100 1050
+Frame 0 2100
+Frame 1050 2100
+Frame 2100 2100
+Anim Assets/Boss1idle.anm
+Anim Assets/Boss1attack.anm
+Anim Assets/Boss1die.anm
+
