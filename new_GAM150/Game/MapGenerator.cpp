@@ -467,6 +467,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 						if (MAP[x + i][y + j]->Get_State() == TILES::COLONY_CORE) {
 							MAP[x + i][y + j]->ReduceHP();
 							if (MAP[x + i][y + j]->GetHP() <= 0) {
+								Engine::GetSoundsManager().Load("Assets/Sounds/ColonyDie.wav");
 								for (int k = -1; k <= 1; k++) {
 									for (int l = -1; l <= 1; l++) {
 										delete MAP[x + i + k][y + j + l];
@@ -503,6 +504,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 		case TILES::WARP:
 			MAP[x][y]->Attacked(attack_point);
 			if (MAP[x][y]->GetHP() <= 0) {
+				Engine::GetSoundsManager().Load("Assets/Sounds/GetPotal.wav");
 				delete MAP[x][y];
 				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 				mediator->GetPlayer()->IncreaseWarpResource();
