@@ -33,7 +33,7 @@ public:
 	void SetMap(Map* map);
 
 	// Add and delete monsters and bosses
-	void AddMonster(Math::vec2 position);
+	void AddMonster(Math::vec2 position, bool created_by_boss = false);
 	void DeleteMonster(Monster* monster);
 	void AddBoss1(Math::vec2 position);
 	void AddBoss2(Math::vec2 position);

@@ -13,16 +13,20 @@ protected:
 
 	double pattern_count = 0;
 	int pattern_index = 1;
-	double pattern1_time;
-	double pattern2_time;
-	double pattern3_time;
+	double pattern1_cool;
+	double pattern2_cool;
+	double pattern3_cool;
+	int pattern1_loop;
+	int pattern2_loop;
+	int pattern3_loop;
+	int loop_count = 0;
 
 	double heal_count = 0;
 	double heal_time = 0.5;
 
 	Mediator* mediator;
 public:
-	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, Mediator* mediator);
+	Boss(int hp, double speed, Math::vec2 position, double size, double time1, double time2, double time3, int loop1, int loop2, int loop3, Mediator* mediator);
 	void Update(double dt);
 	virtual void Draw() = 0;
 	void ReduceHP(int damage) { hp -= damage; }
