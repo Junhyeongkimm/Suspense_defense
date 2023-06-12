@@ -625,32 +625,6 @@ void Map::UpgradeBase() {
 		tower_attack_cool -= 0.1;
 		// Update
 		++base_upgrade_count;
-		// Upgrade bosses
-		switch (boss_clear_count) {
-		case 1:
-			for (int i = mediator->GetBosses()->size() - 1; i >= 0; --i) {
-				Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
-				delete (*mediator->GetBosses())[i];
-				mediator->AddBoss2(position);
-			}
-			break;
-		case 2:
-			for (int i = mediator->GetBosses()->size() - 1; i >= 0; --i) {
-				Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
-				delete (*mediator->GetBosses())[i];
-				mediator->AddBoss3(position);
-			}
-			break;
-		case 3:
-			for (int i = mediator->GetBosses()->size() - 1; i >= 0; --i) {
-				Math::vec2 position = (*mediator->GetBosses())[i]->GetPosition();
-				delete (*mediator->GetBosses())[i];
-				mediator->AddBoss4(position);
-			}
-			break;
-		default:
-			break;
-		}
 	}
 	else {
 

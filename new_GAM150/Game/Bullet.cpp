@@ -11,7 +11,8 @@ void Bullet::SetWantScale(Math::vec2 new_scale)
 	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
 }
 // Constructor
-Bullet::Bullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : position(start_position), direction(direction), mediator(mediator) {
+Bullet::Bullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, int damage) : 
+	position(start_position), direction(direction), mediator(mediator), damage(damage) {
 	sprite.Load("Assets/bullet.spt");
 	
 	SetWantScale({ 50,50 });
@@ -45,7 +46,8 @@ void Bullet::Draw() {
 
 }
 
-HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator) : Bullet(start_positon, direction, mediator), target(nullptr) {
+HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator, int damage) : 
+	Bullet(start_positon, direction, mediator, damage), target(nullptr) {
 	if (mediator->GetMonster()->size()) {
 		target = mediator->GetMonster()->front();
 		double distance = GetDistance(target->GetPosition());

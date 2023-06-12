@@ -26,7 +26,7 @@ private:
 	int hp = 10;
 	int max_hp = 10;
 	// Attack
-	int damage = 1;
+	int damage = 2;
 	double attack_delay = 1.0;
 	double attack_count = 0;
 	bool is_attacking = false;
