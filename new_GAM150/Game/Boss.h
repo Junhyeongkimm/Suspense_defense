@@ -34,6 +34,8 @@ public:
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;
 	virtual void Pattern3() = 0;
+	bool is_boss_die = false;
+	bool is_boss_attack = false;
 };
 // --------------------------------- BOSS 1 ---------------------------------
 class Boss1 : public Boss {

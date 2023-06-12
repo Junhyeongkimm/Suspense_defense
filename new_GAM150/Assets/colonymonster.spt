@@ -1,0 +1,31 @@
+Assets/colonymonster.png
+FrameSize 300 294
+HotSpot 90 50
+Frame 0 0
+Frame 300 0
+Frame 600 0
+Frame 0 294
+Frame 300 294
+Frame 600 294
+Frame 0 588
+Frame 300 588
+Frame 600 588
+Frame 0 882
+Frame 300 882
+Frame 600 882
+Frame 0 1176
+Frame 300 1176
+Frame 600 1176
+Frame 0 1470
+Frame 300 1470
+Frame 600 1470
+Frame 0 1764
+Frame 300 1764
+Frame 600 1764
+Frame 0 2088
+Frame 300 2088
+Frame 600 2088
+Anim Assets/colonymonsterleft.anm
+Anim Assets/colonymonsterright.anm
+Anim Assets/colonymonsterup.anm
+Anim Assets/colonymonsterdown.anm

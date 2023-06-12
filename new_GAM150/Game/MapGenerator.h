@@ -40,6 +40,14 @@ private:
 	double tower_attack_count = 0;
 	double tower_attack_cool = 1.0;
 public:
+	// Texture 
+	CS230::Texture* bassarrow;
+	CS230::Texture* bassarrowbackground;
+	CS230::Texture* colonyarrow;
+	CS230::Texture* colonyarrowbackground;
+	CS230::Texture* day;
+	CS230::Texture* night;
+
 	// Constructor
 	Map(Mediator* mediator);
 	// Map making functions
@@ -89,4 +97,5 @@ public:
 	int GetUpgradeCost();
 	void RepairBase();
 	void UpgradeBase();
+	
 };
