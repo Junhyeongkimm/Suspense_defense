@@ -228,9 +228,9 @@ void Map::Make_Treasure() {
 // Make boss zone
 void Map::Make_Boss_Zone() {
 	Math::ivec2 first = { 10, 10 };
-	Math::ivec2 second = { map_size / 2 - 10, 10 };
+	Math::ivec2 second = { map_size - 10, 10 };
 	Math::ivec2 third = { 10, map_size - 10 };
-	Math::ivec2 fourth = { map_size / 2 - 10, 10 };
+	Math::ivec2 fourth = { map_size - 10, map_size - 10 };
 
 	for (int i = -6; i <= 6; i++) {
 		for (int j = -6; j <= 6; j++) {

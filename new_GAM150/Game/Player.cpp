@@ -57,7 +57,7 @@ void Player::Update(double dt) {
 	// Differenciate attack delay based on the attack mode
 	switch (attack_mode) {
 	case MELEE:
-		if (attack_count > attack_delay) {
+		if (attack_count > attack_delay * 0.7) {
 			is_attacking = false;
 		}
 		break;
@@ -72,12 +72,12 @@ void Player::Update(double dt) {
 		}
 		break;
 	case GATLING:
-		if (attack_count > attack_delay * 0.4) {
+		if (attack_count > attack_delay * 0.3) {
 			is_attacking = false;
 		}
 		break;
 	case HOMING:
-		if (attack_count > attack_delay * 1.5) {
+		if (attack_count > attack_delay * 1.4) {
 			is_attacking = false;
 		}
 		break;
