@@ -49,26 +49,19 @@ void Map::Update(double dt) {
 		}
 		// Night -> Day timing
 		else {
-			
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
 
 			day->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - day->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - day->GetSize().y) - 100 })));
-			// date = 1, boss_clear_count = 0
-			/*Make_Colony(date * 5);
-			Make_Resource(date * 20);
-			Make_Warp(date * 5);*/
-			Make_Colony((date + 4) * (boss_clear_count + 1));
-			Make_Resource((date + 4) * (boss_clear_count + 1) * 2);
-			Make_Warp((date + 4) * (boss_clear_count + 1));
+			Make_Colony((date + 2) * (boss_clear_count / 2 + 1));
+			Make_Resource((date + 2) * (boss_clear_count / 2 + 1) * 3);
+			Make_Warp((date + 2) * (boss_clear_count / 2 + 1));
 		}
 		time = 0;
 	}
 	else {
-		if (dayMusic->getStatus() == sf::SoundSource::Stopped && is_day == true)
-		{
-
+		if (dayMusic->getStatus() == sf::SoundSource::Stopped && is_day == true) { 
 			nightMusic->stop();
 			dayMusic->play();
 		}
@@ -113,8 +106,8 @@ void Map::MapMaking() {
 	Make_Base();
 	Make_Boss_Zone();
 	Make_Colony(10);
-	Make_Resource(100);
-	Make_Warp(50);
+	Make_Resource(50);
+	Make_Warp(10);
 }
 // Initialize
 void Map::Initialize() {
@@ -506,28 +499,7 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			break;
 
 		case TILES::TREASURE:
-			//MAP[x][y]->Attacked(attack_point);
-			//if (MAP[x][y]->GetHP() <= 0) {
-			//	delete MAP[x][y];
-			//	MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 
-			//	switch (unlock_count) {
-			//	case 0:
-			//		mediator->GetMap()->UnlockBaseArraw();
-			//		break;
-			//	case 1:
-			//		//mediator->UnlockRangedAttack();
-			//		break;
-			//	case 2:
-			//		mediator->GetPlayer()->UnlockDodge();
-			//		break;
-			//	case 3:
-			//		mediator->GetMap()->UnlockColonyArraw();
-			//		break;
-			//	}
-			//	++unlock_count;
-			//}
-			//break;
 		default:
 
 			break;
@@ -558,7 +530,7 @@ int Map::GetRepairCost() {
 	}
 	cost += void_count * 5;
 
-	return cost;
+	return cost / 2;
 }
 void Map::RepairBase() {
 	// Return if the hp is full
