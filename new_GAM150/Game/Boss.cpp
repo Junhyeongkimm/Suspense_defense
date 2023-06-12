@@ -16,7 +16,6 @@ Boss::Boss(int max_hp, double speed, Math::vec2 position, double size, double ti
 void Boss::Update(double dt) {
 	Math::ivec2 player_tile = mediator->GetPlayer()->GetTilePosition();
 	// If player is far from boss
-   //if (mediator->GetPlayer()->GetDistance(position) > mediator->GetMap()->Get_Tile_Length() * 5)
 	if (!(player_tile.x >= tile_position.x - 5 && player_tile.x <= tile_position.x + 5 && 
 		  player_tile.y >= tile_position.y - 5 && player_tile.y <= tile_position.y + 5)) {
 		heal_count += dt;
@@ -81,7 +80,7 @@ void Boss::Draw() {
 
 // --------------------------------- BOSS 1 ---------------------------------
 Boss1::Boss1(Math::vec2 position, Mediator* mediator) :
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
+	Boss(max_hp = 15, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 3, 2, 1, mediator) {
 }
 void Boss1::Draw() {
 	push_settings();
@@ -149,7 +148,7 @@ void Boss2::Pattern3() {
 }
 // --------------------------------- BOSS 3 ---------------------------------
 Boss3::Boss3(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
+	Boss(max_hp = 30, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 7, 4, 3, mediator) {
 
 }
 void Boss3::Draw() {
@@ -183,7 +182,7 @@ void Boss3::Pattern3() {
 }
 // --------------------------------- BOSS 4 ---------------------------------
 Boss4::Boss4(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
+	Boss(max_hp = 50, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 10, 5, 5, mediator) {
 
 }
 void Boss4::Draw() {
