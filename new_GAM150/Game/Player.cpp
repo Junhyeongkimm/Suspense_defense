@@ -112,8 +112,12 @@ void Player::Update(double dt) {
 	
 	// Change the attack mode by 0, 1, 2, 3, 4 key
 	if (!is_attacking) {
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_0)) {
-			attack_mode = MELEE;
+
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
+			if (attack_mode == MELEE)
+				attack_mode = RANGE;
+			else
+				attack_mode = MELEE;
 		}
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_1)) {
 			attack_mode = RANGE;
