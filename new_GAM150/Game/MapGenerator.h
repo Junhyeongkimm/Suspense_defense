@@ -2,11 +2,12 @@
 
 #include "Player.h"
 #include "Monster.h"
-class Mediator;
 #include "TileStates.h"
 #include "Tile.h"
 #include "../Engine/Camera.h"
 #include <vector>
+class Mediator;
+class Monster;
 
 class Map {
 private: 
@@ -20,7 +21,7 @@ private:
 	// Tile length
 	static inline const double tile_length = map_length / map_size;
 	// For the day and night system.
-	double time = 0;
+	double time = -30.0;
 	const double duration = 60;
 	bool is_day = true;
 	int date = 0;
@@ -34,6 +35,10 @@ private:
 	// Middle point
 	Math::vec2 middle_point{ map_length / 2 + tile_length / 2, map_length / 2 + tile_length / 2 };
 	Math::vec2 arrow_direction{ 0, 0 };
+	// Monster, tower
+	Monster* target;
+	double tower_attack_count = 0;
+	double tower_attack_cool = 1.0;
 public:
 	// Texture 
 	CS230::Texture* bassarrow;
@@ -45,35 +50,25 @@ public:
 
 	// Constructor
 	Map(Mediator* mediator);
-	// Make the map. It will be called when you start the game
+	// Map making functions
 	void MapMaking();
-	// Initialize the map
 	void Initialize();
-	// Optimize the map (Check the surrounding tiles and change tiles into another tiles
 	void Optimizing();
-	// Make base camp at the middle point.
-	void Make_Base();
-	// Update the map
-	void Update(double dt);
-	// Check the surrounding cells. If MAP[x][y] is VOID and there are enough tiles of wall, change the tile to the WALL
 	bool Check_Surrounding_Cells(const int x, const int y);
-	// Make "number" numbers of colony
+	// Update
+	void Update(double dt);
+	// Make special spaces
+	void Make_Base();
 	void Make_Colony(int number);
-	// Make "number" numbers of resource
 	void Make_Resource(int number);
-	// Make "number" numbers of warp
 	void Make_Warp(int number);
-	// Make unlock things
 	void Make_Treasure();
-	// Show the map based on the player's position.
+	void Make_Boss_Zone();
+	// Show things
 	void Show_Map();
-	// Draw arrow to the base
-	bool base_compass_unlocked = false;
 	void Base_Show_Arrow();
-	// Draw arrow to the closest colony
-	bool colony_copass_unlocked = false;
 	void Colony_Show_Arrow();
-	// Attacked
+	// Check attacked
 	void Attacked(Math::ivec2 position);
 	// Getter functions
 	int Get_Map_Size() { return map_size; }
@@ -90,11 +85,16 @@ public:
 	int GetOffset() { return offset; }
 	// Unlock things
 	int unlock_count = 0;
-	void UnlockBaseArraw() { base_compass_unlocked = true; }
-	void UnlockColonyArraw() { colony_copass_unlocked = true; }
 	// Upgrade things
+	int boss_clear_count = 0;
+	int GetBossClearCount() { return boss_clear_count; }
+	void IncreaseBossCount();
 	int base_upgrade_count = 0;
+	int base_upgrade_max = 0;
+	int GetUpgradeCount(){ return base_upgrade_count; }
+	int GetUpgradeMax() { return base_upgrade_max; }
 	int GetRepairCost();
+	int GetUpgradeCost();
 	void RepairBase();
 	void UpgradeBase();
 	

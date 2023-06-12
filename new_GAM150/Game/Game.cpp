@@ -50,35 +50,26 @@ void Game::Load() {
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::P)) {
-		
-		/*mediator->UnlockBaseArraw();
-		mediator->UnlockColonyArraw();
-		mediator->UnlockDodge();
-		mediator->UnlockShotgun();
-		mediator->UnlockGatling();
-		mediator->UnlockHoming();*/
-	}
-	// Update player, map, monster update
+	// Update player, map, monster, bullets update
 	player->Update(dt);
 	map->Update(dt);
-	for (Monster* monster : monsters) {
-		monster->Update(dt);
+	for (int i = 0; i < monsters.size(); i++) {
+		monsters[i]->Update(dt);
 	}
-	for (Boss* boss : bosses) {
-		boss->Update(dt);
+	for (int i = 0; i < bosses.size(); i++) {
+		bosses[i]->Update(dt);
 	}
-	// Bullets update
 	for (int i = 0; i < bullets.size(); i++) {
-		// Update bullet's position
 		bullets[i]->Update(dt);
 	}
 	for (int i = 0; i < bullets.size(); i++) {
 		// Check collision with monster
 		for (int j = 0; j < monsters.size(); j++) {
 			if (monsters[j]->GetDistance(bullets[i]->GetPosition()) < (monsters[j]->GetSize() / 2 + bullets[i]->GetSize() / 2)) {
+				monsters[j]->Reduce_hp(bullets[i]->GetDamage());
+				if (monsters[j]->GetHp() <= 0)
+					mediator->DeleteMonster(monsters[j]);
 				mediator->DeleteBullet(bullets[i]);
-				mediator->DeleteMonster(monsters[j]);
 				break;
 			}
 		}
@@ -93,12 +84,9 @@ void Game::Update([[maybe_unused]] double dt) {
 			}
 		}
 	}
-	// Monster bullets update
 	for (int i = 0; i < monster_bullets.size(); i++) {
-		// Update monster bullet's position
 		monster_bullets[i]->Update(dt);
 	}
-
 	// Update camera. (Meaningless)
 	camera.Update(player->GetPosition());
 	// If the player press "Escape" key, change the scene to the mainmenu
@@ -106,26 +94,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 	// ------------------------------- TOWER -------------------------------
-	// Find the closest monster and set the target
-	target = nullptr;
-	for (Monster* monster : monsters) {
-		if (target == nullptr || monster->GetDistance(middle_point) < target->GetDistance(middle_point))
-			target = monster;
-	}
-	// Attack the target monster if it is not nullptr and in range
-	tower_attack_count += dt;
-	if (target != nullptr) {
-		if ((target->GetDistance(middle_point) < map->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
-			Math::vec2 direction = target->GetPosition() - middle_point;
-			direction /= direction.GetLength();
-			mediator->AddBullet(middle_point, direction);
-
-			tower_attack_count = 0;
-		}
-	}
-	// If there is no monster, set the target to the nullptr
-	if (monsters.size() == 0)
-		target = nullptr;
+	
 }
 // Unload game
 void Game::Unload() {
@@ -160,15 +129,24 @@ void Game::Draw() {
 			)
 			monster->Draw();
 	}
-	for (Boss* boss : bosses) {
+	for (int i = 0; i < bosses.size(); i++) {
+		bosses[i]->Draw();
+	}
+	/*for (Boss* boss : bosses) {
 		boss->Draw();
+	}*/
+	for (int i = 0; i < bullets.size(); i++) {
+		bullets[i]->Draw();
 	}
-	for (Bullet* bullet : bullets) {
+	/*for (Bullet* bullet : bullets) {
 		bullet->Draw();
+	}*/
+	for (int i = 0; i < monster_bullets.size(); i++) {
+		monster_bullets[i]->Draw();
 	}
-	for (MBullet* bullet : monster_bullets) {
+	/*for (MBullet* bullet : monster_bullets) {
 		bullet->Draw();
-	}
+	}*/
 	pop_settings();
 
 
@@ -185,7 +163,7 @@ void Game::Draw() {
 
 	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
 
-	draw_text("Day " + std::to_string(map->GetDate()), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
+	draw_text("Day " + std::to_string(map->GetDate() + 1), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
 	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
 
 	pop_settings();

@@ -23,7 +23,7 @@ public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
 	// Constructor
-	Bullet(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator);
+	Bullet(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator, int damage);
 	// Update by "dt"
 	void Update(double dt);
 	// Move
@@ -44,6 +44,6 @@ class HomingShot :public Bullet {
 private:
 	Monster* target;
 public:
-	HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator);
+	HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator, int damage);
 	void Move(double dt);
 };

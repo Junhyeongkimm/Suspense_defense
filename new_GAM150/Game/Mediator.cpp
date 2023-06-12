@@ -5,13 +5,6 @@
 Mediator::Mediator() : map(nullptr), player(nullptr), monsters(), bosses(), bullets(), monster_bullets() {
 
 }
-// Check if the monsters are attacked
-void Mediator::Check_Monster_Attacked() {
-	for (Monster* monster : *monsters) {
-		//monster->Attacked(player->GetAttackPosition());
-		monster->Attacked(player->GetPosition() + player->GetSize() * player->GetAttackDirection());
-	}
-}
 // Check if the map is attacked
 void Mediator::Check_Map_Attacked() {
 	// Two for loop are to restrain restrain the scope
@@ -88,10 +81,18 @@ void Mediator::DeleteBoss(Boss* boss) {
 
 // Add and delete bullet
 void Mediator::AddBullet(Math::vec2 position, Math::vec2 direction) {
-	bullets->push_back(new Bullet(position, direction, this));
+	bullets->push_back(new Bullet(position, direction, this, player->GetDamage()));
+}
+void Mediator::AddShotgun(Math::vec2 position, Math::vec2 direction) {
+	bullets->push_back(new Bullet(position, direction + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)), this, player->GetDamage()-1));
+	bullets->push_back(new Bullet(position, direction + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)), this, player->GetDamage()-1));
+	bullets->push_back(new Bullet(position, direction + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)), this, player->GetDamage()-1));
+}
+void Mediator::AddGatling(Math::vec2 position, Math::vec2 direction) {
+	bullets->push_back(new Bullet(position, direction, this, player->GetDamage()-2));
 }
 void Mediator::AddHoming(Math::vec2 position, Math::vec2 direction) {
-	bullets->push_back(new HomingShot(position, direction, this));
+	bullets->push_back(new HomingShot(position, direction, this, player->GetDamage()-1));
 }
 void Mediator::DeleteBullet(Bullet* bullet) {
 	bullets->erase(remove(bullets->begin(), bullets->end(), bullet), bullets->end());

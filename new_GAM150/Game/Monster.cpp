@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "State.h"
 #include "AStar.h"
-#include <iostream>
 
 void Monster::ColonySetWantScale(Math::vec2 new_scale)
 {
@@ -12,7 +11,7 @@ void Monster::ColonySetWantScale(Math::vec2 new_scale)
 	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
 	scale_y = 1 / static_cast<double>(want.y) * new_scale.y;
 }
-void Monster::FlySetWantScale(Math::vec2 new_scale)
+void Monster::FlySetWantScale(Math::vec2 new_scale)=
 {
 	Math::ivec2 want = flymonstersprite.GetFrameSize();
 	scale_x = 1 / static_cast<double>(want.x) * new_scale.x;
@@ -50,11 +49,6 @@ void Monster::Update(double dt) {
 	paralyze_count += dt;
 	if (paralyze_count < paralyze_time)
 		return;
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::M)) {
-		Math::vec2 direct = mediator->GetPlayer()->GetPosition() - position;
-		direct /= direct.GetLength();
-		mediator->AddMBullet(position, direct, 0);
-	}
 	// During the daytime, it will move to the player.
 	if (created_at_day && (mediator->GetMap()->GetTileStateInt(mediator->GetPlayer()->GetTilePosition()) != BASE_INSIDE) && (mediator->GetMap()->GetTileStateInt(mediator->GetPlayer()->GetTilePosition()) != TOWER)) {
 		
@@ -155,17 +149,8 @@ double Monster::GetDistance(Math::vec2 target) {
 	return sqrt((position.x - target.x) * (position.x - target.x) + (position.y - target.y) * (position.y - target.y));
 }
 // Reduce hp
-void Monster::Reduce_hp() {
-	hp -= mediator->GetPlayer()->GetDamage();
-}
-// Check attaced, check died
-void Monster::Attacked(Math::vec2 attack_position) {
-	if (GetDistance(attack_position) < size / 2) {
-		Reduce_hp();
-		if (hp <= 0) {
-			mediator->DeleteMonster(this);
-		}
-	}
+void Monster::Reduce_hp(int damage) {
+	hp -= damage;
 }
 // Destructor
 Monster::~Monster() {

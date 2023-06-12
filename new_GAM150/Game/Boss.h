@@ -28,6 +28,8 @@ public:
 	void ReduceHP(int damage) { hp -= damage; }
 	double GetDistance(Math::vec2 target) { return (position - target).GetLength(); }
 	double GetSize() { return size; }
+	Math::vec2 GetPosition() { return position; }
+	int GetHp() { return hp; }
 
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;

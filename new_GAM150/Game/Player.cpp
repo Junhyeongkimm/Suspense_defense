@@ -74,19 +74,6 @@ void Player::Update(double dt) {
 		return;
 	}
 
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_1)) {
-		mediator->AddBoss1(position);
-	}
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_2)) {
-		mediator->AddBoss2(position);
-	}
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_3)) {
-		mediator->AddBoss3(position);
-	}
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::NumPad_4)) {
-		mediator->AddBoss4(position);
-	}
-
 	// Increase attack_count and invincibility_count, dodge_count by dt 
 	invincibility_count += dt;
 	dodge_cool_count += dt;
@@ -94,7 +81,7 @@ void Player::Update(double dt) {
 	// Differenciate attack delay based on the attack mode
 	switch (attack_mode) {
 	case MELEE:
-		if (attack_count > attack_delay) {
+		if (attack_count > attack_delay * 0.7) {
 			is_attacking = false;
 		}
 		break;
@@ -109,12 +96,12 @@ void Player::Update(double dt) {
 		}
 		break;
 	case GATLING:
-		if (attack_count > attack_delay * 0.4) {
+		if (attack_count > attack_delay * 0.3) {
 			is_attacking = false;
 		}
 		break;
 	case HOMING:
-		if (attack_count > attack_delay * 1.5) {
+		if (attack_count > attack_delay * 1.4) {
 			is_attacking = false;
 		}
 		break;
@@ -167,26 +154,33 @@ void Player::Update(double dt) {
 	
 	// Change the attack mode by 0, 1, 2, 3, 4 key
 	if (!is_attacking) {
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_0)) {
-			attack_mode = MELEE;
+
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Tab)) {
+			if (attack_mode == MELEE)
+				attack_mode = RANGE;
+			else
+				attack_mode = MELEE;
 		}
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_1)) {
 			attack_mode = RANGE;
 		}
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_2)) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_2) && shotgun_unlocked) {
 			attack_mode = SHOTGUN;
 		}
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_3)) {
-			attack_mode = GATLING;
-		}
-		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_4)) {
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_3) && homing_unlocked) {
 			attack_mode = HOMING;
+		}
+		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::_4) && gatling_unlocked) {
+			attack_mode = GATLING;
 		}
 	}
 
 	// Player warp
-
-	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && (mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) && (warp_resource >= 1)) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::B) && 
+		(mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) &&
+		(mediator->GetMap()->GetTileState(position) != TILES::BASE_WALL) &&
+		(mediator->GetMap()->GetTileState(position) != TILES::TOWER)
+		&& (warp_resource >= 1)) {
 
 		if(is_warping==false){
 			
@@ -222,7 +216,7 @@ void Player::Update(double dt) {
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::RESOURCE) &&
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::WARP) &&
 			(mediator->GetMap()->GetTileState({ position.x + dodge_direction.x * size / 2, position.y + dodge_direction.y * size / 2 }) != TILES::TREASURE)) {
-			position += dodge_direction * 2 * speed * dt;
+			position += dodge_direction * 1.5 * speed * dt;
 			
 		}
 		if (dodging_count >= dodging_time) {
@@ -403,15 +397,13 @@ void Player::Attack() {
 		shoutgun_weaponsprite.Load("Assets/shoutgun.spt");
 		ShoutGunSetWantScale({ 80,80 });
 		shoutgun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
-		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
-		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
-		mediator->AddBullet(position, GetAttackPosition() - position + Math::vec2(random(-0.2, 0.2), random(-0.2, 0.2)));
+		mediator->AddShotgun(position, GetAttackPosition() - position);
 		break;
 	case GATLING:
 		gatlinggun_weaponsprite.Load("Assets/gatlinggun.spt");
 		GatlingGunSetWantScale({ 80, 80 });
 		gatlinggun_weaponsprite.PlayAnimation(static_cast<int>(Weapon_action::attack));
-		mediator->AddBullet(position, GetAttackPosition() - position);
+		mediator->AddGatling(position, GetAttackPosition() - position);
 		break;
 	case HOMING:
 		argun_weaponsprite.Load("Assets/argun.spt");
@@ -436,48 +428,124 @@ void Player::GoToBase() {
 }
 // Upgrade the player
 void Player::Attack_Upgrade() {
-	switch (attack_upgrade_count) {
-	case 0:
-
-		break;
-	case 1:
-
-		break;
-	case 2:
-
-		break;
-	case 3:
-
-		break;
-	case 4:
-
-		break;
-	default:
-
-		break;
+	if (map_resource >= GetAttackUpgradeCost()) {
+		switch (attack_upgrade_count) {
+		case 0:
+			attack_delay -= 0.1;
+			break;
+		case 1:
+			attack_delay -= 0.1;
+			++damage;
+			break;
+		case 2:
+			attack_delay -= 0.1;
+			break;
+		case 3:
+			attack_delay -= 0.1;
+			++damage;
+			break;
+		case 4:
+			attack_delay -= 0.1;
+			break;
+		case 5:
+			attack_delay -= 0.1;
+			++damage;
+			break;
+		}
+		UseMapResource(GetAttackUpgradeCost());
+		//map_resource -= GetAttackUpgradeCost();
+		++attack_upgrade_count;
 	}
-	std::cout << "Player upgrade!\n";
 }
 void Player::Utility_Upgrade() { 
-	switch (utility_upgrade_count) {
-	case 0:
+	if (map_resource >= GetUtilityUpgradeCost()) {
+		switch (utility_upgrade_count) {
+		case 0:
+			max_hp += 2;
+			hp = max_hp;
+			speed += 25;
+			break;
+		case 1:
+			max_hp += 3;
+			hp = max_hp;
+			speed += 25;
+			break;
+		case 2:
+			max_hp += 2;
+			hp = max_hp;
+			hp = max_hp;
+			speed += 25;
+			break;
+		case 3:
+			max_hp += 3;
+			hp = max_hp;
+			speed += 25;
+			break;
+		case 4:
+			max_hp += 2;
+			hp = max_hp;
+			speed += 25;
+			break;
+		case 5:
+			max_hp += 3;
+			hp = max_hp;
+			speed += 25;
+			break;
+		}
+		UseMapResource(GetUtilityUpgradeCost());
+		//map_resource -= GetUtilityUpgradeCost();
+		++utility_upgrade_count;
+	}
+	
+}
 
+int Player::GetAttackUpgradeCost() {
+	switch (attack_upgrade_count) {
+	case 0 :
+		return 5;
 		break;
 	case 1:
-
+		return 10;
 		break;
 	case 2:
-
+		return 15;
 		break;
 	case 3:
-
+		return 20;
 		break;
 	case 4:
-
+		return 25;
+		break;
+	case 5:
+		return 30;
 		break;
 	default:
-
+		return 0;
+	}
+	return 0;
+}
+int Player::GetUtilityUpgradeCost() {
+	switch (utility_upgrade_count) {
+	case 0:
+		return 5;
 		break;
-	} 
-	std::cout << "Utility upgrade!\n";
+	case 1:
+		return 10;
+		break;
+	case 2:
+		return 15;
+		break;
+	case 3:
+		return 20;
+		break;
+	case 4:
+		return 25;
+		break;
+	case 5:
+		return 30;
+		break;
+	default:
+		return 0;
+	}
+	return 0;
 }

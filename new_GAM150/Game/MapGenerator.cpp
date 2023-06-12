@@ -3,10 +3,11 @@
 #include "doodle/angle.hpp"
 #include "Mediator.h"
 #include "../Engine/Engine.h"
+#include "State.h"
 using namespace doodle;
 
 // Constructor of this class
-Map::Map(Mediator* mediator) : mediator(mediator) {
+Map::Map(Mediator* mediator) : mediator(mediator), target(nullptr) {
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			// Change all things to the Void
@@ -36,9 +37,13 @@ void Map::Update(double dt) {
 			// Date + 1 and make colony, resource, warp based on the date
 			is_day = true;
 			++date;
-			Make_Colony(date * 5);
-			Make_Resource(date * 10);
-			Make_Warp(date * 10);
+			// date = 1, boss_clear_count = 0
+			/*Make_Colony(date * 5);
+			Make_Resource(date * 20);
+			Make_Warp(date * 5);*/
+			Make_Colony((date + 4) * (boss_clear_count + 1));
+			Make_Resource((date + 4) * (boss_clear_count + 1) * 2);
+			Make_Warp((date + 4) * (boss_clear_count + 1));
 		}
 		time = 0;
 	}
@@ -49,6 +54,27 @@ void Map::Update(double dt) {
 				MAP[i][j]->Update(dt);
 		}
 	}
+
+	// Find the closest monster and set the target
+	target = nullptr;
+	for (Monster* monster : *mediator->GetMonster()) {
+		if (target == nullptr || monster->GetDistance(middle_point) < target->GetDistance(middle_point))
+			target = monster;
+	}
+	// Attack the target monster if it is not nullptr and in range
+	tower_attack_count += dt;
+	if (target != nullptr) {
+		if ((target->GetDistance(middle_point) < mediator->GetMap()->Get_Tile_Length() * 15) && tower_attack_count >= tower_attack_cool) {
+			Math::vec2 direction = target->GetPosition() - middle_point;
+			direction /= direction.GetLength();
+			mediator->AddBullet(middle_point, direction);
+
+			tower_attack_count = 0;
+		}
+	}
+	// If there is no monster, set the target to the nullptr
+	if (mediator->GetMonster()->size() == 0)
+		target = nullptr;
 }
 // Map making system
 void Map::MapMaking() {
@@ -61,8 +87,9 @@ void Map::MapMaking() {
 	Make_Base();
 	Make_Treasure();
 	Make_Colony(10);
-	Make_Resource(50);
-	Make_Warp(20);
+	Make_Resource(100);
+	Make_Warp(50);
+	Make_Boss_Zone();
 }
 // Initialize
 void Map::Initialize() {
@@ -149,6 +176,7 @@ void Map::Make_Colony(int number) {
 				if (MAP[i][j]->Get_State() == TILES::COLONY_CORE || 
 					MAP[i][j]->Get_State() == TILES::BASE_INSIDE ||
 					MAP[i][j]->Get_State() == TILES::TREASURE ||
+					MAP[i][j]->Get_State() == TILES::BOSS_ZONE ||
 					((mediator->GetPlayer()->GetTilePosition().x == i) && (mediator->GetPlayer()->GetTilePosition().y == j)))
 					not_make = true;
 			}
@@ -223,6 +251,74 @@ void Map::Make_Treasure() {
 	MAP[middle.x][middle.y + 30] = new Treasure(Math::vec2{ middle.x * tile_length, (middle.y + 30) * tile_length } );
 	MAP[middle.x][middle.y - 30] = new Treasure(Math::vec2{ middle.x * tile_length, (middle.y - 30) * tile_length } );
 }
+// Make boss zone
+void Map::Make_Boss_Zone() {
+	Math::ivec2 first = { 10, 10 };
+	Math::ivec2 second = { map_size - 10, 10 };
+	Math::ivec2 third = { 10, map_size - 10 };
+	Math::ivec2 fourth = { map_size - 10, map_size - 10 };
+
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[first.x + i][first.y + j]->GetPosition();
+				delete MAP[first.x + i][first.y + j];
+				MAP[first.x + i][first.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[first.x + i][first.y + j]->GetPosition();
+				delete MAP[first.x + i][first.y + j];
+				MAP[first.x + i][first.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss1(Math::vec2{ first.x * tile_length + tile_length / 2, first.y * tile_length + tile_length / 2 });
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[second.x + i][second.y + j]->GetPosition();
+				delete MAP[second.x + i][second.y + j];
+				MAP[second.x + i][second.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[second.x + i][second.y + j]->GetPosition();
+				delete MAP[second.x + i][second.y + j];
+				MAP[second.x + i][second.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss1(Math::vec2{ second.x * tile_length + tile_length / 2, second.y * tile_length + tile_length / 2 });
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[third.x + i][third.y + j]->GetPosition();
+				delete MAP[third.x + i][third.y + j];
+				MAP[third.x + i][third.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[third.x + i][third.y + j]->GetPosition();
+				delete MAP[third.x + i][third.y + j];
+				MAP[third.x + i][third.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss1(Math::vec2{ third.x * tile_length + tile_length / 2, third.y * tile_length + tile_length / 2 });
+	for (int i = -6; i <= 6; i++) {
+		for (int j = -6; j <= 6; j++) {
+			if (i >= -4 && i <= 4 && j >= -4 && j <= 4) {
+				Math::vec2 position = MAP[fourth.x + i][fourth.y + j]->GetPosition();
+				delete MAP[fourth.x + i][fourth.y + j];
+				MAP[fourth.x + i][fourth.y + j] = new Boss_Zone(position);
+			}
+			else {
+				Math::vec2 position = MAP[fourth.x + i][fourth.y + j]->GetPosition();
+				delete MAP[fourth.x + i][fourth.y + j];
+				MAP[fourth.x + i][fourth.y + j] = new Wall(position);
+			}
+		}
+	}
+	mediator->AddBoss1(Math::vec2{ fourth.x * tile_length + tile_length / 2, fourth.y * tile_length + tile_length / 2 });
+}
 // Show map
 void Map::Show_Map() {
 	push_settings();
@@ -260,33 +356,38 @@ void Map::Show_Map() {
 }
 // Show the direction of base
 void Map::Base_Show_Arrow() {
-	if (base_compass_unlocked == false)
-		return;
 	push_settings();
 
 	arrow_direction = { middle_point.x - mediator->GetPlayer()->GetPosition().x, middle_point.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
-	arrow_direction *= 30;
-	
+
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
-	draw_ellipse(0, 0, 60);
-	set_outline_width(15);
 
-	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
+	draw_ellipse(0, 0, 60);
+
+	double angle = atan(arrow_direction.y / arrow_direction.x);
+	if (arrow_direction.x < 0) {
+		angle += PI;
+	}
+	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
+		angle += 2 * PI;
+	}
+	apply_rotate(angle);
+	set_outline_width(15);
+	draw_line(0, 0, 30, 0);
 	
 	pop_settings();
 }
 // Draw arrow to the closest colony
 void Map::Colony_Show_Arrow() {
-	if (colony_copass_unlocked == false || remaining_colony == 0)
+	if (remaining_colony == 0)
 		return;
 
 	push_settings();
 
 	Math::vec2 current;
 	double distance = std::numeric_limits<double>::max();
-
 	for (int i = 0; i < map_size; i++) {
 		for (int j = 0; j < map_size; j++) {
 			if (MAP[i][j]->Get_State() == TILES::COLONY_CORE) {
@@ -300,14 +401,21 @@ void Map::Colony_Show_Arrow() {
 
 	arrow_direction = { current.x - mediator->GetPlayer()->GetPosition().x, current.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
-	arrow_direction *= 30;
 
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 	draw_ellipse(0, 0, 60);
-	set_outline_width(15);
 
-	draw_line(0, 0, arrow_direction.x, arrow_direction.y);
+	set_outline_width(15);
+	double angle = atan(arrow_direction.y / arrow_direction.x);
+	if (arrow_direction.x < 0) {
+		angle += PI;
+	}
+	else if (arrow_direction.x >= 0 && arrow_direction.y < 0) {
+		angle += 2 * PI;
+	}
+	apply_rotate(angle);
+	draw_line(0, 0, 30, 0);
 
 	pop_settings();
 }
@@ -374,28 +482,28 @@ void Map::CheckAttacked(int x, int y, Math::vec2 attack_point) {
 			break;
 
 		case TILES::TREASURE:
-			MAP[x][y]->Attacked(attack_point);
-			if (MAP[x][y]->GetHP() <= 0) {
-				delete MAP[x][y];
-				MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
+			//MAP[x][y]->Attacked(attack_point);
+			//if (MAP[x][y]->GetHP() <= 0) {
+			//	delete MAP[x][y];
+			//	MAP[x][y] = new Void(Math::vec2{ x * tile_length, y * tile_length });
 
-				switch (unlock_count) {
-				case 0:
-					mediator->GetMap()->UnlockBaseArraw();
-					break;
-				case 1:
-					//mediator->UnlockRangedAttack();
-					break;
-				case 2:
-					mediator->GetPlayer()->UnlockDodge();
-					break;
-				case 3:
-					mediator->GetMap()->UnlockColonyArraw();
-					break;
-				}
-				++unlock_count;
-			}
-			break;
+			//	switch (unlock_count) {
+			//	case 0:
+			//		mediator->GetMap()->UnlockBaseArraw();
+			//		break;
+			//	case 1:
+			//		//mediator->UnlockRangedAttack();
+			//		break;
+			//	case 2:
+			//		mediator->GetPlayer()->UnlockDodge();
+			//		break;
+			//	case 3:
+			//		mediator->GetMap()->UnlockColonyArraw();
+			//		break;
+			//	}
+			//	++unlock_count;
+			//}
+			//break;
 
 		default:
 
@@ -413,14 +521,14 @@ int Map::GetRepairCost() {
 	for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
 		for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
 			// Skip base inside
-			if (i > map_size / 2 - 4 || i < map_size / 2 + 4 || j>map_size / 2 - 4 || j < map_size / 2 + 4) {
+			if (i > map_size / 2 - 4 && i < map_size / 2 + 4 && j>map_size / 2 - 4 && j < map_size / 2 + 4) {
 				continue;
 			}
 			if (MAP[i][j]->Get_State() == TILES::VOID) {
 				++void_count;
 			}
 			else {
-				cost += MAP[i][j]->GetMaxHp() - MAP[i][j]->GetHP();
+				cost += (MAP[i][j]->GetMaxHp() - MAP[i][j]->GetHP());
 			}
 
 		}
@@ -432,16 +540,17 @@ int Map::GetRepairCost() {
 void Map::RepairBase() {
 	// Return if the hp is full
 	if (GetRepairCost() == 0) {
-		std::cout << "All walls have full hp!\n";
 		return;
 	}
 	// Check the player have enough resources
-	if (mediator->GetPlayer()->GetMonsterResource() >= GetRepairCost() / 2) {
+	if (mediator->GetPlayer()->GetMonsterResource() >= GetRepairCost()) {
+		// Use the resource from the player
+		mediator->GetPlayer()->UseMonsterResource(GetRepairCost());
 		// Check the base wall
 		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
 			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
 				// Skip base inside
-				if (i > map_size / 2 - 4 || i < map_size / 2 + 4 || j>map_size / 2 - 4 || j < map_size / 2 + 4) {
+				if (i > map_size / 2 - 4 && i < map_size / 2 + 4 && j > map_size / 2 - 4 && j < map_size / 2 + 4) {
 					continue;
 				}
 				// If the base wall has changed into void, change back to base wall
@@ -454,17 +563,85 @@ void Map::RepairBase() {
 				else {
 					MAP[i][j]->Repair();
 				}
-				// Use the resource from the player
-				mediator->GetPlayer()->UseMonsterResource(GetRepairCost() / 2);
-				std::cout << "Repaired!\n";
 			}
 		}
 	}
 	// If the player has not enough cost
 	else {
-		std::cout << "Not enough resource! You need " << GetRepairCost() / 2 << " resources!\n";
+
 	}
 }
+int Map::GetUpgradeCost() {
+	switch (base_upgrade_count) {
+	case 0:
+		return 10;
+		break;
+	case 1:
+		return 20;
+		break;
+	case 2:
+		return 30;
+		break;
+	default:
+		return 0;
+	}
+	return 0;
+}
 void Map::UpgradeBase() {
+	if (mediator->GetPlayer()->GetMapResource() >= GetUpgradeCost()) {
+		// Something
+		switch (base_upgrade_count) {
+		case 0:
+			mediator->GetPlayer()->UnlockShotgun();
+			break;
+		case 1:
+			mediator->GetPlayer()->UnlockHoming();
+			break;
+		case 2:
+			mediator->GetPlayer()->UnlockGatling();
+			break;
+		}
+		// Upgrade wall max hp
+		for (int i = map_size / 2 - 4; i <= map_size / 2 + 4; i++) {
+			for (int j = map_size / 2 - 4; j <= map_size / 2 + 4; j++) {
+				// Skip base inside
+				if (i > map_size / 2 - 4 && i < map_size / 2 + 4 && j > map_size / 2 - 4 && j < map_size / 2 + 4) {
+					continue;
+				}
+				// If the base wall has changed into void, change back to base wall
+				if (MAP[i][j]->Get_State() == TILES::VOID) {
+					Math::vec2 position = MAP[i][j]->GetPosition();
+					delete MAP[i][j];
+					MAP[i][j] = new Base_Wall(position);
+				}
+				// Upgrade the walls's hp
+				MAP[i][j]->Upgrade();
+			}
+		}
+		// Increase upgrade maximum of player
+		mediator->GetPlayer()->UseMonsterResource(GetUpgradeCost());
+		mediator->GetPlayer()->IncreaseUpgradeMax();
+		// Upgrade tower
+		tower_attack_cool -= 0.1;
+		// Update
+		++base_upgrade_count;
+	}
+	else {
 
+	}
+
+}
+void Map::IncreaseBossCount() { 
+	++boss_clear_count; 
+	++base_upgrade_max;
+
+	for (int i = 0; i < boss_clear_count * 10; i++) {
+		mediator->GetPlayer()->IncreaseMapResource();
+		mediator->GetPlayer()->IncreaseMonsterResource();
+	}
+
+	// Game clear
+	if (boss_clear_count == 4) {
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+	}
 }

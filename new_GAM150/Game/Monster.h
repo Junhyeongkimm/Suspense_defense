@@ -14,7 +14,7 @@ private:
 	Math::vec2 position;
 	Math::ivec2 tile_position;
 	Math::vec2 direction;
-	int hp = 1;
+	int hp = 2;
 	double size = 40;
 	double speed;
 	// The monster will not move when it is paralyzed (when it spawned)
@@ -37,10 +37,9 @@ public:
 	Math::vec2& GetPosition()  { return position; }
 	double GetDistance(Math::vec2 target);
 	double GetSize() { return size; }
-	// Check attacked
-	void Attacked(Math::vec2 attack_position);
 	// Reduec hp
-	void Reduce_hp();
+	void Reduce_hp(int damage);
+	int GetHp() { return hp; }
 	// Destructor
 	~Monster();
 	double scale_x;
