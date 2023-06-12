@@ -120,7 +120,7 @@ void PopupBox::Draw() {
 				draw_text("Upgrade base\nPlayer upgrade max " + std::to_string(mediator->GetPlayer()->GetMaximumUpgrade()) + "->" + std::to_string(mediator->GetPlayer()->GetMaximumUpgrade() + 2) +
 					"\nBase wall max hp + 5" +
 					"\nTower attack delay -0.1"
-					"\nYou need " + std::to_string(mediator->GetMap()->GetUpgradeCost()) + " map resources", position.x + 25, position.y + 100);
+					"\nYou need " + std::to_string(mediator->GetMap()->GetUpgradeCost()) + " monster resources", position.x + 25, position.y + 100);
 			}
 			else {
 				draw_text("You cannot upgrade more", position.x + 25, position.y + 100);
