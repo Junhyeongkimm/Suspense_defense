@@ -31,16 +31,32 @@ void MainMenu::Draw() {
 
 void MainMenu::Update([[maybe_unused]] double dt) {
     
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
+        menu = (menu + 2) % 3;
+    }
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
+        menu = (menu + 1) % 3;
+    }
+
 
     if (Key == KeyboardButtons::Enter) {
-        if (counter == 0)
-        {
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
+        if (counter == 0) {
+            switch (menu) {
+            case 0:
+                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
+                break;
+            case 1:
+                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::HowToPlay));
+                break;
+            case 2:
+                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
+                break;
+            }
+            menu = 0;
         }
     }
     if (Key == KeyboardButtons::Escape) {
-        if (counter == 0)
-        {
+        if (counter == 0) {
             Engine::GetGameStateManager().ClearNextGameState();
         }
     }

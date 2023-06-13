@@ -36,7 +36,6 @@ void Map::Update(double dt) {
 			nightMusic->setLoop(true);
 		}
 
-
 		if (is_day == true) {
 			is_day = false;
 			night->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - night->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - night->GetSize().y) - 100 })));

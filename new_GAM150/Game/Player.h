@@ -31,9 +31,9 @@ private:
 	bool is_attacking = false;
 	enum ATTACK_MODE { MELEE, RANGE, SHOTGUN, GATLING, HOMING };
 	int attack_mode = MELEE;
-	bool shotgun_unlocked = true;
-	bool gatling_unlocked = true;
-	bool homing_unlocked = true;
+	bool shotgun_unlocked = false;
+	bool gatling_unlocked = false;
+	bool homing_unlocked = false;
 
 	// Invincibility
 	const double invincibility_time = 0.3;
@@ -69,15 +69,10 @@ private:
 public:
 	//scale
 	void SetWantScale(Math::vec2 new_scale);
-	
 	void SwordSetWantScale(Math::vec2 new_scale);
-
 	void GunSetWantScale(Math::vec2 new_scale);
-
 	void ShoutGunSetWantScale(Math::vec2 new_scale);
-
 	void GatlingGunSetWantScale(Math::vec2 new_scale);
-
 	void ARGunSetWantScale(Math::vec2 new_scale);
 
 	// Constructor
