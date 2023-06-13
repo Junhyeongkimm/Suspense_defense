@@ -23,7 +23,7 @@ private:
 	// Tile length
 	static inline const double tile_length = map_length / map_size;
 	// For the day and night system.
-	double time = -30.0;
+	double time = 0.0;
 	const double duration = 60;
 	bool is_day = true;
 	int date = 0;
