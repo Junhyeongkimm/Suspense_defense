@@ -1,0 +1,24 @@
+#pragma once
+#include "../Engine/GameState.h"
+#include "../Engine/Texture.h"
+#include "SFML/Audio.hpp"
+// Need to be updated
+class Credit : public CS230::GameState {
+public:
+    Credit();
+    void Load() override;
+    void Update([[maybe_unused]] double dt) override;
+    void Unload() override;
+    void Draw() override;
+
+    std::string GetName() override { return "Credit"; }
+
+private:
+    int menu = 0;
+    double counter = 0;
+    CS230::Texture* texture;
+    CS230::Texture* playbutton;
+    CS230::Texture* howtoplaybutton;
+    CS230::Texture* creditbutton;
+    sf::Music* music;
+};

@@ -156,7 +156,9 @@
     <ClCompile Include="Game\AStar.cpp" />
     <ClCompile Include="Game\Boss.cpp" />
     <ClCompile Include="Game\Bullet.cpp" />
+    <ClCompile Include="Game\Credit.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\HowToPlay.cpp" />
     <ClCompile Include="Game\MainMenu.cpp" />
     <ClCompile Include="Game\MapGenerator.cpp" />
     <ClCompile Include="Game\MBullet.cpp" />
@@ -190,7 +192,9 @@
     <ClInclude Include="Game\AStar.h" />
     <ClInclude Include="Game\Boss.h" />
     <ClInclude Include="Game\Bullet.h" />
+    <ClInclude Include="Game\Credit.h" />
     <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Game\HowToPlay.h" />
     <ClInclude Include="Game\MainMenu.h" />
     <ClInclude Include="Game\MapGenerator.h" />
     <ClInclude Include="Game\MBullet.h" />
