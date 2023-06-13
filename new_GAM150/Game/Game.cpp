@@ -47,7 +47,6 @@ void Game::Load() {
 	mediator->SetMBullets(&monster_bullets);
 	// Create map by function MapMaking()
 	map->MapMaking();
-	
 }
 // Update Game
 void Game::Update([[maybe_unused]] double dt) {

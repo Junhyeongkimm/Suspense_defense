@@ -29,7 +29,7 @@ Monster::Monster(Math::vec2 position, Mediator* mediator, bool created_by_boss)
 		ColonySetWantScale({ 60,60 });
 		created_at_day = true;
 		colonymonstertype = true;
-		speed = 500;
+		speed = mediator->GetPlayer()->GetSpeed();
 	}
 	else {
 		flymonstersprite.Load("Assets/flymonster.spt");
@@ -37,7 +37,7 @@ Monster::Monster(Math::vec2 position, Mediator* mediator, bool created_by_boss)
 		FlySetWantScale({ 60,60 });
 		created_at_day = false;
 		flymonstertype = true;
-		speed = 200;
+		speed = mediator->GetPlayer()->GetSpeed() / 2;
 		
 	}
 		
