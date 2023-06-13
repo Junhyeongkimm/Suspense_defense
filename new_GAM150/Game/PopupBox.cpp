@@ -7,18 +7,19 @@
 #include <string>
 using namespace doodle;
 
-PopupBox::PopupBox(Mediator* mediator) : mediator(mediator) {
-
+PopupBox::PopupBox(Mediator* mediator) : mediator(mediator), table(table) {
+	table = Engine::GetTextureManager().Load("Assets/popupbox.png");
 }
 void PopupBox::Draw() {
 
 	push_settings();
 	set_font_size(25);
-	set_fill_color(HexColor(0x964B00ff));
+	//set_fill_color(HexColor(0x964B00ff));
 	push_settings();
-	no_outline();
-	draw_rectangle(position.x, position.y, width, height);
+	//no_outline();
+	//draw_rectangle(position.x, position.y, width, height);
 	pop_settings();
+	table->Draw(Math::TranslationMatrix{ Math::ivec2{static_cast<int>(position.x),static_cast<int>(position.y)}  });
 	set_fill_color(0);
 	switch (state) {
 	case 0:

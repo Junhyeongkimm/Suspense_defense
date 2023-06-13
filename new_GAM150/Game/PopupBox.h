@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Engine/Vec2.h"
-
+#include "../Engine/Texture.h"
 class Mediator;
 
 class PopupBox {
@@ -17,6 +17,7 @@ protected:
 
 	Mediator* mediator;
 public:
+	CS230::Texture* table;
 	PopupBox(Mediator* mediator);
 	void Draw();
 	void Update();
