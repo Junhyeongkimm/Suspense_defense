@@ -31,12 +31,12 @@ void Credit::Draw() {
 
 void Credit::Update([[maybe_unused]] double dt) {
 
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
+    /*if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
         menu = (menu + 2) % 3;
     }
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
         menu = (menu + 1) % 3;
-    }
+    }*/
 
 
     /*if (Key == KeyboardButtons::Enter) {

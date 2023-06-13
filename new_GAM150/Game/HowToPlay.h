@@ -14,7 +14,6 @@ public:
     std::string GetName() override { return "HowToPlay"; }
 
 private:
-    int menu = 0;
     double counter = 0;
     CS230::Texture* texture;
     CS230::Texture* playbutton;

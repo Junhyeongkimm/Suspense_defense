@@ -1,16 +1,16 @@
 #include "../Engine/Engine.h"
 #include "State.h"
-#include "HowToPlay.h"
+#include "GameOver.h"
 #include "doodle/drawing.hpp"
 #include "doodle/input.hpp"
 
 using namespace doodle;
 // Need to be updated
 
-HowToPlay::HowToPlay() :texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), music(nullptr)
+GameOver::GameOver() :texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), music(nullptr)
 { }
 
-void HowToPlay::Load() {
+void GameOver::Load() {
     music = Engine::GetMusicManager().Load("Assets/Music/MainMenu.wav");
     texture = Engine::GetTextureManager().Load("Assets/maintitle.png");
     playbutton = Engine::GetTextureManager().Load("Assets/playbutton.png");
@@ -20,7 +20,7 @@ void HowToPlay::Load() {
     music->setLoop(true);
 }
 
-void HowToPlay::Draw() {
+void GameOver::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
     texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
     playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 380 })));
@@ -29,7 +29,7 @@ void HowToPlay::Draw() {
 
 }
 
-void HowToPlay::Update([[maybe_unused]] double dt) {
+void GameOver::Update([[maybe_unused]] double dt) {
 
     /*if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
         menu = (menu + 2) % 3;
@@ -37,7 +37,6 @@ void HowToPlay::Update([[maybe_unused]] double dt) {
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
         menu = (menu + 1) % 3;
     }*/
-
 
     /*if (Key == KeyboardButtons::Enter) {
         if (counter == 0) {
@@ -63,6 +62,6 @@ void HowToPlay::Update([[maybe_unused]] double dt) {
 
 }
 
-void HowToPlay::Unload() {
+void GameOver::Unload() {
     music->stop();
 }

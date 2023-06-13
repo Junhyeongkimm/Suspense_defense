@@ -3,15 +3,15 @@
 #include "../Engine/Texture.h"
 #include "SFML/Audio.hpp"
 // Need to be updated
-class Credit : public CS230::GameState {
+class GameOver : public CS230::GameState {
 public:
-    Credit();
+    GameOver();
     void Load() override;
     void Update([[maybe_unused]] double dt) override;
     void Unload() override;
     void Draw() override;
 
-    std::string GetName() override { return "Credit"; }
+    std::string GetName() override { return "GameOver"; }
 
 private:
     double counter = 0;

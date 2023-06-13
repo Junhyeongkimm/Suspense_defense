@@ -33,6 +33,7 @@
     <ClCompile Include="Engine\MusicManager.cpp" />
     <ClCompile Include="Game\HowToPlay.cpp" />
     <ClCompile Include="Game\Credit.cpp" />
+    <ClCompile Include="Game\GameOver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Animation.h" />
@@ -70,5 +71,6 @@
     <ClInclude Include="Engine\MusicManager.h" />
     <ClInclude Include="Game\HowToPlay.h" />
     <ClInclude Include="Game\Credit.h" />
+    <ClInclude Include="Game\GameOver.h" />
   </ItemGroup>
 </Project>
