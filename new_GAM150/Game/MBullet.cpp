@@ -52,15 +52,15 @@ void Homing::Move(double dt) {
 	position += direction * speed * dt;
 }
 // Strong
-Strong::Strong(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : MBullet(start_position, direction, mediator, 600, 20, 2) {
+Strong::Strong(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : MBullet(start_position, direction, mediator, 400, 20, 2) {
 
 }
 // Fast
-Fast::Fast(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : MBullet(start_position, direction, mediator, 1200, 20, 1) {
+Fast::Fast(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : MBullet(start_position, direction, mediator, 800, 20, 1) {
 
 }
 // Big
-Big::Big(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : MBullet(start_position, direction, mediator, 600, 40, 1) {
+Big::Big(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator) : MBullet(start_position, direction, mediator, 300, 40, 3) {
 
 }
 // Heal

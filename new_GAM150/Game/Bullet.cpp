@@ -39,11 +39,6 @@ void Bullet::Move(double dt) {
 // Draw bullet
 void Bullet::Draw() {
 	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
-	/*push_settings();
-	set_fill_color(HexColor(0x888888ff));
-	draw_ellipse(position.x, position.y, size, size);
-	pop_settings();*/
-
 }
 
 HomingShot::HomingShot(Math::vec2 start_positon, Math::vec2 direction, Mediator* mediator, int damage) : 

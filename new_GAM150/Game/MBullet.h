@@ -18,7 +18,7 @@ protected:
 	Mediator* mediator;
 public:
 
-	MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, double speed = 600, double size = 20, int damage = 1);
+	MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, double speed = 400, double size = 20, int damage = 1);
 	virtual void Update(double dt);
 	virtual void Draw();
 	virtual void Move(double dt);

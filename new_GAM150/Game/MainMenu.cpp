@@ -7,7 +7,7 @@
 using namespace doodle;
 // Need to be updated
 
-MainMenu::MainMenu():texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), music(nullptr)
+MainMenu::MainMenu():texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), exitbutton(exitbutton), music(nullptr)
 { }
 
 void MainMenu::Load() {
@@ -16,6 +16,7 @@ void MainMenu::Load() {
     playbutton = Engine::GetTextureManager().Load("Assets/playbutton.png");
     howtoplaybutton = Engine::GetTextureManager().Load("Assets/howtoplaybutton.png");
     creditbutton = Engine::GetTextureManager().Load("Assets/creditbutton.png");
+    //exitbutton = Engine::GetTextureManager().Load("Assets/exitbutton.png"); // Exit button here
     music->play();
     music->setLoop(true);
 }
@@ -26,16 +27,16 @@ void MainMenu::Draw() {
     playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10}, {(Engine::GetWindow().GetSize().y - playbutton->GetSize().y) -380})));
     howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) -500})));
     creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - creditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - creditbutton->GetSize().y) -620 })));
- 
+    //exitbutton->Draw(); // Draw here
 }
 
 void MainMenu::Update([[maybe_unused]] double dt) {
     
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        menu = (menu + 2) % 3;
+        menu = (menu + 3) % 4;
     }
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
-        menu = (menu + 1) % 3;
+        menu = (menu + 1) % 4;
     }
 
 
@@ -51,13 +52,11 @@ void MainMenu::Update([[maybe_unused]] double dt) {
             case 2:
                 Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
                 break;
+            case 3:
+                Engine::GetGameStateManager().ClearNextGameState();
+                break;
             }
             menu = 0;
-        }
-    }
-    if (Key == KeyboardButtons::Escape) {
-        if (counter == 0) {
-            Engine::GetGameStateManager().ClearNextGameState();
         }
     }
 

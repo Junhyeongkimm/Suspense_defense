@@ -20,5 +20,6 @@ private:
     CS230::Texture* playbutton;
     CS230::Texture* howtoplaybutton;
     CS230::Texture* creditbutton;
+    CS230::Texture* exitbutton;
     sf::Music* music;
 };
