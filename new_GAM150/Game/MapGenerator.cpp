@@ -388,7 +388,15 @@ void Map::Base_Show_Arrow() {
 	/*draw_ellipse(0, 0, 60);*/
 	double scaleVal = 60 / 200;
 	bassarrowbackground->Draw(Math::TranslationMatrix{ Math::ivec2{-30,-30} } * Math::ScaleMatrix{0.3});
-	night->Draw(Math::TranslationMatrix{ Math::ivec2{-70,-30} } *Math::ScaleMatrix{ 0.3 });
+	if (is_day == true)
+	{
+		night->Draw(Math::TranslationMatrix{ Math::ivec2{-300,-30} } *Math::ScaleMatrix{ 0.3 });
+	}
+	else
+	{
+		day->Draw(Math::TranslationMatrix{ Math::ivec2{-300,-30} } *Math::ScaleMatrix{ 0.3 });
+	}
+	
 
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
