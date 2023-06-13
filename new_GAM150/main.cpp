@@ -16,6 +16,9 @@ Updated:    April 28, 2023
 #include "Game/Splash2.h"
 #include "Game/Game.h"
 #include "Game/MainMenu.h"
+#include "Game/HowToPlay.h"
+#include "Game/Credit.h"
+
 
 #include <Windows.h>
 
@@ -50,6 +53,10 @@ int main() {
         engine.GetGameStateManager().AddGameState(mainmenu);
         Game game;
         engine.GetGameStateManager().AddGameState(game);
+        HowToPlay howtoplay;
+        engine.GetGameStateManager().AddGameState(howtoplay);
+        Credit credit;
+        engine.GetGameStateManager().AddGameState(credit);
 
         make_window_not_resizable();
         while (engine.HasGameEnded() == false) {
