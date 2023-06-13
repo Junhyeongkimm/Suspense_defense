@@ -189,10 +189,10 @@ void Player::Update(double dt) {
 		(mediator->GetMap()->GetTileState(position) != TILES::BASE_INSIDE) &&
 		(mediator->GetMap()->GetTileState(position) != TILES::BASE_WALL) &&
 		(mediator->GetMap()->GetTileState(position) != TILES::TOWER)
-		&& (warp_resource >= 1)) {
+		&& (warp_resource >= 1) &&
+		!is_attacking) {
 
 		if(is_warping==false){
-			
 			warpsprite.Load("Assets/teleport.spt");
 			warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
 		}
@@ -220,22 +220,19 @@ void Player::Update(double dt) {
 		sword_weaponsprite.Update(dt);
 	}
 	else if (is_attacking == true && attack_mode == RANGE) {
-
 		gun_weaponsprite.Update(dt);
 	}
 	else if (is_attacking == true && attack_mode == SHOTGUN) {
-
 		shoutgun_weaponsprite.Update(dt);
 
 	}
 	else if (is_attacking == true && attack_mode == GATLING) {
-
 		gatlinggun_weaponsprite.Update(dt);
 	}
 	else if (is_attacking == true && attack_mode == HOMING) {
-
 		argun_weaponsprite.Update(dt);
 	}
+
 	// Player dodge
 	if (is_dodging) {
 		dodging_count += dt;
@@ -334,7 +331,8 @@ void Player::Update(double dt) {
 	mediator->CheckPlayerAttacked();
 	// HP recovery
 	recover_count += dt;
-	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE) {
+	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE ||
+		mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
 		Heal();
 	}
 	// Game over

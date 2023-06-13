@@ -14,7 +14,6 @@ public:
     std::string GetName() override { return "Credit"; }
 
 private:
-    int menu = 0;
     double counter = 0;
     int credit = 0;
     CS230::Texture* Credit1;
