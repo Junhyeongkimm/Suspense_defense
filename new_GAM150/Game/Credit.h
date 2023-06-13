@@ -12,10 +12,12 @@ public:
     void Draw() override;
 
     std::string GetName() override { return "Credit"; }
-
+   
 private:
-    double counter = 0;
     int credit = 0;
+    double creditTimer = 0.0;
+    int creditDelay = 1;
+    CS230::Texture* next;
     CS230::Texture* Credit1;
     CS230::Texture* Credit2;
     CS230::Texture* Credit3;
