@@ -31,6 +31,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\SoundManager.cpp" />
     <ClCompile Include="Engine\MusicManager.cpp" />
+    <ClCompile Include="Game\HowToPlay.cpp" />
+    <ClCompile Include="Game\Credit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Animation.h" />
@@ -66,5 +68,7 @@
     <ClInclude Include="Game\TileStates.h" />
     <ClInclude Include="Engine\SoundManager.h" />
     <ClInclude Include="Engine\MusicManager.h" />
+    <ClInclude Include="Game\HowToPlay.h" />
+    <ClInclude Include="Game\Credit.h" />
   </ItemGroup>
 </Project>
