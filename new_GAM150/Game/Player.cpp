@@ -193,7 +193,6 @@ void Player::Update(double dt) {
 		!is_attacking) {
 
 		if(is_warping==false){
-			
 			warpsprite.Load("Assets/teleport.spt");
 			warpsprite.PlayAnimation(static_cast<int>(warp_action::warping));
 		}
@@ -332,7 +331,8 @@ void Player::Update(double dt) {
 	mediator->CheckPlayerAttacked();
 	// HP recovery
 	recover_count += dt;
-	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE) {
+	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE ||
+		mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
 		Heal();
 	}
 	// Game over
