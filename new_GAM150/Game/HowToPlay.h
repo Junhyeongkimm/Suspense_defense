@@ -15,9 +15,6 @@ public:
 
 private:
     double counter = 0;
-    CS230::Texture* texture;
-    CS230::Texture* playbutton;
-    CS230::Texture* howtoplaybutton;
-    CS230::Texture* creditbutton;
+    CS230::Texture* howtoplay;
     sf::Music* music;
 };

@@ -14,6 +14,7 @@ void PopupBox::Draw() {
 
 	push_settings();
 	set_font_size(25);
+	set_fill_color(21);
 	draw_rectangle(position.x, position.y, width, height);
 
 	switch (state) {
