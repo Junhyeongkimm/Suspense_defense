@@ -43,8 +43,15 @@ public:
 	Math::vec2 GetPosition() { return position; }
 	int GetHp() { return hp; }
 
-	CS230::Sprite sprite;
-	CS230::Sprite bossbullet;
+	CS230::Sprite boss1sprite;
+	CS230::Sprite boss2sprite;
+	CS230::Sprite boss3sprite;
+	CS230::Sprite boss4sprite;
+	CS230::Sprite boss1bullet;
+	CS230::Sprite boss2bullet;
+	CS230::Sprite boss3bullet;
+	CS230::Sprite boss4bullet;
+
 
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;

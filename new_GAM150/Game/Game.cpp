@@ -20,7 +20,6 @@ Game::Game() :
 	player(nullptr), monsters(), bosses(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { 
 	sprite.Load("Assets/bullet.spt");
-	
 	SetWantScale({ 125,125 });
 	sprite.PlayAnimation(static_cast<int>(bullet::None));
 }
@@ -155,21 +154,26 @@ void Game::Draw() {
 	map->Colony_Show_Arrow();
 	pop_settings();
 
+	
+
+
 	// Draw texts
 	push_settings();
 	set_font_size(25);
 
-	draw_text("R1: " + std::to_string(player->GetMapResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 50);
-	draw_text("R2: " + std::to_string(player->GetMonsterResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 80);
-	draw_text("R3: " + std::to_string(player->GetWarpResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 110);
 
-	draw_text("C: " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
-	draw_text("M: " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);
+
+	draw_text("  : " + std::to_string(player->GetMapResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 50);
+	draw_text("  : " + std::to_string(player->GetMonsterResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 80);
+	draw_text("  : " + std::to_string(player->GetWarpResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 110);
+
+	draw_text(" : " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
+	draw_text(" : " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);
 
 	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
 
 	draw_text("Day " + std::to_string(map->GetDate() + 1), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
-	draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
+	//draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
 
 	pop_settings();
 }

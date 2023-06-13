@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Engine/Vec2.h"
+#include "../Engine/Sprite.h"
 
 class Mediator;
 
@@ -18,6 +19,7 @@ protected:
 	Mediator* mediator;
 public:
 
+	CS230::Sprite boss1bullet;
 	MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, double speed = 400, double size = 20, int damage = 1);
 	virtual void Update(double dt);
 	virtual void Draw();
@@ -26,6 +28,8 @@ public:
 	Math::vec2 GetPosition() { return position; }
 	double GetSize() { return size; }
 	double GetDistance(Math::vec2 target);
+	double scale_x;
+	double scale_y;
 };
 
 class Homing : public MBullet {

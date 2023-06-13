@@ -49,6 +49,11 @@ public:
 	CS230::Texture* colonyarrowbackground;
 	CS230::Texture* day;
 	CS230::Texture* night;
+	CS230::Texture* ui_resource;
+	CS230::Texture* ui_potalresource;
+	CS230::Texture* ui_monsterresource;
+	CS230::Texture* ui_colony;
+	CS230::Texture* ui_monster;
 
 	sf::Music* dayMusic;
 	sf::Music* nightMusic;

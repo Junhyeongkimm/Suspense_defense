@@ -20,6 +20,11 @@ Map::Map(Mediator* mediator) : mediator(mediator),bassarrowbackground(bassarrowb
 	colonyarrowbackground = Engine::GetTextureManager().Load("Assets/colonyarrowbackground.png");
 	day = Engine::GetTextureManager().Load("Assets/day.png");
 	night = Engine::GetTextureManager().Load("Assets/night.png");
+	ui_resource = Engine::GetTextureManager().Load("Assets/ui_resource.png");
+	ui_monsterresource = Engine::GetTextureManager().Load("Assets/ui_monsterresource.png");
+	ui_potalresource = Engine::GetTextureManager().Load("Assets/ui_potal.png");
+	ui_colony = Engine::GetTextureManager().Load("Assets/ui_colony.png");
+	ui_monster = Engine::GetTextureManager().Load("Assets/ui_monster.png");
 	dayMusic = Engine::GetMusicManager().Load("Assets/Music/Daytime.wav");
 	nightMusic = Engine::GetMusicManager().Load("Assets/Music/NightTime.wav");
 }
@@ -388,13 +393,20 @@ void Map::Base_Show_Arrow() {
 	/*draw_ellipse(0, 0, 60);*/
 	double scaleVal = 60 / 200;
 	bassarrowbackground->Draw(Math::TranslationMatrix{ Math::ivec2{-30,-30} } * Math::ScaleMatrix{0.3});
+	ui_resource->Draw(Math::TranslationMatrix{ Math::ivec2{480,10} } * Math::ScaleMatrix{ 0.6 });
+	ui_monsterresource->Draw(Math::TranslationMatrix{ Math::ivec2{480,-30} } * Math::ScaleMatrix{ 0.6 });
+	ui_potalresource->Draw(Math::TranslationMatrix{ Math::ivec2{480,-70} } * Math::ScaleMatrix{ 0.6 });
+
+	ui_colony->Draw(Math::TranslationMatrix{ Math::ivec2{470,-620} } * Math::ScaleMatrix{ 0.6 });
+	ui_monster->Draw(Math::TranslationMatrix{ Math::ivec2{475,-650} } * Math::ScaleMatrix{ 0.6 });
 	if (is_day == true)
 	{
-		night->Draw(Math::TranslationMatrix{ Math::ivec2{-300,-30} } *Math::ScaleMatrix{ 0.3 });
+		day->Draw(Math::TranslationMatrix{ Math::ivec2{-300,-30} } *Math::ScaleMatrix{ 0.3 });
 	}
 	else
 	{
-		day->Draw(Math::TranslationMatrix{ Math::ivec2{-300,-30} } *Math::ScaleMatrix{ 0.3 });
+		
+		night->Draw(Math::TranslationMatrix{ Math::ivec2{-300,-30} } *Math::ScaleMatrix{ 0.3 });
 	}
 	
 

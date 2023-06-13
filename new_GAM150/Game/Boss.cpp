@@ -81,20 +81,18 @@ void Boss::Draw() {
 // --------------------------------- BOSS 1 ---------------------------------
 Boss1::Boss1(Math::vec2 position, Mediator* mediator) :
 	Boss(max_hp = 15, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 3, 2, 1, mediator) {
-	sprite.Load("Assets/Boss1.spt");
-	bossbullet.Load("Assets/redbullet.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(Boss1_animations::basic));
+	boss1sprite.Load("Assets/Boss1.spt");
+	
+	scale_x = size / static_cast<double>(boss1sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(boss1sprite.GetFrameSize().y);
+	boss1sprite.PlayAnimation(static_cast<int>(Boss1_animations::basic));
 }
 void Boss1::Draw() {
 
-	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	boss1sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	push_settings();
-	draw_ellipse(position.x, position.y, size);
-	set_fill_color(HexColor(0x888888ff));
+	
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
-	set_fill_color(HexColor(0x444444ff));
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, ((double)hp / max_hp) * size, size / 10);
 
 	pop_settings();
@@ -122,15 +120,15 @@ void Boss1::Pattern3() {
 // --------------------------------- BOSS 2 ---------------------------------
 Boss2::Boss2(Math::vec2 position, Mediator* mediator) : 
 	Boss(max_hp = 20, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 5, 3, 2, mediator) {
-	sprite.Load("Assets/Boss2.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(Boss2_animations::basic));
+	boss2sprite.Load("Assets/Boss2.spt");
+	boss2bullet.Load("Assets/boss2bullet.spt");
+	scale_x = size / static_cast<double>(boss2sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(boss2sprite.GetFrameSize().y);
+	boss2sprite.PlayAnimation(static_cast<int>(Boss2_animations::basic));
 }
 void Boss2::Draw() {
-	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	boss2sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	push_settings();
-	draw_ellipse(position.x, position.y, size);
 	set_fill_color(HexColor(0x888888ff));
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
 	set_fill_color(HexColor(0x444444ff));
@@ -160,15 +158,15 @@ void Boss2::Pattern3() {
 // --------------------------------- BOSS 3 ---------------------------------
 Boss3::Boss3(Math::vec2 position, Mediator* mediator) : 
 	Boss(max_hp = 30, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 7, 4, 3, mediator) {
-	sprite.Load("Assets/Boss3.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(Boss3_animations::basic));
+	boss3sprite.Load("Assets/Boss3.spt");
+	boss3bullet.Load("Assets/boss3bullet.spt");
+	scale_x = size / static_cast<double>(boss3sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(boss3sprite.GetFrameSize().y);
+	boss3sprite.PlayAnimation(static_cast<int>(Boss3_animations::basic));
 }
 void Boss3::Draw() {
-	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	boss3sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	push_settings();
-	draw_ellipse(position.x, position.y, size);
 	set_fill_color(HexColor(0x888888ff));
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
 	set_fill_color(HexColor(0x444444ff));
@@ -198,15 +196,15 @@ void Boss3::Pattern3() {
 // --------------------------------- BOSS 4 ---------------------------------
 Boss4::Boss4(Math::vec2 position, Mediator* mediator) : 
 	Boss(max_hp = 50, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 10, 5, 5, mediator) {
-	sprite.Load("Assets/Boss4.spt");
-	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
-	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
-	sprite.PlayAnimation(static_cast<int>(Boss4_animations::basic));
+	boss4sprite.Load("Assets/Boss4.spt");
+	boss4bullet.Load("Assets/boss4bullet.spt");
+	scale_x = size / static_cast<double>(boss4sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(boss4sprite.GetFrameSize().y);
+	boss4sprite.PlayAnimation(static_cast<int>(Boss4_animations::basic));
 }
 void Boss4::Draw() {
-	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
+	boss4sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	push_settings();
-	draw_ellipse(position.x, position.y, size);
 	set_fill_color(HexColor(0x888888ff));
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
 	set_fill_color(HexColor(0x444444ff));

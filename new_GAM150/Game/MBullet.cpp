@@ -6,6 +6,10 @@
 // ------------------------------------------------ Basic Bullet ------------------------------------------------
 MBullet::MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, double speed, double size, int damage) 
 	: position(start_position), direction(direction), mediator(mediator), speed(speed), size(size), damage(damage) {
+	boss1bullet.Load("Assets/boss1bullet.spt");
+
+	scale_x = size / static_cast<double>(boss1bullet.GetFrameSize().x);
+	scale_y = size / static_cast<double>(boss1bullet.GetFrameSize().y);
 
 }
 
@@ -33,8 +37,7 @@ void MBullet::Move(double dt) {
 }
 void MBullet::Draw() {
 	push_settings();
-	set_fill_color(HexColor(0xBBBBBBff));
-	draw_ellipse(position.x, position.y, size);
+	boss1bullet.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	pop_settings();
 }
 double MBullet::GetDistance(Math::vec2 target) {
