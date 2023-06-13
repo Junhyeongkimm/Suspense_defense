@@ -337,7 +337,8 @@ void Player::Update(double dt) {
 	}
 	// Game over
 	if (hp <= 0) {
-		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+		Engine::GetGameStateManager().ClearNextGameState();
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
 	}
 	if (is_moving == false && is_dodging == false)
 	{

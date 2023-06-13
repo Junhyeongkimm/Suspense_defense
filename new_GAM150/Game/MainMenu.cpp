@@ -23,6 +23,7 @@ void MainMenu::Load() {
     selectcreditbutton = Engine::GetTextureManager().Load("Assets/selectcreditbutton.png");
     selectexitbutton = Engine::GetTextureManager().Load("Assets/selectexit.png");
 
+    loading = Engine::GetTextureManager().Load("Assets/loading.png");
     music->play();
     music->setLoop(true);
 }
@@ -32,32 +33,32 @@ void MainMenu::Draw() {
     texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
     if (menu == 0)
     {
-        selectplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectplaybutton->GetSize().y) - 340 })));
-        howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 480 })));
-        creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - creditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - creditbutton->GetSize().y) - 620 })));
-        exitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) -100 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 600 })));
+        selectplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectplaybutton->GetSize().y) - 300 })));
+        howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 420 })));
+        creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - creditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - creditbutton->GetSize().y) - 540 })));
+        exitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 660 })));
     }
     if (menu == 1)
     {
-        playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 340 })));
-        selecthowtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selecthowtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selecthowtoplaybutton->GetSize().y) - 480 })));
-        creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - creditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - creditbutton->GetSize().y) - 620 })));
-        exitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) -100 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 600 })));
+        playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 300 })));
+        selecthowtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selecthowtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selecthowtoplaybutton->GetSize().y) - 420 })));
+        creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - creditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - creditbutton->GetSize().y) - 540 })));
+        exitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) /10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 660 })));
     }
     if (menu == 2)
     {
-        playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 340 })));
-        howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 480 })));
-        selectcreditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 620 })));
-        exitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) -100 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 600 })));
+        playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 300 })));
+        howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 420 })));
+        selectcreditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 540 })));
+        exitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) /10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 660 })));
 
     }
     if (menu == 3)
     {
-        playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 340 })));
-        howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 480 })));
-        creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 620 })));
-        selectexitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x)-100 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 600 })));
+        playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 300 })));
+        howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 420 })));
+        creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 540 })));
+        selectexitbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - selectcreditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - selectcreditbutton->GetSize().y) - 660 })));
     }
 
    
@@ -68,7 +69,7 @@ void MainMenu::Draw() {
 void MainMenu::Update([[maybe_unused]] double dt) {
     
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        menu = (menu + 3) % 4;
+        menu = (menu - 1) % 4;
     }
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
         menu = (menu + 1) % 4;
@@ -76,10 +77,12 @@ void MainMenu::Update([[maybe_unused]] double dt) {
 
 
     if (Key == KeyboardButtons::Enter) {
-        if (counter == 0) {
+       
             switch (menu) {
             case 0:
+                
                 Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
+                loading->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - loading->GetSize()) / 2.0 }));
                 break;
             case 1:
                 Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::HowToPlay));
@@ -91,8 +94,6 @@ void MainMenu::Update([[maybe_unused]] double dt) {
                 Engine::GetGameStateManager().ClearNextGameState();
                 break;
             }
-            menu = 0;
-        }
     }
 
 

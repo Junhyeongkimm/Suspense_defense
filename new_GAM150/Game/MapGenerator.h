@@ -108,5 +108,6 @@ public:
 	int GetUpgradeCost();
 	void RepairBase();
 	void UpgradeBase();
+	void Unload() ;
 	
 };

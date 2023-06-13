@@ -18,6 +18,7 @@ Updated:    April 28, 2023
 #include "Game/MainMenu.h"
 #include "Game/HowToPlay.h"
 #include "Game/Credit.h"
+#include "Game/GameOver.h"
 
 
 #include <Windows.h>
@@ -57,6 +58,8 @@ int main() {
         engine.GetGameStateManager().AddGameState(howtoplay);
         Credit credit;
         engine.GetGameStateManager().AddGameState(credit);
+        GameOver gameover;
+        engine.GetGameStateManager().AddGameState(gameover);
 
         make_window_not_resizable();
         while (engine.HasGameEnded() == false) {

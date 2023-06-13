@@ -14,7 +14,7 @@ public:
     std::string GetName() override { return "MainMenu"; }
 
 private:
-    int menu = 0;
+    unsigned int menu = 0;
     double counter = 0;
     CS230::Texture* texture;
     CS230::Texture* playbutton;
@@ -25,5 +25,6 @@ private:
     CS230::Texture* selecthowtoplaybutton;
     CS230::Texture* selectcreditbutton;
     CS230::Texture* selectexitbutton;
+    CS230::Texture* loading;
     sf::Music* music;
 };

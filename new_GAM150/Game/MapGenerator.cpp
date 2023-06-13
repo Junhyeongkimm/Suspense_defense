@@ -664,3 +664,9 @@ void Map::IncreaseBossCount() {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 }
+
+void Map::Unload()
+{
+	nightMusic->stop();
+	dayMusic->stop();
+}

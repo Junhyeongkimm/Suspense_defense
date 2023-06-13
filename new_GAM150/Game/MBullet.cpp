@@ -40,7 +40,6 @@ void MBullet::Move(double dt) {
 }
 void MBullet::Draw() {
 	push_settings();
-	
 	boss1bullet.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	pop_settings();
 }

@@ -126,7 +126,8 @@ void Monster::Update(double dt) {
 	}
 
 	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
-		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+		Engine::GetGameStateManager().ClearNextGameState();
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
 	}
 	
 

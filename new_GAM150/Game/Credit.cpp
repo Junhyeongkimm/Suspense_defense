@@ -73,16 +73,16 @@ void Credit::Update(double dt) {
 
         // 크레딧 변경
         credit++;
-        if (credit >= 7) {
-            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-            credit = 0;
-        }
+            if (Key == KeyboardButtons::Escape) {
+                Engine::GetGameStateManager().ClearNextGameState();
+                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+            }
+            if (credit >= 7) {
+                credit = 0;
+            }
     }
 
-    // 사용자 입력 처리
-    if (Key == KeyboardButtons::Q) {
-        Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-    }
+
 }
 
 void Credit::Unload() {

@@ -29,9 +29,8 @@ void HowToPlay::Update([[maybe_unused]] double dt) {
 
     
     if (Key == KeyboardButtons::Escape) {
-        if (counter == 0) {
+            Engine::GetGameStateManager().ClearNextGameState();
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-        }
     }
 
 }
