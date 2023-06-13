@@ -82,6 +82,7 @@ void Boss::Draw() {
 Boss1::Boss1(Math::vec2 position, Mediator* mediator) :
 	Boss(max_hp = 15, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 3, 2, 1, mediator) {
 	sprite.Load("Assets/Boss1.spt");
+	bossbullet.Load("Assets/redbullet.spt");
 	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
 	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
 	sprite.PlayAnimation(static_cast<int>(Boss1_animations::basic));

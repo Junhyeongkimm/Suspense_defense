@@ -44,6 +44,7 @@ public:
 	int GetHp() { return hp; }
 
 	CS230::Sprite sprite;
+	CS230::Sprite bossbullet;
 
 	virtual void Pattern1() = 0;
 	virtual void Pattern2() = 0;

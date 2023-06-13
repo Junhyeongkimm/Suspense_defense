@@ -16,7 +16,6 @@ void Splash2::Draw() {
 }
 
 void Splash2::Update([[maybe_unused]] double dt) {
-    Engine::GetLogger().LogDebug(std::to_string(counter));
     if (counter >= 1) {
         Engine::GetGameStateManager().ClearNextGameState();
         Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));

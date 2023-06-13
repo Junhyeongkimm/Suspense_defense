@@ -7,58 +7,82 @@
 using namespace doodle;
 // Need to be updated
 
-Credit::Credit() :texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), music(nullptr)
+Credit::Credit() :Credit1(nullptr), Credit2(nullptr), Credit3(nullptr), Credit4(nullptr), Credit5(nullptr), Credit6(nullptr), Credit7(nullptr), music(nullptr)
 { }
 
 void Credit::Load() {
     music = Engine::GetMusicManager().Load("Assets/Music/MainMenu.wav");
-    texture = Engine::GetTextureManager().Load("Assets/maintitle.png");
-    playbutton = Engine::GetTextureManager().Load("Assets/playbutton.png");
-    howtoplaybutton = Engine::GetTextureManager().Load("Assets/howtoplaybutton.png");
-    creditbutton = Engine::GetTextureManager().Load("Assets/creditbutton.png");
+    Credit1 = Engine::GetTextureManager().Load("Assets/Credit/Credit1.png");
+    Credit2 = Engine::GetTextureManager().Load("Assets/Credit/Credit2.png");
+    Credit3 = Engine::GetTextureManager().Load("Assets/Credit/Credit3.png");
+    Credit4 = Engine::GetTextureManager().Load("Assets/Credit/Credit4.png");
+    Credit5 = Engine::GetTextureManager().Load("Assets/Credit/Credit5.png");
+    Credit6 = Engine::GetTextureManager().Load("Assets/Credit/Credit6.png");
+    Credit7 = Engine::GetTextureManager().Load("Assets/Credit/Credit7.png");
     music->play();
     music->setLoop(true);
 }
 
 void Credit::Draw() {
     Engine::GetWindow().Clear(UINT_MAX);
-    texture->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - texture->GetSize()) / 2.0 }));
-    playbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - playbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - playbutton->GetSize().y) - 380 })));
-    howtoplaybutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - howtoplaybutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - howtoplaybutton->GetSize().y) - 500 })));
-    creditbutton->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - creditbutton->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - creditbutton->GetSize().y) - 620 })));
-
+    switch (credit) {
+    case 1:
+        Credit1->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit1->GetSize()) / 2.0 }));
+        break;
+    case 2:
+        Credit2->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit2->GetSize()) / 2.0 }));
+        break;
+    case 3:
+        Credit3->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit3->GetSize()) / 2.0 }));
+        break;
+    case 4:
+        Credit4->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit4->GetSize()) / 2.0 }));
+        break;
+    case 5:
+        Credit5->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit5->GetSize()) / 2.0 }));
+        break;
+    case 6:
+        Credit6->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit6->GetSize()) / 2.0 }));
+        break;
+    case 7:
+        Credit7->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit7->GetSize()) / 2.0 }));
+        break;
+    }
 }
 
 void Credit::Update([[maybe_unused]] double dt) {
-
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        menu = (menu + 2) % 3;
+    
+    if (counter >= 0)
+    {
+        credit++;
+    }else if (counter >= 2)
+    {
+        credit++;
     }
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
-        menu = (menu + 1) % 3;
+    else if (counter >= 4)
+    {
+        credit++;
     }
+    else if (counter >= 6)
+    {
+        credit++;
+    }
+    else if (counter >= 8)
+    {
+        credit++;
+    }
+    else if (counter >= 10)
+    {
+        credit++;
+    }
+    else if (counter >= 12)
+    {
+        credit++;
+    }
+    counter += dt;
 
-
-    /*if (Key == KeyboardButtons::Enter) {
-        if (counter == 0) {
-            switch (menu) {
-            case 0:
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
-                break;
-            case 1:
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::HowToPlay));
-                break;
-            case 2:
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
-                break;
-            }
-            menu = 0;
-        }
-    }*/
-    if (Key == KeyboardButtons::Escape) {
-        if (counter == 0) {
+    if (Key == KeyboardButtons::Q){ 
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-        }
     }
 
 }

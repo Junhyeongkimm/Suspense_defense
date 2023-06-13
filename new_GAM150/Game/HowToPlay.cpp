@@ -12,8 +12,7 @@ HowToPlay::HowToPlay() :texture(texture), playbutton(playbutton), howtoplaybutto
 
 void HowToPlay::Load() {
     music = Engine::GetMusicManager().Load("Assets/Music/MainMenu.wav");
-    texture = Engine::GetTextureManager().Load("Assets/maintitle.png");
-    playbutton = Engine::GetTextureManager().Load("Assets/playbutton.png");
+
     howtoplaybutton = Engine::GetTextureManager().Load("Assets/howtoplaybutton.png");
     creditbutton = Engine::GetTextureManager().Load("Assets/creditbutton.png");
     music->play();

@@ -16,9 +16,13 @@ public:
 private:
     int menu = 0;
     double counter = 0;
-    CS230::Texture* texture;
-    CS230::Texture* playbutton;
-    CS230::Texture* howtoplaybutton;
-    CS230::Texture* creditbutton;
+    int credit = 0;
+    CS230::Texture* Credit1;
+    CS230::Texture* Credit2;
+    CS230::Texture* Credit3;
+    CS230::Texture* Credit4;
+    CS230::Texture* Credit5;
+    CS230::Texture* Credit6;
+    CS230::Texture* Credit7;
     sf::Music* music;
 };
