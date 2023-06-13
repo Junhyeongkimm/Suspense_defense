@@ -383,8 +383,9 @@ void Map::Base_Show_Arrow() {
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 
-	bassarrowbackground->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - bassarrowbackground->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - bassarrowbackground->GetSize().y) - 100 })));
-	draw_ellipse(0, 0, 60);
+	bassarrowbackground->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - bassarrowbackground->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - bassarrowbackground->GetSize().y) - 500 })));
+	Engine::GetLogger().LogDebug("2");
+	/*draw_ellipse(0, 0, 60);*/
 
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
