@@ -5,5 +5,8 @@ enum class States {
     Splash1,
     Splash2,
     MainMenu,
-    Game
+    Game,
+    HowToPlay,
+    Credit,
+    GameOver
 };
