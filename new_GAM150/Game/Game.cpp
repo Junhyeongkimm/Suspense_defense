@@ -20,7 +20,7 @@ Game::Game() :
 	player(nullptr), monsters(), bosses(), bullets(), monster_bullets(), map(nullptr), mediator(nullptr), target(nullptr)
 { 
 	sprite.Load("Assets/bullet.spt");
-
+	
 	SetWantScale({ 125,125 });
 	sprite.PlayAnimation(static_cast<int>(bullet::None));
 }
@@ -134,7 +134,7 @@ void Game::Draw() {
 	player->Draw();
 	// Draw monsters if they are near the screen.
 	for (Monster* monster : monsters) {
-		if( monster->GetPosition().x < player->GetPosition().x + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
+		if (monster->GetPosition().x < player->GetPosition().x + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
 			monster->GetPosition().x > player->GetPosition().x - map->Get_Tile_Length() * (map->GetOffset() + 2) &&
 			monster->GetPosition().y < player->GetPosition().y + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
 			monster->GetPosition().y > player->GetPosition().y - map->Get_Tile_Length() * (map->GetOffset() + 2)
@@ -150,6 +150,7 @@ void Game::Draw() {
 	for (int i = 0; i < monster_bullets.size(); i++) {
 		monster_bullets[i]->Draw();
 	}
+	
 	map->Base_Show_Arrow();
 	map->Colony_Show_Arrow();
 	pop_settings();

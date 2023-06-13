@@ -38,7 +38,7 @@ void Map::Update(double dt) {
 
 		if (is_day == true) {
 			is_day = false;
-			night->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - night->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - night->GetSize().y) - 100 })));
+			night->Draw(Math::TranslationMatrix{ Math::ivec2{-90,-30} } *Math::ScaleMatrix{ 0.3 });
 			// Make monsters
 			for (int i = 0; i < map_size; i++) {
 				for (int j = 0; j < map_size; j++) {
@@ -53,8 +53,7 @@ void Map::Update(double dt) {
 			is_day = true;
 			++date;
 
-			day->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - day->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - day->GetSize().y) - 100 })));
-			Make_Colony((date + 2) * (boss_clear_count / 2 + 1));
+			day->Draw(Math::TranslationMatrix{ Math::ivec2{-90,-30} } *Math::ScaleMatrix{ 0.3 });
 			Make_Resource((date + 2) * (boss_clear_count / 2 + 1) * 3);
 			Make_Warp((date + 2) * (boss_clear_count / 2 + 1));
 		}
@@ -376,22 +375,27 @@ void Map::Show_Map() {
 void Map::Base_Show_Arrow() {
 	push_settings();
 
+
+	
+		//day->Draw(Math::TranslationMatrix{ Math::ivec2{-60,-30} } *Math::ScaleMatrix{ 0.3 });
 	arrow_direction = { middle_point.x - mediator->GetPlayer()->GetPosition().x, middle_point.y - mediator->GetPlayer()->GetPosition().y };
 	arrow_direction /= arrow_direction.GetLength();
 
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(-150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
 
-	bassarrowbackground->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - bassarrowbackground->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - bassarrowbackground->GetSize().y) - 500 })));
-	Engine::GetLogger().LogDebug("2");
+	
 	/*draw_ellipse(0, 0, 60);*/
+	double scaleVal = 60 / 200;
+	bassarrowbackground->Draw(Math::TranslationMatrix{ Math::ivec2{-30,-30} } * Math::ScaleMatrix{0.3});
+	night->Draw(Math::TranslationMatrix{ Math::ivec2{-70,-30} } *Math::ScaleMatrix{ 0.3 });
 
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
 	}
 	apply_rotate(angle);
-	set_outline_width(15);
+	set_outline_width(12);
 	draw_line(0, 0, 30, 0);
 	
 	pop_settings();
@@ -421,10 +425,9 @@ void Map::Colony_Show_Arrow() {
 
 	apply_translate(mediator->GetPlayer()->GetPosition().x, mediator->GetPlayer()->GetPosition().y);
 	apply_translate(150, (double)Engine::GetWindow().GetSize().y / 2 - 50);
-	colonyarrowbackground->Draw(Math::TranslationMatrix(Math::ivec2({ (Engine::GetWindow().GetSize().x - colonyarrowbackground->GetSize().x) / 10 }, { (Engine::GetWindow().GetSize().y - colonyarrowbackground->GetSize().y) - 100 })));
-	draw_ellipse(0, 0, 60);
-
-	set_outline_width(15);
+	
+	colonyarrowbackground->Draw(Math::TranslationMatrix{ Math::ivec2{-30,-30} } *Math::ScaleMatrix{ 0.3 });
+	set_outline_width(12);
 	double angle = atan(arrow_direction.y / arrow_direction.x);
 	if (arrow_direction.x < 0) {
 		angle += PI;
