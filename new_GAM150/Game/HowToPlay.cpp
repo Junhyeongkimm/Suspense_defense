@@ -39,7 +39,7 @@ void HowToPlay::Update([[maybe_unused]] double dt) {
     }
 
 
-    if (Key == KeyboardButtons::Enter) {
+    /*if (Key == KeyboardButtons::Enter) {
         if (counter == 0) {
             switch (menu) {
             case 0:
@@ -54,10 +54,10 @@ void HowToPlay::Update([[maybe_unused]] double dt) {
             }
             menu = 0;
         }
-    }
+    }*/
     if (Key == KeyboardButtons::Escape) {
         if (counter == 0) {
-            Engine::GetGameStateManager().ClearNextGameState();
+            Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
         }
     }
 
