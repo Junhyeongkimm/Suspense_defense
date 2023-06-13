@@ -91,8 +91,9 @@ void Boss1::Draw() {
 
 	boss1sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	push_settings();
-	
+	set_fill_color(HexColor(0x888888ff));
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, size, size / 10);
+	set_fill_color(HexColor(0x444444ff));
 	draw_rectangle(position.x - size / 2, position.y - size / 2 - size / 10, ((double)hp / max_hp) * size, size / 10);
 
 	pop_settings();

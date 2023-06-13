@@ -262,13 +262,14 @@ void Treasure::Draw(bool is_day) {
 
 Boss_Zone::Boss_Zone(Math::vec2 position) : Tile(position) {
 	state = TILES::BOSS_ZONE;
+	sprite.Load("Assets/tile.spt");
+	scale_x = size / static_cast<double>(sprite.GetFrameSize().x);
+	scale_y = size / static_cast<double>(sprite.GetFrameSize().y);
+	sprite.PlayAnimation(static_cast<int>(boss_zone_animations::Basic));
 }
 void Boss_Zone::Update(double dt) {
 
 }
 void Boss_Zone::Draw(bool is_day) {
-	push_settings();
-	set_fill_color(0);
-	draw_rectangle(position.x, position.y, size);
-	pop_settings();
+	sprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 }

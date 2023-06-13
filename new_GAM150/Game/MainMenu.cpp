@@ -68,7 +68,7 @@ void MainMenu::Draw() {
 void MainMenu::Update([[maybe_unused]] double dt) {
     
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        menu = (menu + 1) % 4;
+        menu = (menu + 3) % 4;
     }
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
         menu = (menu + 1) % 4;

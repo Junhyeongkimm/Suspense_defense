@@ -14,9 +14,12 @@ void PopupBox::Draw() {
 
 	push_settings();
 	set_font_size(25);
-	set_fill_color(21);
+	set_fill_color(HexColor(0x964B00ff));
+	push_settings();
+	no_outline();
 	draw_rectangle(position.x, position.y, width, height);
-
+	pop_settings();
+	set_fill_color(0);
 	switch (state) {
 	case 0:
 		switch (menu) {
