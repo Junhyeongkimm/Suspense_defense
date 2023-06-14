@@ -24,9 +24,7 @@ Game::Game() :
 	sprite.PlayAnimation(static_cast<int>(bullet::None));
 }
 // Load. Create mediator and set map, monster, player, bullet.
-void Game::Load() {
-
-
+void Game::Load() { 
 	//camera.SetLimit({ {0,0}, { background.GetSize() - Engine::GetWindow().GetSize() } });
 	// Create mediator
 	mediator = new Mediator();
@@ -125,13 +123,11 @@ void Game::Unload() {
 	delete player;
 	delete map;
 	delete mediator;
-	delete music;
 	delete target;
 	monsters.clear();
 	bullets.clear();
 	monster_bullets.clear();
 	bosses.clear();
-	//music->stop();
 }
 // Draw things
 void Game::Draw() {

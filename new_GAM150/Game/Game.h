@@ -46,7 +46,6 @@ private:
     Map* map;
     Mediator* mediator;
 
-    sf::Music* music;
 
     //CS230::GameObjectManager gameobjectmanager;
     Math::vec2 middle_point{ (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2, (double)map->Get_Map_Length() / 2 + map->Get_Tile_Length()/2 };
