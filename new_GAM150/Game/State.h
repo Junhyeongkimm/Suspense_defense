@@ -8,6 +8,6 @@ enum class States {
     Game,
     HowToPlay,
     Credit,
-    Clear,
-    GameOver
+    GameOver,
+    Clear
 };

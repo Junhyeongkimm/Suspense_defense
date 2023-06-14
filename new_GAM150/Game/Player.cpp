@@ -69,6 +69,7 @@ Player::Player(Math::vec2 start_position, Mediator* mediator, Math::ivec2 tile_p
 
 
 }
+#include <iostream>
 // Update
 void Player::Update(double dt) {
 	is_moving = false;
@@ -337,7 +338,8 @@ void Player::Update(double dt) {
 	}
 	// Game over
 	if (hp <= 0) {
-		Engine::GetGameStateManager().ClearNextGameState();
+		//Engine::GetGameStateManager().ClearNextGameState();
+		std::cout << "Game Over called\n";
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
 	}
 	if (is_moving == false && is_dodging == false)

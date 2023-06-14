@@ -63,7 +63,7 @@ void Credit::Update(double dt) {
 
 		credit++;
 		if (credit >= 7) {
-			Engine::GetGameStateManager().ClearNextGameState();
+			//Engine::GetGameStateManager().ClearNextGameState();
 			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 		}
 	}

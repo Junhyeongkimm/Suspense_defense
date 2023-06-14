@@ -44,6 +44,9 @@ Monster::Monster(Math::vec2 position, Mediator* mediator, bool created_by_boss)
 }
 // Update
 void Monster::Update(double dt) {
+	// Tile position update
+	tile_position.x = (int)((position.x) / mediator->GetMap()->Get_Tile_Length());
+	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
 	// Paralyze. Monster will do nothing while the paralyze_count is smaller than the paralyze_time
 	//is_monstermoving = false;
 	paralyze_count += dt;
@@ -58,12 +61,10 @@ void Monster::Update(double dt) {
 		direction = target - position;
 		direction /= direction.GetLength();
 		position += direction * speed * dt;
-		if (direction.x <= 0)
-		{
+		if (direction.x <= 0) {
 			colonymonstersprite.PlayAnimation(static_cast<int>(colonymonster_action::left));
 		}
-		else
-		{
+		else {
 			colonymonstersprite.PlayAnimation(static_cast<int>(colonymonster_action::right));
 		}
 		colonymonstersprite.Update(dt);
@@ -97,20 +98,14 @@ void Monster::Update(double dt) {
 			position.y = next_position_y.y;
 		}
 		
-		if (direction.x <= 0)
-		{
+		if (direction.x <= 0) {
 			flymonstersprite.PlayAnimation(static_cast<int>(flymonster_action::flymove1));
 		}
-		else
-		{
+		else {
 			flymonstersprite.PlayAnimation(static_cast<int>(flymonster_action::flymove2));
 		}
-		flymonstersprite.Update(dt);
-
+		flymonstersprite.Update(dt); 
 	}
-	// Tile position update
-	tile_position.x = (int)((position.x) / mediator->GetMap()->Get_Tile_Length());
-	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
 
 	if (mediator->GetMap()->GetTileStateInt({ tile_position.x + 1, tile_position.y }) == TILES::BASE_WALL) {
 		mediator->BaseAttacked({ tile_position.x + 1, tile_position.y });
@@ -126,20 +121,16 @@ void Monster::Update(double dt) {
 	}
 
 	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
-		Engine::GetGameStateManager().ClearNextGameState();
+		//Engine::GetGameStateManager().ClearNextGameState();
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
-	}
-	
-
+	} 
 }
 // Draw
 void Monster::Draw() {
-	if (colonymonstertype == true)
-	{
+	if (colonymonstertype == true) {
 		colonymonstersprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
-	if(flymonstertype == true)
-	{ 
+	if(flymonstertype == true) { 
 		flymonstersprite.Draw((Math::TranslationMatrix(position) * Math::ScaleMatrix({ scale_x, scale_y })));
 	}
 	

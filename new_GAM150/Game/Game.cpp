@@ -114,7 +114,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		monster_bullets[i]->Update(dt);
 	}
 	// If the player press "Escape" key, change the scene to the mainmenu
-	if (Key == KeyboardButtons::Escape) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Escape)) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 	// ------------------------------- TOWER -------------------------------
@@ -131,7 +131,7 @@ void Game::Unload() {
 	bullets.clear();
 	monster_bullets.clear();
 	bosses.clear();
-	music->stop();
+	//music->stop();
 }
 // Draw things
 void Game::Draw() {
