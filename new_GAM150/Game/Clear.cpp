@@ -13,7 +13,7 @@ Clear::Clear() :clear(clear), music(nullptr)
 void Clear::Load() {
     music = Engine::GetMusicManager().Load("Assets/Music/MainMenu.wav");
 
-    clear = Engine::GetTextureManager().Load("Assets/howtoplay.png");
+    clear = Engine::GetTextureManager().Load("Assets/gameclear.png");
 
     music->play();
     music->setLoop(true);
