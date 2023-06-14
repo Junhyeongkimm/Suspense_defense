@@ -7,9 +7,9 @@
 MBullet::MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, double speed, double size, int damage) 
 	: position(start_position), direction(direction), mediator(mediator), speed(speed), size(size), damage(damage) {
 	boss1bullet.Load("Assets/boss1bullet.spt");
-	//boss2bullet.Load("Assets/boss1bullet.spt");
-	//boss3bullet.Load("Assets/boss1bullet.spt");
-	//boss4bullet.Load("Assets/boss1bullet.spt");
+	boss2bullet.Load("Assets/boss2bullet.spt");
+	boss3bullet.Load("Assets/boss3bullet.spt");
+	boss4bullet.Load("Assets/boss4bullet.spt");
 
 	scale_x = size / static_cast<double>(boss1bullet.GetFrameSize().x);
 	scale_y = size / static_cast<double>(boss1bullet.GetFrameSize().y);

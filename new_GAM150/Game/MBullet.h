@@ -20,9 +20,9 @@ protected:
 public:
 
 	CS230::Sprite boss1bullet;
-	//CS230::Sprite boss2bullet;
-	//CS230::Sprite boss3bullet;
-	//CS230::Sprite boss4bullet;
+	CS230::Sprite boss2bullet;
+	CS230::Sprite boss3bullet;
+	CS230::Sprite boss4bullet;
 
 	MBullet(Math::vec2 start_position, Math::vec2 direction, Mediator* mediator, double speed = 400, double size = 20, int damage = 1);
 	virtual void Update(double dt);
