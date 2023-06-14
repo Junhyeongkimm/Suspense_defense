@@ -6,7 +6,7 @@ class Mediator;
 
 class PopupBox {
 protected:
-	const Math::vec2 position{ 5000, 5000 };
+	const Math::vec2 position{ 4900, 5000 };
 	const double width = 400;
 	const double height = 200;
 

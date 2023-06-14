@@ -14,13 +14,10 @@ void PopupBox::Draw() {
 
 	push_settings();
 	set_font_size(25);
-	//set_fill_color(HexColor(0x964B00ff));
+	table->Draw(Math::TranslationMatrix{ Math::ivec2{static_cast<int>(position.x),static_cast<int>(position.y)} } *Math::ScaleMatrix{ (1.05, 1.05) });
+	//set_fill_color(0);
 	push_settings();
-	//no_outline();
-	//draw_rectangle(position.x, position.y, width, height);
-	pop_settings();
-	table->Draw(Math::TranslationMatrix{ Math::ivec2{static_cast<int>(position.x),static_cast<int>(position.y)}  });
-	set_fill_color(0);
+	apply_translate(20, 0);
 	switch (state) {
 	case 0:
 		switch (menu) {
@@ -157,7 +154,7 @@ void PopupBox::Draw() {
 		}
 		break;
 	}
-
+	pop_settings();
 	pop_settings();
 }
 
