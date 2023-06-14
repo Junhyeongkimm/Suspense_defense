@@ -5,15 +5,6 @@
 #include "doodle/input.hpp"
 
 using namespace doodle;
-// Need to be updated
-
-#include "../Engine/Engine.h"
-#include "State.h"
-#include "Credit.h"
-#include "doodle/drawing.hpp"
-#include "doodle/input.hpp"
-
-using namespace doodle;
 
 Credit::Credit() : Credit1(nullptr), Credit2(nullptr), Credit3(nullptr), Credit4(nullptr), Credit5(nullptr), Credit6(nullptr), Credit7(nullptr), music(nullptr), creditTimer(0.0), creditDelay(1.0)
 { }
@@ -65,24 +56,17 @@ void Credit::Draw() {
 }
 
 void Credit::Update(double dt) {
-    // 타이머 업데이트
-    creditTimer += dt;
+	creditTimer += dt;
 
-    if (creditTimer >= creditDelay) {
-        creditTimer = 0.0;  // 타이머 초기화
+	if (creditTimer >= creditDelay) {
+		creditTimer = 0.0;
 
-        // 크레딧 변경
-        credit++;
-            if (Key == KeyboardButtons::Escape) {
-                Engine::GetGameStateManager().ClearNextGameState();
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
-            }
-            if (credit >= 7) {
-                credit = 0;
-            }
-    }
-
-
+		credit++;
+		if (credit >= 7) {
+			Engine::GetGameStateManager().ClearNextGameState();
+			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+		}
+	}
 }
 
 void Credit::Unload() {

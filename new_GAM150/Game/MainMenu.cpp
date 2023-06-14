@@ -67,36 +67,33 @@ void MainMenu::Draw() {
 }
 
 void MainMenu::Update([[maybe_unused]] double dt) {
-    
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
-        menu = (menu - 1) % 4;
-    }
-    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
-        menu = (menu + 1) % 4;
-    }
+
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::W)) {
+		menu = (menu - 1) % 4;
+	}
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::S)) {
+		menu = (menu + 1) % 4;
+	}
 
 
-    if (Key == KeyboardButtons::Enter) {
-       
-            switch (menu) {
-            case 0:
-                
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
-                loading->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - loading->GetSize()) / 2.0 }));
-                break;
-            case 1:
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::HowToPlay));
-                break;
-            case 2:
-                Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
-                break;
-            case 3:
-                Engine::GetGameStateManager().ClearNextGameState();
-                break;
-            }
-    }
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Enter)) {
+		switch (menu) {
+		case 0:
 
-
+			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
+			loading->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - loading->GetSize()) / 2.0 }));
+			break;
+		case 1:
+			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::HowToPlay));
+			break;
+		case 2:
+			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Credit));
+			break;
+		case 3:
+			Engine::GetGameStateManager().ClearNextGameState();
+			break;
+		}
+	}
 }
 
 void MainMenu::Unload() {
