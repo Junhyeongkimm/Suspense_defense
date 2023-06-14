@@ -84,10 +84,14 @@ void Game::Update([[maybe_unused]] double dt) {
 					mediator->DeleteBoss(bosses[j]);
 
 					std::vector<Math::vec2>positions;
-					for (int k = 0; k < bosses.size(); k++) {
+					while (bosses.size()) {
+						positions.push_back(bosses.front()->GetPosition());
+						mediator->DeleteBoss(bosses.front());
+					}
+					/*for (int k = 0; k < bosses.size(); k++) {
 						positions.push_back(bosses[k]->GetPosition());
 						mediator->DeleteBoss(bosses[k]);
-					}
+					}*/
 					for (int k = 0; k < positions.size(); k++) {
 						switch (mediator->GetMap()->GetBossClearCount()) {
 						case 1:
