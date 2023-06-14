@@ -14,7 +14,7 @@ namespace CS230 {
             O, P, Q, R, S, T, U, V, W, X, Y, Z,
             Space, Enter, Left, Up, Right, Down,
             Tilde, Tab, NumPad_1, NumPad_2, NumPad_3, NumPad_4, 
-            _0, _1, _2, _3, _4, Unknown
+            _0, _1, _2, _3, _4, Escape, Unknown
         };
 
         Input();

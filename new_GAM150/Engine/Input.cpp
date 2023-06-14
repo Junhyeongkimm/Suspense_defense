@@ -103,6 +103,8 @@ CS230::Input::Keys convert_doodle_to_cs230(doodle::KeyboardButtons doodle_key) {
         return CS230::Input::Keys::_3;
     case doodle::KeyboardButtons::_4:
         return CS230::Input::Keys::_4;
+    case doodle::KeyboardButtons::Escape:
+        return CS230::Input::Keys::Escape;
     }
 
     return CS230::Input::Keys::Unknown;

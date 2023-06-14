@@ -79,7 +79,6 @@ void MainMenu::Update([[maybe_unused]] double dt) {
 	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Enter)) {
 		switch (menu) {
 		case 0:
-
 			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Game));
 			loading->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - loading->GetSize()) / 2.0 }));
 			break;
