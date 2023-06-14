@@ -651,6 +651,7 @@ void Map::UpgradeBase() {
 	}
 
 }
+#include <iostream>
 void Map::IncreaseBossCount() { 
 	++boss_clear_count; 
 	++base_upgrade_max;
@@ -659,10 +660,10 @@ void Map::IncreaseBossCount() {
 		mediator->GetPlayer()->IncreaseMapResource();
 		mediator->GetPlayer()->IncreaseMonsterResource();
 	}
-
 	// Game clear
 	if (boss_clear_count == 4) {
-		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
+		std::cout << "Boss clear called\n";
+		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::Clear));
 	}
 }
 

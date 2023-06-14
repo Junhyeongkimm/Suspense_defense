@@ -4,8 +4,7 @@
 #include "doodle/drawing.hpp"
 #include "doodle/input.hpp"
 
-using namespace doodle;
-// Need to be updated
+using namespace doodle; 
 
 HowToPlay::HowToPlay() :howtoplay(howtoplay), music(nullptr)
 { }
@@ -28,8 +27,8 @@ void HowToPlay::Draw() {
 void HowToPlay::Update([[maybe_unused]] double dt) {
 
     
-    if (Key == KeyboardButtons::Escape) {
-            Engine::GetGameStateManager().ClearNextGameState();
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Escape)) {
+            //Engine::GetGameStateManager().ClearNextGameState();
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
     }
 

@@ -196,7 +196,7 @@ void Boss3::Pattern3() {
 }
 // --------------------------------- BOSS 4 ---------------------------------
 Boss4::Boss4(Math::vec2 position, Mediator* mediator) : 
-	Boss(max_hp = 50, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 10, 5, 5, mediator) {
+	Boss(max_hp = 50, speed = 300, position, size = 100, pattern1_cool = 0.5, pattern2_cool = 0.5, pattern3_cool = 0.5, 1, 5, 3, mediator) {
 	boss4sprite.Load("Assets/Boss4.spt");
 	boss4bullet.Load("Assets/boss4bullet.spt");
 	scale_x = size / static_cast<double>(boss4sprite.GetFrameSize().x);

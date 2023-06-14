@@ -84,10 +84,14 @@ void Game::Update([[maybe_unused]] double dt) {
 					mediator->DeleteBoss(bosses[j]);
 
 					std::vector<Math::vec2>positions;
-					for (int k = 0; k < bosses.size(); k++) {
+					while (bosses.size()) {
+						positions.push_back(bosses.front()->GetPosition());
+						mediator->DeleteBoss(bosses.front());
+					}
+					/*for (int k = 0; k < bosses.size(); k++) {
 						positions.push_back(bosses[k]->GetPosition());
 						mediator->DeleteBoss(bosses[k]);
-					}
+					}*/
 					for (int k = 0; k < positions.size(); k++) {
 						switch (mediator->GetMap()->GetBossClearCount()) {
 						case 1:
@@ -110,7 +114,7 @@ void Game::Update([[maybe_unused]] double dt) {
 		monster_bullets[i]->Update(dt);
 	}
 	// If the player press "Escape" key, change the scene to the mainmenu
-	if (Key == KeyboardButtons::Escape) {
+	if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Escape)) {
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 	}
 	// ------------------------------- TOWER -------------------------------
@@ -118,7 +122,16 @@ void Game::Update([[maybe_unused]] double dt) {
 }
 // Unload game
 void Game::Unload() {
-
+	delete player;
+	delete map;
+	delete mediator;
+	delete music;
+	delete target;
+	monsters.clear();
+	bullets.clear();
+	monster_bullets.clear();
+	bosses.clear();
+	//music->stop();
 }
 // Draw things
 void Game::Draw() {
@@ -136,8 +149,7 @@ void Game::Draw() {
 		if (monster->GetPosition().x < player->GetPosition().x + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
 			monster->GetPosition().x > player->GetPosition().x - map->Get_Tile_Length() * (map->GetOffset() + 2) &&
 			monster->GetPosition().y < player->GetPosition().y + map->Get_Tile_Length() * (map->GetOffset() + 2) &&
-			monster->GetPosition().y > player->GetPosition().y - map->Get_Tile_Length() * (map->GetOffset() + 2)
-			)
+			monster->GetPosition().y > player->GetPosition().y - map->Get_Tile_Length() * (map->GetOffset() + 2) )
 			monster->Draw();
 	}
 	for (int i = 0; i < bosses.size(); i++) {
@@ -149,31 +161,21 @@ void Game::Draw() {
 	for (int i = 0; i < monster_bullets.size(); i++) {
 		monster_bullets[i]->Draw();
 	}
-	
 	map->Base_Show_Arrow();
 	map->Colony_Show_Arrow();
 	pop_settings();
-
-	
-
 
 	// Draw texts
 	push_settings();
 	set_font_size(25);
 
-
-
 	draw_text("  : " + std::to_string(player->GetMapResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 50);
 	draw_text("  : " + std::to_string(player->GetMonsterResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 80);
-	draw_text("  : " + std::to_string(player->GetWarpResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 110);
-
+	draw_text("  : " + std::to_string(player->GetWarpResource()), Engine::GetWindow().GetSize().x - 150, Engine::GetWindow().GetSize().y - 110); 
 	draw_text(" : " + std::to_string(map->GetColony()), Engine::GetWindow().GetSize().x - 150, 80);
-	draw_text(" : " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50);
-
-	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30);
-
+	draw_text(" : " + std::to_string(monsters.size()), Engine::GetWindow().GetSize().x - 150, 50); 
+	draw_text("Hp: " + std::to_string(player->GetHP()) + " / " + std::to_string(player->GetMaxHP()), 10, 30); 
 	draw_text("Day " + std::to_string(map->GetDate() + 1), (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 50);
-	//draw_text("Time: " + std::to_string((int)(map->GetTime() / map->GetDuration() * 100)) + "%", (double)Engine::GetWindow().GetSize().x / 2 - 100, (double)Engine::GetWindow().GetSize().y - 80);
-
+	
 	pop_settings();
 }

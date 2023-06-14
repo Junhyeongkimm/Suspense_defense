@@ -11,11 +11,7 @@ GameOver::GameOver() :texture(texture)
 { }
 
 void GameOver::Load() {
-
     texture = Engine::GetTextureManager().Load("Assets/Gameover.png");
-
-
-
 }
 
 void GameOver::Draw() {
@@ -28,8 +24,8 @@ void GameOver::Draw() {
 void GameOver::Update([[maybe_unused]] double dt) {
 
 
-    if (Key == KeyboardButtons::Escape) {
-            Engine::GetGameStateManager().ClearNextGameState();
+    if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Escape)) {
+            //Engine::GetGameStateManager().ClearNextGameState();
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
    
     }

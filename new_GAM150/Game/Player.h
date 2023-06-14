@@ -36,7 +36,7 @@ private:
 	bool homing_unlocked = false;
 
 	// Invincibility
-	const double invincibility_time = 0.3;
+	const double invincibility_time = 0.7;
 	double invincibility_count = 0;
 	// Resources
 	int map_resource = 0;
