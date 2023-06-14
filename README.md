@@ -27,4 +27,5 @@
 •	Change to Gun type: Number 1~4
 •	Left Click:	Attack, resource collection
 •	Right Click: Dash
+
 Check out how to play in the game for more information.
