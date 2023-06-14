@@ -226,11 +226,11 @@ void Player::Update(double dt) {
 		shoutgun_weaponsprite.Update(dt);
 
 	}
-	else if (is_attacking == true && attack_mode == GATLING) {
-		gatlinggun_weaponsprite.Update(dt);
-	}
 	else if (is_attacking == true && attack_mode == HOMING) {
 		argun_weaponsprite.Update(dt);
+	}
+	else if (is_attacking == true && attack_mode == GATLING) {
+		gatlinggun_weaponsprite.Update(dt);
 	}
 
 	// Player dodge
