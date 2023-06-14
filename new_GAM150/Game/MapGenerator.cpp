@@ -59,6 +59,7 @@ void Map::Update(double dt) {
 			++date;
 
 			day->Draw(Math::TranslationMatrix{ Math::ivec2{-90,-30} } *Math::ScaleMatrix{ 0.3 });
+			Make_Colony((date + 2) * (boss_clear_count / 2 + 1));
 			Make_Resource((date + 2) * (boss_clear_count / 2 + 1) * 3);
 			Make_Warp((date + 2) * (boss_clear_count / 2 + 1));
 		}

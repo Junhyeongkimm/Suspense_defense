@@ -15,7 +15,6 @@ void PopupBox::Draw() {
 	push_settings();
 	set_font_size(25);
 	table->Draw(Math::TranslationMatrix{ Math::ivec2{static_cast<int>(position.x),static_cast<int>(position.y)} } *Math::ScaleMatrix{ (1.05, 1.05) });
-	//set_fill_color(0);
 	push_settings();
 	apply_translate(20, 0);
 	switch (state) {
