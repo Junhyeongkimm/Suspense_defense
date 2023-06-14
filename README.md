@@ -10,16 +10,21 @@
 
 - Compilation Instructions
 
-Run the solution and compile it because you don't need any other image assets or sound files
+  You can compile it after checking that all the code and the asset are downloaded properly.
+
+- What is Suspense Defense
+
+  Suspense Defense is a log defense game that combines loglike and defense to prevent enemies charging to the main base, explore, and defeat the boss. Players need to explore the map to gather resources to build strength and save the world by defeating the boss. But be careful If player only focus on exploring, the main base will be in danger in the meantime!
 
 -  How to play?
 
-    Use WASD to move and attack with left click. The green tile represents the main camp, and the red tile represents the monster colony.
-
-    Yellow tiles are resources and can be obtained by clicking. You can also get another resource by attacking and killing monsters.(This will be used in the reinforcement system to be added later)
-
-    Blue tiles can return to main base in case of attack.
-
-    As time goes by, it becomes night, when the user's view narrows and the color of the tile changes.(At this point we're going to add a monster attacking the main base later.)
-
-    Attack the walls of the Monster Colony to remove them and venture the map by catching the Summoned Monster!
+•	Move Left: A
+•	Move Right: D
+•	Move Over: W
+•	Move Down: S
+•	Teleport to Base: B
+•	Change to close attack: TAB
+•	Change to Gun type: Number 1~4
+•	Left Click:	Attack, resource collection
+•	Right Click: Dash
+Check out how to play in the game for more information.
