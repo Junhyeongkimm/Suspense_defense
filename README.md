@@ -19,13 +19,21 @@
 -  How to play?
 
 •	Move Left: A
+
 •	Move Right: D
+
 •	Move Over: W
+
 •	Move Down: S
+
 •	Teleport to Base: B
+
 •	Change to close attack: TAB
+
 •	Change to Gun type: Number 1~4
+
 •	Left Click:	Attack, resource collection
+
 •	Right Click: Dash
 
 Check out how to play in the game for more information.
