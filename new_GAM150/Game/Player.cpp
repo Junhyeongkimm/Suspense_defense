@@ -69,9 +69,15 @@ Player::Player(Math::vec2 start_position, Mediator* mediator, Math::ivec2 tile_p
 
 
 }
-#include <iostream>
 // Update
-void Player::Update(double dt) {
+void Player::Update(double dt) { 
+	// HP recovery
+	recover_count += dt;
+	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE ||
+		mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
+		Heal();
+	}
+
 	is_moving = false;
 	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
 		if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::E) && !box->is_activated()) {
@@ -330,15 +336,8 @@ void Player::Update(double dt) {
 	tile_position.y = (int)((position.y) / mediator->GetMap()->Get_Tile_Length());
 	// Check player attacked
 	mediator->CheckPlayerAttacked();
-	// HP recovery
-	recover_count += dt;
-	if (mediator->GetMap()->GetTileStateInt(tile_position) == TILES::BASE_INSIDE ||
-		mediator->GetMap()->GetTileStateInt(tile_position) == TILES::TOWER) {
-		Heal();
-	}
 	// Game over
 	if (hp <= 0) {
-		std::cout << "Game Over called\n";
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
 	}
 	if (is_moving == false && is_dodging == false)

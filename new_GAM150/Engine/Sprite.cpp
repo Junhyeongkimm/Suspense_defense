@@ -99,7 +99,6 @@ void CS230::Sprite::Load(const std::filesystem::path& sprite_file) {
 Math::ivec2 CS230::Sprite::GetHotSpot(int index)
 {
     if (index < 0 || index >= hotspots.size()) {
-        //std::cout << "Error: Invalid hotspot index\n";
         return Math::ivec2(0, 0);
     }
     return hotspots[index];
