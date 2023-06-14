@@ -392,7 +392,7 @@ void Map::Base_Show_Arrow() {
 
 	
 	/*draw_ellipse(0, 0, 60);*/
-	double scaleVal = 60 / 200;
+	double scaleVal = 60.0 / 200;
 	bassarrowbackground->Draw(Math::TranslationMatrix{ Math::ivec2{-30,-30} } * Math::ScaleMatrix{0.3});
 	ui_resource->Draw(Math::TranslationMatrix{ Math::ivec2{480,10} } * Math::ScaleMatrix{ 0.6 });
 	ui_monsterresource->Draw(Math::TranslationMatrix{ Math::ivec2{480,-30} } * Math::ScaleMatrix{ 0.6 });

@@ -7,7 +7,9 @@
 using namespace doodle;
 // Need to be updated
 
-MainMenu::MainMenu():texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), music(nullptr)
+MainMenu::MainMenu():texture(texture), playbutton(playbutton), howtoplaybutton(howtoplaybutton), creditbutton(creditbutton), exitbutton(exitbutton), loading(loading),
+                    selectcreditbutton(selectcreditbutton), selectexitbutton(selectexitbutton), selecthowtoplaybutton(selecthowtoplaybutton), 
+                    selectplaybutton(selectplaybutton), music(nullptr)
 { }
 
 void MainMenu::Load() {

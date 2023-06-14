@@ -338,7 +338,6 @@ void Player::Update(double dt) {
 	}
 	// Game over
 	if (hp <= 0) {
-		//Engine::GetGameStateManager().ClearNextGameState();
 		std::cout << "Game Over called\n";
 		Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::GameOver));
 	}

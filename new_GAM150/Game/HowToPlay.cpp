@@ -25,10 +25,7 @@ void HowToPlay::Draw() {
 }
 
 void HowToPlay::Update([[maybe_unused]] double dt) {
-
-    
     if (Engine::GetInput().KeyJustPressed(CS230::Input::Keys::Escape)) {
-            //Engine::GetGameStateManager().ClearNextGameState();
             Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
     }
 

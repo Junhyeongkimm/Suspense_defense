@@ -6,7 +6,7 @@
 
 using namespace doodle;
 
-Credit::Credit() : Credit1(nullptr), Credit2(nullptr), Credit3(nullptr), Credit4(nullptr), Credit5(nullptr), Credit6(nullptr), Credit7(nullptr), music(nullptr), creditTimer(0.0), creditDelay(1.0)
+Credit::Credit() : Credit1(nullptr), Credit2(nullptr), Credit3(nullptr), Credit4(nullptr), Credit5(nullptr), Credit6(nullptr), Credit7(nullptr), music(nullptr), creditTimer(0.0), creditDelay(1), next(next)
 { }
 
 void Credit::Load() {
@@ -24,34 +24,30 @@ void Credit::Load() {
 }
 
 void Credit::Draw() {
-    Engine::GetWindow().Clear(UINT_MAX);
-    if (credit == 0)
-    {
+    switch (credit) {
+	case 0:
         Credit1->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit1->GetSize()) / 2.0 }));
-    }
-    if (credit == 1)
-    {
+		break;
+    case 1:
         Credit2->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit2->GetSize()) / 2.0 }));
-    }
-    if (credit == 2)
-    {
+        break;
+    case 2:
         Credit3->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit3->GetSize()) / 2.0 }));
-    }
-    if (credit == 3)
-    {
+        break;
+    case 3:
         Credit4->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit4->GetSize()) / 2.0 }));
-    }
-    if (credit == 4)
-    {
+        break;
+    case 4:
         Credit5->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit5->GetSize()) / 2.0 }));
-    }
-    if (credit == 5)
-    {
+        break;
+    case 5:
         Credit6->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit6->GetSize()) / 2.0 }));
-    }
-    if (credit == 6)
-    {
+        break;
+    case 6:
         Credit7->Draw(Math::TranslationMatrix({ (Engine::GetWindow().GetSize() - Credit7->GetSize()) / 2.0 }));
+        break;
+    default:
+        break;
     }
 }
 
@@ -63,7 +59,6 @@ void Credit::Update(double dt) {
 
 		credit++;
 		if (credit >= 7) {
-			//Engine::GetGameStateManager().ClearNextGameState();
 			Engine::GetGameStateManager().SetNextGameState(static_cast<int>(States::MainMenu));
 		}
 	}
