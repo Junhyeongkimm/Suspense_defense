@@ -22,8 +22,8 @@ private:
 	double speed = 350;
 	const double size = 40;
 	// HP
-	int hp = 10;
-	int max_hp = 10;
+	int hp = 100;
+	int max_hp = 100;
 	// Attack
 	int damage = 2;
 	double attack_delay = 1.0;
