@@ -1,51 +1,53 @@
-- Ovenning
+# Suspense Defense (Custom C++)
 
-- Suspense Defense
+A 2D roguelike tower-defense game built in a custom C++ engine with the Doodle framework (Mar–Jun 2023).  
+This was a **team project at DigiPen (4 members)**. Players alternate between **daytime exploration** to gather resources and **nighttime defense** to protect the base. Defeating bosses unlocks stronger weapons, while monster colonies multiply dynamically each day, creating a risk–reward dilemma.
 
-- Junhyeong Kim(김준형):Test Lead, Tool Developer
-  Youngho Kim(김영호):Producer, Build Engineer
+---
 
-  Hyeonjoon Nam(남현준):Technical Lead, Tester
-  Taehoon Lim(임태훈):Design Lead, Systems Design
+## Team
+- **Hyeonjoon Nam (남현준)** — Technical Lead, Tester  
+- **Junhyeong Kim (김준형)** — Test Lead, Tool Developer  
+- **Youngho Kim (김영호)** — Producer, Build Engineer  
+- **Taehoon Lim (임태훈)** — Design Lead, Systems Design  
 
-- Compilation Instructions
+---
 
-  You can compile it after checking that all the code and the asset are downloaded properly.
+## Technical Highlights
+- **Mediator Pattern** to centralize collision, spawning, and state management → reduced duplication, improved maintainability.  
+- **Procedural Map Generation** (cellular automata) for fresh layouts each run.  
+- **A\*** pathfinding integrated for smarter enemy pursuit without frame drops.  
 
-- What is Suspense Defense
+*(For portfolio context: Hyeonjoon Nam served as Tech Lead, responsible for most gameplay/system code and for coordinating tasks and bugs via Trello.)*
 
-  Suspense Defense is a log defense game that combines loglike and defense to prevent enemies charging to the main base, explore, and defeat the boss. Players need to explore the map to gather resources to build strength and save the world by defeating the boss. But be careful If player only focus on exploring, the main base will be in danger in the meantime!
+---
 
--  How to play?
+## How to Play
+**Title Screen**  
+- Move Up: `W`  
+- Move Down: `S`  
+- Select: `Enter`  
+- Back to Title: `Esc`  
 
-Title Screen
+**In Game**  
+- Move: `WASD`  
+- Attack / Resource Collection: `Left Click`  
+- Dash: `Right Click`  
+- Teleport to Base: `B`  
+- Switch to Close Attack: `Tab`  
+- Switch Gun Type: `1–4`  
 
-•	Move Over: W
+(Check in-game tutorial for more details.)
 
-•	Move Down: S
+---
 
-•	Select: Enter key
+## Build / Run
+- Visual Studio 2019+ (C++17), x64 Debug/Release
+- Doodle framework required (provided by DigiPen)  
+- Run from project root (adjust working directory if needed)
 
-•	Back to Title: ESC key
+---
 
-In game
-
-•	Move Left: A
-
-•	Move Right: D
-
-•	Move Over: W
-
-•	Move Down: S
-
-•	Teleport to Base: B
-
-•	Change to close attack: TAB
-
-•	Change to Gun type: Number 1~4
-
-•	Left Click:	Attack, resource collection
-
-•	Right Click: Dash
-
-Check out how to play in the game for more information.
+> ⚠️ This repository is for academic purposes at DigiPen Institute of Technology.  
+> Proprietary frameworks/assets are excluded where necessary.  
+> Credits to all teammates; see commit history for contributions.
